@@ -30,8 +30,8 @@
         <span style="width:11px;height:11px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>
         <span style="font-weight:800;font-size:13px;letter-spacing:.22em;color:#141417;text-transform:uppercase;">Positif Design</span>
       </div>
-      <h1 style="font-weight:800;font-size:40px;line-height:1.05;letter-spacing:-0.02em;color:#141417;margin:14px 0 0;">Kit Mailing — 7 modèles e-mail</h1>
-      <p style="font-weight:500;font-size:15px;color:#6c6c75;margin:12px 0 0;max-width:560px;">Modèles responsives, codés en tableaux et styles inline — beaux à l'écran et prêts à partir dans Sarbacane, Brevo ou Mailchimp. Direction pop-art, hyper commerciale. Plus un constructeur glisser-déposer pour monter vos e-mails bloc par bloc.</p>
+      <h1 style="font-weight:800;font-size:40px;line-height:1.05;letter-spacing:-0.02em;color:#141417;margin:14px 0 0;">Designer mailing Positif</h1>
+      <p style="font-weight:500;font-size:15px;color:#6c6c75;margin:12px 0 0;max-width:560px;">Construisez vos e-mails bloc par bloc, sauvegardez vos mod?les, puis exportez un HTML pr?t pour Brevo.</p>
     </div>
     <div style="display:flex;align-items:center;gap:22px;background:#fff;border:1px solid #DEDEE3;border-radius:10px;padding:14px 20px;">
       <div style="display:flex;flex-direction:column;gap:6px;">
@@ -65,788 +65,49 @@
 
   <!-- TAB: MODELES -->
   <div style="display:{{ modelesDisplay }};">
+    <div style="max-width:1304px;margin:42px auto 0;">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:22px;">
+        <div>
+          <div style="font-weight:800;font-size:13px;letter-spacing:.18em;color:#FC1D37;text-transform:uppercase;">Biblioth?que</div>
+          <h2 style="font-weight:800;font-size:28px;line-height:1.08;color:#141417;margin:8px 0 0;letter-spacing:-0.015em;">Mod?les sauvegard?s</h2>
+          <p style="font-weight:500;font-size:14px;line-height:1.55;color:#6c6c75;margin:10px 0 0;max-width:620px;">Les mod?les cr??s dans le constructeur apparaissent ici. Cliquez sur un mod?le pour le rouvrir dans le builder.</p>
+        </div>
+        <button onClick="{{ showBuilder }}" style="background:#141417;color:#fff;border:none;border-radius:50px;padding:13px 22px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.06em;cursor:pointer;">CR?ER UN NOUVEL E-MAIL</button>
+      </div>
 
-  <!-- ============ SECTION 01 ============ -->
-  <div style="max-width:1304px;margin:48px auto 0;">
-    <div style="display:flex;align-items:baseline;gap:16px;margin:0 0 30px;flex-wrap:wrap;">
-      <span style="font-weight:800;font-size:13px;letter-spacing:.18em;color:#FC1D37;">01</span>
-      <h2 style="font-weight:800;font-size:27px;color:#141417;margin:0;letter-spacing:-0.015em;">Vente Flash — Disque A personnalisé</h2>
-      <span style="font-weight:500;font-size:14px;color:#8a8a93;">Cible : auto-écoles · Vente flash</span>
-    </div>
-    <div style="display:flex;gap:56px;flex-wrap:wrap;align-items:flex-start;">
-      <div style="width:600px;">
-        <div style="margin:0 0 14px;">
-          <div style="font-weight:700;font-size:12px;letter-spacing:.14em;color:#56565e;text-transform:uppercase;">Vente Flash · Disque A</div>
-          <div style="font-weight:500;font-size:13px;color:#9a9aa2;margin-top:3px;">Pop blast — gros chiffres, points Ben-Day, urgence</div>
+      <sc-if value="{{ noSavedTemplates }}" hint-placeholder-val="true">
+        <div style="background:#fff;border:1px dashed #CFCFD8;border-radius:12px;padding:42px 28px;text-align:center;box-shadow:0 12px 34px -28px rgba(20,20,30,.3);">
+          <div style="font-weight:800;font-size:24px;color:#C4C4CC;letter-spacing:.02em;">AUCUN MOD?LE SAUVEGARD?</div>
+          <p style="font-weight:500;font-size:14px;line-height:1.55;color:#8a8a93;margin:10px auto 0;max-width:520px;">Commencez dans le constructeur, ajoutez vos blocs, puis utilisez ?Sauvegarder comme mod?le?.</p>
         </div>
-        <div style="width:600px;background-color:#fff;background-image:radial-gradient(rgba(20,20,28,.045) 1px, transparent 1.6px);background-size:16px 16px;border-radius:10px;overflow:hidden;box-shadow:0 26px 60px -22px rgba(20,20,30,.36);border:1px solid #E2E2E8;">
-          <div style="background:#141417;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;">
-            <img src="assets/logo-positif-white.png" width="148" alt="Positif Design" style="display:block;width:148px;height:auto;">
-            <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.18em;color:#9a9aa2;">ÉPINAY-SUR-SEINE</span>
-          </div>
-          <div style="position:relative;background:#FC1D37;overflow:hidden;min-height:366px;">
-            <div style="position:absolute;top:-40px;right:-40px;width:380px;height:380px;background-image:radial-gradient(circle, rgba(255,255,255,.9) 30%, transparent 33%);background-size:27px 27px;-webkit-mask-image:radial-gradient(circle at 72% 28%, #000 0%, transparent 56%);mask-image:radial-gradient(circle at 72% 28%, #000 0%, transparent 56%);"></div>
-            <div style="position:absolute;left:0;right:0;bottom:0;height:122px;background:#141417;clip-path:polygon(0 55%, 100% 0%, 100% 100%, 0% 100%);"></div>
-            <div style="position:relative;z-index:2;padding:28px 34px 30px;">
-              <div style="display:inline-block;background:#141417;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.16em;padding:7px 13px;transform:rotate(-2deg);white-space:nowrap;">AUTO-ÉCOLES · VENTE FLASH</div>
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:74px;line-height:.94;color:#fff;letter-spacing:.01em;margin:16px 0 0;white-space:nowrap;text-shadow:3px 4px 0 rgba(20,20,30,.20);">1 ACHETÉ</div>
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:74px;line-height:.98;letter-spacing:.01em;margin:2px 0 0;white-space:nowrap;"><span style="background:#141417;color:#fff;padding:1px 11px 5px;display:inline-block;transform:skewX(-6deg);">1 OFFERT</span></div>
-              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:15px;line-height:1.45;color:#fff;margin:26px 0 0;max-width:328px;">Vos disques A « jeune conducteur » floqués à votre nom. <span style="background:#fff;color:#FC1D37;font-weight:800;padding:1px 6px;-webkit-box-decoration-break:clone;box-decoration-break:clone;">Commandez-en 50, on vous en imprime 100.</span></p>
-            </div>
-            <div style="position:absolute;top:118px;right:22px;z-index:4;width:124px;height:124px;border-radius:50%;background:repeating-conic-gradient(#fff 0deg 9deg, #ffd0d6 9deg 18deg);display:flex;align-items:center;justify-content:center;transform:rotate(-13deg);box-shadow:0 10px 22px -8px rgba(0,0,0,.45);"><div style="width:94px;height:94px;border-radius:50%;background:#141417;display:flex;flex-direction:column;align-items:center;justify-content:center;"><span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:38px;color:#FC1D37;line-height:.9;">×2</span><span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:9px;letter-spacing:.12em;color:#fff;margin-top:1px;">DISQUES</span></div></div>
-            <div style="position:absolute;right:30px;bottom:18px;z-index:5;transform:rotate(-7deg);"><div style="width:136px;height:136px;border-radius:50%;background:#fff;box-shadow:0 16px 34px -12px rgba(0,0,0,.5);border:1px solid #EFEFF0;display:flex;flex-direction:column;align-items:center;justify-content:center;"><span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:8px;letter-spacing:.1em;color:#141417;background:#F1F1F4;border-radius:20px;padding:2px 9px;">VOTRE LOGO</span><div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:74px;color:#FC1D37;line-height:.8;margin-top:3px;">A</div></div></div>
-          </div>
-          <div style="padding:28px 34px 4px;">
-            <div style="position:relative;background:#141417;border-radius:16px;padding:16px 24px;display:flex;align-items:center;gap:18px;">
-              <span style="position:absolute;left:-9px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:#fff;"></span>
-              <span style="position:absolute;right:-9px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:#fff;"></span>
-              <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:42px;color:#FC1D37;line-height:.82;white-space:nowrap;">100</span>
-              <span style="border-left:2px dashed #3a3a42;padding-left:18px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:15px;line-height:1.2;color:#fff;">DISQUES A POUR LE PRIX DE 50<br><span style="font-weight:600;font-size:12px;color:#b9b9c0;">soit −50&nbsp;% sur le pack complet</span></span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:9px 18px;margin:18px 2px 0;">
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>À VOTRE LOGO</span>
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>CONFORME AU CODE</span>
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>FABRIQUÉ À ÉPINAY</span>
-            </div>
-          </div>
-          <div style="padding:22px 34px 28px;text-align:center;">
-            <a href="mailto:contact@positif.biz?subject=Offre%20Disque%20A" style="display:block;background:#FC1D37;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:25px;letter-spacing:.02em;padding:18px 16px;border-radius:50px;box-shadow:0 14px 26px -10px rgba(252,29,55,.55);">J’EN PROFITE MAINTENANT →</a>
-            <div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:15px;">
-              <a href="tel:+33148291551" style="display:inline-flex;align-items:center;gap:8px;background:#fff;border:2px solid #141417;color:#141417;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;padding:10px 18px;border-radius:50px;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>01.48.29.15.51</a>
-              <a href="https://wa.me/33618701118" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;padding:10px 18px;border-radius:50px;">WhatsApp&nbsp;· 06 18 70 11 18</a>
-            </div>
-          </div>
-          <div style="background:repeating-linear-gradient(-45deg,#FC1D37 0 20px,#d4122b 20px 40px);padding:13px 30px;text-align:center;">
-            <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:.08em;color:#fff;">OFFRE FLASH · STOCK LIMITÉ · JUSQU’AU 30 JUIN 2026</span>
-          </div>
-          <div style="background:#FAFAFB;border-top:1px solid #ECECEF;padding:22px 30px 24px;">
-            <div style="display:flex;align-items:center;gap:9px;">
-              <span style="width:9px;height:9px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>
-              <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:17px;letter-spacing:.03em;color:#141417;">POSITIF, C’EST AUSSI</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:13px;">
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Enseignes &amp; façades</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Signalétique</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Marquage véhicule</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Covering</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Panneaux &amp; bâches</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Stickers &amp; adhésifs</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Impression grand format</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Marquage textile</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Objets publicitaires</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Flyers &amp; dépliants</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Cartes de visite</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>PLV &amp; stands</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Décoration vitrine</span>
-            </div>
-          </div>
-          <div style="position:relative;background:#141417;overflow:hidden;padding:28px 32px 22px;">
-            <div style="position:absolute;inset:20px;background-image:{{ dotGradient }};background-size:{{ dotCell }};background-repeat:space;opacity:.12;pointer-events:none;"></div>
-            <img src="assets/arrows.png" alt="" style="position:absolute;right:{{ arrowRight }};bottom:{{ arrowBottom }};width:{{ arrowW }};height:auto;transform:{{ arrowTransform }};transform-origin:bottom right;pointer-events:none;z-index:1;">
-            <div style="position:relative;z-index:2;">
-              <img src="assets/logo-positif-white.png" width="142" alt="Positif Design" style="display:block;width:142px;height:auto;">
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.14em;color:#8e8e96;text-transform:uppercase;margin:12px 0 0;">Communication visuelle · Imprimerie · Signalétique</div>
-              <div style="display:flex;flex-direction:column;gap:9px;margin:18px 0 0;max-width:340px;">
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Adresse</span>
-                <span style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">48 bis Bd Foch · 93800 Épinay-sur-Seine</span>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Téléphone</span>
-                <a href="tel:+33148291551" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">01.48.29.15.51</a>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">WhatsApp</span>
-                <a href="https://wa.me/33618701118" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">06 18 70 11 18</a>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Email</span>
-                <a href="mailto:contact@positif.biz" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">contact@positif.biz</a>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Web</span>
-                <a href="https://positifdesign.fr" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">positifdesign.fr</a>
-              </div>
-              </div>
-              <div style="display:flex;gap:8px;margin:18px 0 0;">
-                <a href="#" style="display:inline-block;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;color:#fff;background:#FC1D37;border-radius:50px;padding:6px 14px;">Facebook</a>
-                <a href="#" style="display:inline-block;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;color:#fff;border:1px solid #3a3a42;border-radius:50px;padding:6px 14px;">Instagram</a>
-              </div>
-              <div style="height:1px;background:#2a2a30;margin:20px 0 12px;max-width:340px;"></div>
-              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.6;color:#6c6c75;margin:0;max-width:360px;">Vous recevez cet e-mail en tant que client ou partenaire de Positif Design.<br><a href="#" style="color:#8a8a93;text-decoration:underline;">Se désabonner</a> · <a href="#" style="color:#8a8a93;text-decoration:underline;">Voir dans le navigateur</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+      </sc-if>
 
-  <!-- ============ SECTION 02 ============ -->
-  <div style="max-width:1304px;margin:80px auto 0;">
-    <div style="display:flex;align-items:baseline;gap:16px;margin:0 0 30px;flex-wrap:wrap;">
-      <span style="font-weight:800;font-size:13px;letter-spacing:.18em;color:#FC1D37;">02</span>
-      <h2 style="font-weight:800;font-size:27px;color:#141417;margin:0;letter-spacing:-0.015em;">Modèles de prospection par métier</h2>
-      <span style="font-weight:500;font-size:14px;color:#8a8a93;">Restaurants · BTP · Objets &amp; textiles · Véhicules</span>
+      <sc-if value="{{ hasSavedTemplates }}" hint-placeholder-val="false">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;">
+          <sc-for list="{{ savedTemplates }}" as="tpl" hint-placeholder-count="0">
+            <div style="background:#fff;border:1px solid #E2E2E8;border-radius:12px;padding:18px;box-shadow:0 10px 28px -24px rgba(20,20,30,.36);">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+                <div style="min-width:0;">
+                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:17px;line-height:1.15;color:#141417;word-break:break-word;">{{ tpl.name }}</div>
+                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11px;letter-spacing:.08em;color:#9a9aa2;text-transform:uppercase;margin-top:8px;">{{ tpl.meta }}</div>
+                </div>
+                <button onClick="{{ tpl.onDelete }}" title="Supprimer" style="width:30px;height:30px;border-radius:50%;border:1px solid #FFD0D6;background:#fff;color:#FC1D37;font-family:Montserrat,Arial,sans-serif;font-weight:900;font-size:13px;line-height:1;cursor:pointer;flex:0 0 auto;">?</button>
+              </div>
+              <div style="height:94px;margin:16px 0 14px;border-radius:8px;background:#F4F4F6;border:1px solid #ECECF1;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                <div style="width:154px;height:64px;border-radius:7px;background:#fff;border:1px solid #E2E2E8;box-shadow:0 10px 18px -16px rgba(20,20,30,.34);display:flex;flex-direction:column;">
+                  <div style="height:18px;background:#141417;border-radius:7px 7px 0 0;"></div>
+                  <div style="flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:8px;">
+                    <sc-for list="{{ tpl.dots }}" as="dot" hint-placeholder-count="0"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:block;opacity:.85;"></span></sc-for>
+                  </div>
+                  <div style="height:18px;background:#141417;border-radius:0 0 7px 7px;"></div>
+                </div>
+              </div>
+              <button onClick="{{ tpl.onLoad }}" style="width:100%;background:#FC1D37;color:#fff;border:none;border-radius:50px;padding:12px 14px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.05em;cursor:pointer;">OUVRIR DANS LE BUILDER</button>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
     </div>
-    <div style="display:flex;gap:56px;flex-wrap:wrap;align-items:flex-start;">
-      <div style="width:600px;">
-        <div style="margin:0 0 14px;">
-          <div style="font-weight:700;font-size:12px;letter-spacing:.14em;color:#56565e;text-transform:uppercase;">Restaurants &amp; traiteurs</div>
-          <div style="font-weight:500;font-size:13px;color:#9a9aa2;margin-top:3px;">Cartes, menus, flyers, sets de table</div>
-        </div>
-        <div style="width:600px;background-color:#fff;background-image:radial-gradient(rgba(20,20,28,.045) 1px, transparent 1.6px);background-size:16px 16px;border-radius:10px;overflow:hidden;box-shadow:0 26px 60px -22px rgba(20,20,30,.36);border:1px solid #E2E2E8;">
-          <div style="background:#141417;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;">
-            <img src="assets/logo-positif-white.png" width="148" alt="Positif Design" style="display:block;width:148px;height:auto;">
-            <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.18em;color:#9a9aa2;">RESTOS &amp; TRAITEURS</span>
-          </div>
-          <div style="position:relative;background:#FC1D37;overflow:hidden;min-height:312px;">
-            <div style="position:absolute;top:-40px;right:-40px;width:380px;height:380px;background-image:radial-gradient(circle, rgba(255,255,255,.9) 30%, transparent 33%);background-size:27px 27px;-webkit-mask-image:radial-gradient(circle at 72% 28%, #000 0%, transparent 56%);mask-image:radial-gradient(circle at 72% 28%, #000 0%, transparent 56%);"></div>
-            <div style="position:absolute;left:0;right:0;bottom:0;height:122px;background:#141417;clip-path:polygon(0 55%, 100% 0%, 100% 100%, 0% 100%);"></div>
-            <div style="position:relative;z-index:2;padding:26px 30px 30px;">
-              <div style="display:inline-block;background:#141417;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.14em;padding:7px 13px;transform:rotate(-2deg);white-space:nowrap;">VOS PLATS MÉRITENT MIEUX</div>
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:50px;line-height:.92;color:#fff;letter-spacing:.01em;margin:16px 0 0;">LA CARTE<br>QUI DONNE<br><span style="background:#141417;color:#fff;padding:1px 11px 5px;display:inline-block;transform:skewX(-6deg);">FAIM.</span></div>
-              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:14px;line-height:1.45;color:#fff;margin:18px 0 0;max-width:300px;">Cartes, menus, sets de table, flyers de livraison, vitrophanie… on met vos plats en valeur, du comptoir à la devanture.</p>
-            </div>
-            <div style="position:absolute;right:22px;bottom:18px;z-index:5;transform:rotate(-6deg);width:178px;height:128px;border-radius:14px;background-image:repeating-linear-gradient(45deg,#E7E7EC 0 14px,#F3F3F6 14px 28px);border:5px solid #fff;box-shadow:0 16px 30px -10px rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;"><span style="font-family:'Courier New',monospace;font-size:11px;color:#6a6a72;background:#fff;padding:5px 9px;border-radius:4px;">PHOTO — VOS PLATS</span></div>
-          </div>
-          <div style="padding:26px 30px 4px;">
-            <div style="position:relative;background:#141417;border-radius:16px;padding:16px 24px;display:flex;align-items:center;gap:18px;">
-              <span style="position:absolute;left:-9px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:#fff;"></span>
-              <span style="position:absolute;right:-9px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:#fff;"></span>
-              <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:42px;color:#FC1D37;line-height:.82;white-space:nowrap;">−15%</span>
-              <span style="border-left:2px dashed #3a3a42;padding-left:18px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:15px;line-height:1.2;color:#fff;">SUR VOTRE 1ʳᵉ COMMANDE<br><span style="font-weight:600;font-size:12px;color:#b9b9c0;">cartes &amp; menus imprimés</span></span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:11px 18px;margin:18px 2px 0;">
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>CARTES PLASTIFIÉES</span>
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>SETS DE TABLE</span>
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>FLYERS LIVRAISON</span>
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>VITROPHANIE</span>
-            </div>
-          </div>
-          <div style="padding:22px 30px 26px;text-align:center;">
-            <a href="mailto:contact@positif.biz?subject=Supports%20restaurant" style="display:block;background:#FC1D37;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:25px;letter-spacing:.02em;padding:18px 16px;border-radius:50px;box-shadow:0 14px 26px -10px rgba(252,29,55,.55);">JE BOOSTE MA CARTE →</a>
-            <div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:15px;">
-              <a href="tel:+33148291551" style="display:inline-flex;align-items:center;gap:8px;background:#fff;border:2px solid #141417;color:#141417;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;padding:10px 18px;border-radius:50px;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>01.48.29.15.51</a>
-              <a href="https://wa.me/33618701118" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;padding:10px 18px;border-radius:50px;">WhatsApp&nbsp;· 06 18 70 11 18</a>
-            </div>
-          </div>
-          <div style="background:#141417;padding:12px 30px;text-align:center;">
-            <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.1em;color:#fff;">DEVIS GRATUIT · RÉPONSE SOUS 24 H</span>
-          </div>
-          <div style="background:#FAFAFB;border-top:1px solid #ECECEF;padding:22px 30px 24px;">
-            <div style="display:flex;align-items:center;gap:9px;">
-              <span style="width:9px;height:9px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>
-              <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:17px;letter-spacing:.03em;color:#141417;">POSITIF, C’EST AUSSI</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:13px;">
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Enseignes &amp; façades</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Signalétique</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Marquage véhicule</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Covering</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Panneaux &amp; bâches</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Stickers &amp; adhésifs</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Impression grand format</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Marquage textile</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Objets publicitaires</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Flyers &amp; dépliants</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Cartes de visite</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>PLV &amp; stands</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Décoration vitrine</span>
-            </div>
-          </div>
-          <div style="position:relative;background:#141417;overflow:hidden;padding:28px 32px 22px;">
-            <div style="position:absolute;inset:20px;background-image:{{ dotGradient }};background-size:{{ dotCell }};background-repeat:space;opacity:.12;pointer-events:none;"></div>
-            <img src="assets/arrows.png" alt="" style="position:absolute;right:{{ arrowRight }};bottom:{{ arrowBottom }};width:{{ arrowW }};height:auto;transform:{{ arrowTransform }};transform-origin:bottom right;pointer-events:none;z-index:1;">
-            <div style="position:relative;z-index:2;">
-              <img src="assets/logo-positif-white.png" width="142" alt="Positif Design" style="display:block;width:142px;height:auto;">
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.14em;color:#8e8e96;text-transform:uppercase;margin:12px 0 0;">Communication visuelle · Imprimerie · Signalétique</div>
-              <div style="display:flex;flex-direction:column;gap:9px;margin:18px 0 0;max-width:340px;">
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Adresse</span>
-                <span style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">48 bis Bd Foch · 93800 Épinay-sur-Seine</span>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Téléphone</span>
-                <a href="tel:+33148291551" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">01.48.29.15.51</a>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">WhatsApp</span>
-                <a href="https://wa.me/33618701118" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">06 18 70 11 18</a>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Email</span>
-                <a href="mailto:contact@positif.biz" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">contact@positif.biz</a>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Web</span>
-                <a href="https://positifdesign.fr" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">positifdesign.fr</a>
-              </div>
-              </div>
-              <div style="display:flex;gap:8px;margin:18px 0 0;">
-                <a href="#" style="display:inline-block;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;color:#fff;background:#FC1D37;border-radius:50px;padding:6px 14px;">Facebook</a>
-                <a href="#" style="display:inline-block;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;color:#fff;border:1px solid #3a3a42;border-radius:50px;padding:6px 14px;">Instagram</a>
-              </div>
-              <div style="height:1px;background:#2a2a30;margin:20px 0 12px;max-width:340px;"></div>
-              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.6;color:#6c6c75;margin:0;max-width:360px;">Vous recevez cet e-mail en tant que client ou partenaire de Positif Design.<br><a href="#" style="color:#8a8a93;text-decoration:underline;">Se désabonner</a> · <a href="#" style="color:#8a8a93;text-decoration:underline;">Voir dans le navigateur</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div style="width:600px;">
-        <div style="margin:0 0 14px;">
-          <div style="font-weight:700;font-size:12px;letter-spacing:.14em;color:#56565e;text-transform:uppercase;">Bâtiment &amp; travaux publics</div>
-          <div style="font-weight:500;font-size:13px;color:#9a9aa2;margin-top:3px;">Panneaux, bâches, signalétique</div>
-        </div>
-        <div style="width:600px;background-color:#fff;background-image:radial-gradient(rgba(20,20,28,.045) 1px, transparent 1.6px);background-size:16px 16px;border-radius:10px;overflow:hidden;box-shadow:0 26px 60px -22px rgba(20,20,30,.36);border:1px solid #E2E2E8;">
-          <div style="position:relative;background:#141417;overflow:hidden;min-height:300px;padding:26px 30px 30px;">
-            <div style="position:absolute;left:-60px;bottom:-60px;width:320px;height:320px;background-image:radial-gradient(circle, #FC1D37 30%, transparent 33%);background-size:25px 25px;-webkit-mask-image:radial-gradient(circle at 24% 76%, #000 0%, transparent 50%);mask-image:radial-gradient(circle at 24% 76%, #000 0%, transparent 50%);opacity:.92;"></div>
-            <div style="position:relative;z-index:2;">
-              <img src="assets/logo-positif-white.png" width="148" alt="Positif Design" style="display:block;width:148px;height:auto;">
-              <div style="display:inline-block;margin:20px 0 0;background:#FC1D37;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.14em;padding:7px 13px;white-space:nowrap;">BÂTIMENT &amp; TRAVAUX PUBLICS</div>
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:46px;line-height:.94;color:#fff;letter-spacing:.01em;margin:14px 0 0;">VOS CHANTIERS<br>SE VOIENT<br><span style="color:#FC1D37;">DE LOIN.</span></div>
-              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:14px;line-height:1.5;color:#cfcfd6;margin:14px 0 0;max-width:300px;">Panneaux Forex &amp; Dibond, bâches grand format, marquage de bennes, fléchage, barrières… pensés pour tenir aux intempéries.</p>
-            </div>
-<div style="position:absolute;top:24px;right:24px;z-index:4;width:118px;height:118px;border-radius:50%;background:repeating-conic-gradient(#FC1D37 0deg 9deg, #a50f22 9deg 18deg);display:flex;align-items:center;justify-content:center;transform:rotate(12deg);box-shadow:0 10px 22px -8px rgba(0,0,0,.5);"><div style="width:90px;height:90px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;"><span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:29px;color:#141417;line-height:.85;">24H</span><span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:9px;letter-spacing:.1em;color:#FC1D37;margin-top:2px;">DEVIS</span></div></div>
-            <div style="position:absolute;right:22px;bottom:18px;z-index:5;transform:rotate(-6deg);width:178px;height:128px;border-radius:14px;background-image:repeating-linear-gradient(45deg,#E7E7EC 0 14px,#F3F3F6 14px 28px);border:5px solid #fff;box-shadow:0 16px 30px -10px rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;"><span style="font-family:'Courier New',monospace;font-size:11px;color:#6a6a72;background:#fff;padding:5px 9px;border-radius:4px;">PHOTO — PANNEAU</span></div>
-          </div>
-          <div style="padding:26px 30px 4px;">
-            <div style="position:relative;background:#141417;border-radius:16px;padding:16px 24px;display:flex;align-items:center;gap:18px;">
-              <span style="position:absolute;left:-9px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:#fff;"></span>
-              <span style="position:absolute;right:-9px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:#fff;"></span>
-              <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:42px;color:#FC1D37;line-height:.82;white-space:nowrap;">0€</span>
-              <span style="border-left:2px dashed #3a3a42;padding-left:18px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:15px;line-height:1.2;color:#fff;">ÉTUDE &amp; CONSEIL<br><span style="font-weight:600;font-size:12px;color:#b9b9c0;">devis chantier sous 24 h</span></span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:11px 18px;margin:18px 2px 0;">
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>PANNEAUX RÉGLEMENTAIRES</span>
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>BÂCHES ANTI-UV</span>
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>MARQUAGE BENNES</span>
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>FLÉCHAGE</span>
-            </div>
-          </div>
-          <div style="padding:22px 30px 26px;text-align:center;">
-            <a href="mailto:contact@positif.biz?subject=Devis%20chantier" style="display:block;background:#141417;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:25px;letter-spacing:.02em;padding:18px 16px;border-radius:50px;box-shadow:0 14px 26px -10px rgba(20,20,30,.4);">MON DEVIS CHANTIER →</a>
-            <div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:15px;">
-              <a href="tel:+33148291551" style="display:inline-flex;align-items:center;gap:8px;background:#fff;border:2px solid #141417;color:#141417;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;padding:10px 18px;border-radius:50px;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>01.48.29.15.51</a>
-              <a href="https://wa.me/33618701118" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;padding:10px 18px;border-radius:50px;">WhatsApp&nbsp;· 06 18 70 11 18</a>
-            </div>
-          </div>
-          <div style="background:#141417;padding:12px 30px;text-align:center;">
-            <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.1em;color:#fff;">INTERVENTION RAPIDE EN ÎLE-DE-FRANCE</span>
-          </div>
-          <div style="background:#FAFAFB;border-top:1px solid #ECECEF;padding:22px 30px 24px;">
-            <div style="display:flex;align-items:center;gap:9px;">
-              <span style="width:9px;height:9px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>
-              <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:17px;letter-spacing:.03em;color:#141417;">POSITIF, C’EST AUSSI</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:13px;">
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Enseignes &amp; façades</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Signalétique</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Marquage véhicule</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Covering</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Panneaux &amp; bâches</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Stickers &amp; adhésifs</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Impression grand format</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Marquage textile</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Objets publicitaires</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Flyers &amp; dépliants</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Cartes de visite</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>PLV &amp; stands</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Décoration vitrine</span>
-            </div>
-          </div>
-          <div style="position:relative;background:#141417;overflow:hidden;padding:28px 32px 22px;">
-            <div style="position:absolute;inset:20px;background-image:{{ dotGradient }};background-size:{{ dotCell }};background-repeat:space;opacity:.12;pointer-events:none;"></div>
-            <img src="assets/arrows.png" alt="" style="position:absolute;right:{{ arrowRight }};bottom:{{ arrowBottom }};width:{{ arrowW }};height:auto;transform:{{ arrowTransform }};transform-origin:bottom right;pointer-events:none;z-index:1;">
-            <div style="position:relative;z-index:2;">
-              <img src="assets/logo-positif-white.png" width="142" alt="Positif Design" style="display:block;width:142px;height:auto;">
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.14em;color:#8e8e96;text-transform:uppercase;margin:12px 0 0;">Communication visuelle · Imprimerie · Signalétique</div>
-              <div style="display:flex;flex-direction:column;gap:9px;margin:18px 0 0;max-width:340px;">
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Adresse</span>
-                <span style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">48 bis Bd Foch · 93800 Épinay-sur-Seine</span>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Téléphone</span>
-                <a href="tel:+33148291551" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">01.48.29.15.51</a>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">WhatsApp</span>
-                <a href="https://wa.me/33618701118" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">06 18 70 11 18</a>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Email</span>
-                <a href="mailto:contact@positif.biz" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">contact@positif.biz</a>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Web</span>
-                <a href="https://positifdesign.fr" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">positifdesign.fr</a>
-              </div>
-              </div>
-              <div style="display:flex;gap:8px;margin:18px 0 0;">
-                <a href="#" style="display:inline-block;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;color:#fff;background:#FC1D37;border-radius:50px;padding:6px 14px;">Facebook</a>
-                <a href="#" style="display:inline-block;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;color:#fff;border:1px solid #3a3a42;border-radius:50px;padding:6px 14px;">Instagram</a>
-              </div>
-              <div style="height:1px;background:#2a2a30;margin:20px 0 12px;max-width:340px;"></div>
-              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.6;color:#6c6c75;margin:0;max-width:360px;">Vous recevez cet e-mail en tant que client ou partenaire de Positif Design.<br><a href="#" style="color:#8a8a93;text-decoration:underline;">Se désabonner</a> · <a href="#" style="color:#8a8a93;text-decoration:underline;">Voir dans le navigateur</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div style="width:600px;">
-        <div style="margin:0 0 14px;">
-          <div style="font-weight:700;font-size:12px;letter-spacing:.14em;color:#56565e;text-transform:uppercase;">Objets publicitaires &amp; textiles</div>
-          <div style="font-weight:500;font-size:13px;color:#9a9aa2;margin-top:3px;">Goodies, textiles floqués, cadeaux</div>
-        </div>
-        <div style="width:600px;background-color:#fff;background-image:radial-gradient(rgba(20,20,28,.045) 1px, transparent 1.6px);background-size:16px 16px;border-radius:10px;overflow:hidden;box-shadow:0 26px 60px -22px rgba(20,20,30,.36);border:1px solid #E2E2E8;">
-          <div style="background:#141417;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;">
-            <img src="assets/logo-positif-white.png" width="148" alt="Positif Design" style="display:block;width:148px;height:auto;">
-            <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.18em;color:#9a9aa2;">GOODIES &amp; TEXTILES</span>
-          </div>
-          <div style="position:relative;background:#FC1D37;overflow:hidden;min-height:312px;">
-            <div style="position:absolute;top:-40px;right:-40px;width:380px;height:380px;background-image:radial-gradient(circle, rgba(255,255,255,.9) 30%, transparent 33%);background-size:27px 27px;-webkit-mask-image:radial-gradient(circle at 72% 28%, #000 0%, transparent 56%);mask-image:radial-gradient(circle at 72% 28%, #000 0%, transparent 56%);"></div>
-            <div style="position:absolute;left:0;right:0;bottom:0;height:122px;background:#141417;clip-path:polygon(0 55%, 100% 0%, 100% 100%, 0% 100%);"></div>
-            <div style="position:relative;z-index:2;padding:26px 30px 30px;">
-              <div style="display:inline-block;background:#141417;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.14em;padding:7px 13px;transform:rotate(-2deg);white-space:nowrap;">OBJETS PUBLICITAIRES &amp; TEXTILES</div>
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:50px;line-height:.92;color:#fff;letter-spacing:.01em;margin:16px 0 0;">VOTRE LOGO<br>PARTOUT,<br><span style="background:#141417;color:#fff;padding:1px 11px 5px;display:inline-block;transform:skewX(-6deg);">TOUTE L’ANNÉE.</span></div>
-              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:14px;line-height:1.45;color:#fff;margin:18px 0 0;max-width:300px;">Textiles floqués ou brodés, tote bags, mugs, gourdes, stylos, casquettes… le cadeau qui fait vivre votre marque.</p>
-            </div>
-            <div style="position:absolute;right:22px;bottom:18px;z-index:5;transform:rotate(-6deg);width:178px;height:128px;border-radius:14px;background-image:repeating-linear-gradient(45deg,#E7E7EC 0 14px,#F3F3F6 14px 28px);border:5px solid #fff;box-shadow:0 16px 30px -10px rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;"><span style="font-family:'Courier New',monospace;font-size:11px;color:#6a6a72;background:#fff;padding:5px 9px;border-radius:4px;">PHOTO — GOODIES</span></div>
-          </div>
-          <div style="padding:26px 30px 4px;">
-            <div style="position:relative;background:#141417;border-radius:16px;padding:16px 24px;display:flex;align-items:center;gap:18px;">
-              <span style="position:absolute;left:-9px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:#fff;"></span>
-              <span style="position:absolute;right:-9px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:#fff;"></span>
-              <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:42px;color:#FC1D37;line-height:.82;white-space:nowrap;">25</span>
-              <span style="border-left:2px dashed #3a3a42;padding-left:18px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:15px;line-height:1.2;color:#fff;">PIÈCES MINIMUM<br><span style="font-weight:600;font-size:12px;color:#b9b9c0;">tarifs dégressifs · BAT offert</span></span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:11px 18px;margin:18px 2px 0;">
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>TEXTILES FLOQUÉS</span>
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>MUGS &amp; GOURDES</span>
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>STYLOS &amp; TOTE BAGS</span>
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>CASQUETTES</span>
-            </div>
-          </div>
-          <div style="padding:22px 30px 26px;text-align:center;">
-            <a href="mailto:contact@positif.biz?subject=Objets%20publicitaires" style="display:block;background:#FC1D37;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:25px;letter-spacing:.02em;padding:18px 16px;border-radius:50px;box-shadow:0 14px 26px -10px rgba(252,29,55,.55);">JE COMPOSE MA SÉLECTION →</a>
-            <div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:15px;">
-              <a href="tel:+33148291551" style="display:inline-flex;align-items:center;gap:8px;background:#fff;border:2px solid #141417;color:#141417;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;padding:10px 18px;border-radius:50px;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>01.48.29.15.51</a>
-              <a href="https://wa.me/33618701118" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;padding:10px 18px;border-radius:50px;">WhatsApp&nbsp;· 06 18 70 11 18</a>
-            </div>
-          </div>
-          <div style="background:#141417;padding:12px 30px;text-align:center;">
-            <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.1em;color:#fff;">PETITES &amp; GRANDES QUANTITÉS · BAT OFFERT</span>
-          </div>
-          <div style="background:#FAFAFB;border-top:1px solid #ECECEF;padding:22px 30px 24px;">
-            <div style="display:flex;align-items:center;gap:9px;">
-              <span style="width:9px;height:9px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>
-              <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:17px;letter-spacing:.03em;color:#141417;">POSITIF, C’EST AUSSI</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:13px;">
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Enseignes &amp; façades</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Signalétique</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Marquage véhicule</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Covering</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Panneaux &amp; bâches</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Stickers &amp; adhésifs</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Impression grand format</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Marquage textile</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Objets publicitaires</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Flyers &amp; dépliants</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Cartes de visite</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>PLV &amp; stands</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Décoration vitrine</span>
-            </div>
-          </div>
-          <div style="position:relative;background:#141417;overflow:hidden;padding:28px 32px 22px;">
-            <div style="position:absolute;inset:20px;background-image:{{ dotGradient }};background-size:{{ dotCell }};background-repeat:space;opacity:.12;pointer-events:none;"></div>
-            <img src="assets/arrows.png" alt="" style="position:absolute;right:{{ arrowRight }};bottom:{{ arrowBottom }};width:{{ arrowW }};height:auto;transform:{{ arrowTransform }};transform-origin:bottom right;pointer-events:none;z-index:1;">
-            <div style="position:relative;z-index:2;">
-              <img src="assets/logo-positif-white.png" width="142" alt="Positif Design" style="display:block;width:142px;height:auto;">
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.14em;color:#8e8e96;text-transform:uppercase;margin:12px 0 0;">Communication visuelle · Imprimerie · Signalétique</div>
-              <div style="display:flex;flex-direction:column;gap:9px;margin:18px 0 0;max-width:340px;">
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Adresse</span>
-                <span style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">48 bis Bd Foch · 93800 Épinay-sur-Seine</span>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Téléphone</span>
-                <a href="tel:+33148291551" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">01.48.29.15.51</a>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">WhatsApp</span>
-                <a href="https://wa.me/33618701118" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">06 18 70 11 18</a>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Email</span>
-                <a href="mailto:contact@positif.biz" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">contact@positif.biz</a>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Web</span>
-                <a href="https://positifdesign.fr" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">positifdesign.fr</a>
-              </div>
-              </div>
-              <div style="display:flex;gap:8px;margin:18px 0 0;">
-                <a href="#" style="display:inline-block;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;color:#fff;background:#FC1D37;border-radius:50px;padding:6px 14px;">Facebook</a>
-                <a href="#" style="display:inline-block;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;color:#fff;border:1px solid #3a3a42;border-radius:50px;padding:6px 14px;">Instagram</a>
-              </div>
-              <div style="height:1px;background:#2a2a30;margin:20px 0 12px;max-width:340px;"></div>
-              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.6;color:#6c6c75;margin:0;max-width:360px;">Vous recevez cet e-mail en tant que client ou partenaire de Positif Design.<br><a href="#" style="color:#8a8a93;text-decoration:underline;">Se désabonner</a> · <a href="#" style="color:#8a8a93;text-decoration:underline;">Voir dans le navigateur</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div style="width:600px;">
-        <div style="margin:0 0 14px;">
-          <div style="font-weight:700;font-size:12px;letter-spacing:.14em;color:#56565e;text-transform:uppercase;">Marquage véhicule &amp; covering</div>
-          <div style="font-weight:500;font-size:13px;color:#9a9aa2;margin-top:3px;">Lettrage, semi &amp; covering total</div>
-        </div>
-        <div style="width:600px;background-color:#fff;background-image:radial-gradient(rgba(20,20,28,.045) 1px, transparent 1.6px);background-size:16px 16px;border-radius:10px;overflow:hidden;box-shadow:0 26px 60px -22px rgba(20,20,30,.36);border:1px solid #E2E2E8;">
-          <div style="position:relative;background:#141417;overflow:hidden;min-height:300px;padding:26px 30px 30px;">
-            <div style="position:absolute;left:-60px;bottom:-60px;width:320px;height:320px;background-image:radial-gradient(circle, #FC1D37 30%, transparent 33%);background-size:25px 25px;-webkit-mask-image:radial-gradient(circle at 24% 76%, #000 0%, transparent 50%);mask-image:radial-gradient(circle at 24% 76%, #000 0%, transparent 50%);opacity:.92;"></div>
-            <div style="position:relative;z-index:2;">
-              <img src="assets/logo-positif-white.png" width="148" alt="Positif Design" style="display:block;width:148px;height:auto;">
-              <div style="display:inline-block;margin:20px 0 0;background:#FC1D37;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.14em;padding:7px 13px;white-space:nowrap;">MARQUAGE VÉHICULE &amp; COVERING</div>
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:46px;line-height:.94;color:#fff;letter-spacing:.01em;margin:14px 0 0;">VOS VÉHICULES<br>FONT VOTRE<br><span style="color:#FC1D37;">PUB.</span></div>
-              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:14px;line-height:1.5;color:#cfcfd6;margin:14px 0 0;max-width:300px;">Lettrage adhésif, semi-covering ou covering total — voiture, utilitaire ou flotte entière. Conception, impression et pose à Épinay.</p>
-            </div>
-<div style="position:absolute;top:24px;right:24px;z-index:4;width:118px;height:118px;border-radius:50%;background:repeating-conic-gradient(#FC1D37 0deg 9deg, #a50f22 9deg 18deg);display:flex;align-items:center;justify-content:center;transform:rotate(12deg);box-shadow:0 10px 22px -8px rgba(0,0,0,.5);"><div style="width:90px;height:90px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;"><span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:29px;color:#141417;line-height:.85;">7J/7</span><span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:9px;letter-spacing:.1em;color:#FC1D37;margin-top:2px;">PUB</span></div></div>
-            <div style="position:absolute;right:22px;bottom:18px;z-index:5;transform:rotate(-6deg);width:178px;height:128px;border-radius:14px;background-image:repeating-linear-gradient(45deg,#E7E7EC 0 14px,#F3F3F6 14px 28px);border:5px solid #fff;box-shadow:0 16px 30px -10px rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;"><span style="font-family:'Courier New',monospace;font-size:11px;color:#6a6a72;background:#fff;padding:5px 9px;border-radius:4px;">PHOTO — UTILITAIRE</span></div>
-          </div>
-          <div style="padding:26px 30px 4px;">
-            <div style="position:relative;background:#141417;border-radius:16px;padding:16px 24px;display:flex;align-items:center;gap:18px;">
-              <span style="position:absolute;left:-9px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:#fff;"></span>
-              <span style="position:absolute;right:-9px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:#fff;"></span>
-              <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:42px;color:#FC1D37;line-height:.82;white-space:nowrap;">0€</span>
-              <span style="border-left:2px dashed #3a3a42;padding-left:18px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:15px;line-height:1.2;color:#fff;">DE BUDGET MÉDIA<br><span style="font-weight:600;font-size:12px;color:#b9b9c0;">votre pub roule en ville</span></span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:11px 18px;margin:18px 2px 0;">
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>LETTRAGE ADHÉSIF</span>
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>SEMI-COVERING</span>
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>COVERING TOTAL</span>
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>POSE ATELIER</span>
-            </div>
-          </div>
-          <div style="padding:22px 30px 26px;text-align:center;">
-            <a href="mailto:contact@positif.biz?subject=Marquage%20vehicule" style="display:block;background:#141417;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:25px;letter-spacing:.02em;padding:18px 16px;border-radius:50px;box-shadow:0 14px 26px -10px rgba(20,20,30,.4);">J’HABILLE MON VÉHICULE →</a>
-            <div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:15px;">
-              <a href="tel:+33148291551" style="display:inline-flex;align-items:center;gap:8px;background:#fff;border:2px solid #141417;color:#141417;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;padding:10px 18px;border-radius:50px;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>01.48.29.15.51</a>
-              <a href="https://wa.me/33618701118" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;padding:10px 18px;border-radius:50px;">WhatsApp&nbsp;· 06 18 70 11 18</a>
-            </div>
-          </div>
-          <div style="background:#141417;padding:12px 30px;text-align:center;">
-            <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.1em;color:#fff;">CONCEPTION · IMPRESSION · POSE À ÉPINAY</span>
-          </div>
-          <div style="background:#FAFAFB;border-top:1px solid #ECECEF;padding:22px 30px 24px;">
-            <div style="display:flex;align-items:center;gap:9px;">
-              <span style="width:9px;height:9px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>
-              <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:17px;letter-spacing:.03em;color:#141417;">POSITIF, C’EST AUSSI</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:13px;">
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Enseignes &amp; façades</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Signalétique</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Marquage véhicule</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Covering</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Panneaux &amp; bâches</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Stickers &amp; adhésifs</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Impression grand format</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Marquage textile</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Objets publicitaires</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Flyers &amp; dépliants</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Cartes de visite</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>PLV &amp; stands</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Décoration vitrine</span>
-            </div>
-          </div>
-          <div style="position:relative;background:#141417;overflow:hidden;padding:28px 32px 22px;">
-            <div style="position:absolute;inset:20px;background-image:{{ dotGradient }};background-size:{{ dotCell }};background-repeat:space;opacity:.12;pointer-events:none;"></div>
-            <img src="assets/arrows.png" alt="" style="position:absolute;right:{{ arrowRight }};bottom:{{ arrowBottom }};width:{{ arrowW }};height:auto;transform:{{ arrowTransform }};transform-origin:bottom right;pointer-events:none;z-index:1;">
-            <div style="position:relative;z-index:2;">
-              <img src="assets/logo-positif-white.png" width="142" alt="Positif Design" style="display:block;width:142px;height:auto;">
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.14em;color:#8e8e96;text-transform:uppercase;margin:12px 0 0;">Communication visuelle · Imprimerie · Signalétique</div>
-              <div style="display:flex;flex-direction:column;gap:9px;margin:18px 0 0;max-width:340px;">
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Adresse</span>
-                <span style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">48 bis Bd Foch · 93800 Épinay-sur-Seine</span>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Téléphone</span>
-                <a href="tel:+33148291551" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">01.48.29.15.51</a>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">WhatsApp</span>
-                <a href="https://wa.me/33618701118" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">06 18 70 11 18</a>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Email</span>
-                <a href="mailto:contact@positif.biz" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">contact@positif.biz</a>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Web</span>
-                <a href="https://positifdesign.fr" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">positifdesign.fr</a>
-              </div>
-              </div>
-              <div style="display:flex;gap:8px;margin:18px 0 0;">
-                <a href="#" style="display:inline-block;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;color:#fff;background:#FC1D37;border-radius:50px;padding:6px 14px;">Facebook</a>
-                <a href="#" style="display:inline-block;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;color:#fff;border:1px solid #3a3a42;border-radius:50px;padding:6px 14px;">Instagram</a>
-              </div>
-              <div style="height:1px;background:#2a2a30;margin:20px 0 12px;max-width:340px;"></div>
-              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.6;color:#6c6c75;margin:0;max-width:360px;">Vous recevez cet e-mail en tant que client ou partenaire de Positif Design.<br><a href="#" style="color:#8a8a93;text-decoration:underline;">Se désabonner</a> · <a href="#" style="color:#8a8a93;text-decoration:underline;">Voir dans le navigateur</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============ SECTION 03 ============ -->
-  <div style="max-width:1304px;margin:80px auto 0;">
-    <div style="display:flex;align-items:baseline;gap:16px;margin:0 0 30px;flex-wrap:wrap;">
-      <span style="font-weight:800;font-size:13px;letter-spacing:.18em;color:#FC1D37;">03</span>
-      <h2 style="font-weight:800;font-size:27px;color:#141417;margin:0;letter-spacing:-0.015em;">Newsletter &amp; modèle réutilisable</h2>
-      <span style="font-weight:500;font-size:14px;color:#8a8a93;">Le rendez-vous mensuel + un gabarit promo à dupliquer</span>
-    </div>
-    <div style="display:flex;gap:56px;flex-wrap:wrap;align-items:flex-start;">
-      <div style="width:600px;">
-        <div style="margin:0 0 14px;">
-          <div style="font-weight:700;font-size:12px;letter-spacing:.14em;color:#56565e;text-transform:uppercase;">Newsletter mensuelle</div>
-          <div style="font-weight:500;font-size:13px;color:#9a9aa2;margin-top:3px;">Actu de l’atelier, réalisation, conseils</div>
-        </div>
-        <div style="width:600px;background-color:#fff;background-image:radial-gradient(rgba(20,20,28,.045) 1px, transparent 1.6px);background-size:16px 16px;border-radius:10px;overflow:hidden;box-shadow:0 26px 60px -22px rgba(20,20,30,.36);border:1px solid #E2E2E8;">
-          <div style="position:relative;background:#141417;overflow:hidden;padding:26px 32px 28px;">
-            <div style="position:absolute;left:-60px;bottom:-60px;width:320px;height:320px;background-image:radial-gradient(circle, #FC1D37 30%, transparent 33%);background-size:25px 25px;-webkit-mask-image:radial-gradient(circle at 24% 76%, #000 0%, transparent 50%);mask-image:radial-gradient(circle at 24% 76%, #000 0%, transparent 50%);opacity:.92;"></div>
-            <div style="position:relative;z-index:2;">
-              <div style="display:flex;align-items:center;justify-content:space-between;">
-                <img src="assets/logo-positif-white.png" width="150" alt="Positif Design" style="display:block;width:150px;height:auto;">
-                <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.16em;color:#9a9aa2;">LETTRE D’INFO · JUIN 2026</span>
-              </div>
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:44px;line-height:.94;color:#fff;letter-spacing:.01em;margin:20px 0 0;">LES NOUVELLES<br>DE <span style="color:#FC1D37;">L’ATELIER.</span></div>
-            </div>
-          </div>
-          <div style="padding:30px 34px 4px;">
-            <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:15px;line-height:1.6;color:#4c4c54;margin:0;">Bonjour ! Voici ce qui s’est passé ce mois-ci dans l’atelier, et quelques idées pour faire briller votre communication cet été.</p>
-            <div style="height:208px;background-image:repeating-linear-gradient(45deg,#E7E7EC 0 14px,#F3F3F6 14px 28px);border-radius:14px;border:5px solid #fff;box-shadow:0 12px 26px -12px rgba(20,20,30,.3);display:flex;align-items:center;justify-content:center;margin:24px 0 0;transform:rotate(-1deg);"><span style="font-family:'Courier New',monospace;font-size:12px;color:#6a6a72;background:#fff;padding:6px 12px;border-radius:5px;">PHOTO — RÉALISATION DU MOIS</span></div>
-            <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.14em;color:#FC1D37;text-transform:uppercase;margin:22px 0 0;">Réalisation du mois</div>
-            <h3 style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:27px;line-height:1.02;color:#141417;margin:9px 0 0;letter-spacing:.01em;">UNE FAÇADE TOUT EN LUMIÈRE POUR LA BOULANGERIE MARTIN</h3>
-            <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:14px;line-height:1.6;color:#5c5c64;margin:10px 0 0;">Enseigne lumineuse, vitrophanie et lettrage : un relooking complet posé en deux jours, juste avant la réouverture. Le résultat parle de lui-même.</p>
-            <a href="#" style="display:inline-block;margin:14px 0 0;background:#fff;border:2px solid #141417;color:#141417;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;padding:9px 18px;border-radius:50px;">LIRE LA SUITE →</a>
-          </div>
-          <div style="padding:24px 34px 4px;">
-            <div style="position:relative;background:#141417;border-radius:16px;padding:20px 24px;">
-              <span style="position:absolute;left:-9px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:#fff;"></span>
-              <span style="position:absolute;right:-9px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:#fff;"></span>
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:.04em;color:#FC1D37;">LE CONSEIL DU MOIS</div>
-              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:13px;line-height:1.6;color:#cfcfd6;margin:8px 0 0;">Pour une impression nette en grand format, fournissez vos fichiers en 300 dpi minimum et en mode CMJN. Un doute ? Envoyez-nous votre visuel, on vérifie gratuitement.</p>
-            </div>
-          </div>
-          <div style="padding:24px 34px 28px;text-align:center;">
-            <a href="mailto:contact@positif.biz?subject=Mon%20projet" style="display:block;background:#FC1D37;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:25px;letter-spacing:.02em;padding:18px 16px;border-radius:50px;box-shadow:0 14px 26px -10px rgba(252,29,55,.55);">UN PROJET ? PARLONS-EN →</a>
-            <div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:15px;">
-              <a href="tel:+33148291551" style="display:inline-flex;align-items:center;gap:8px;background:#fff;border:2px solid #141417;color:#141417;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;padding:10px 18px;border-radius:50px;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>01.48.29.15.51</a>
-              <a href="https://wa.me/33618701118" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;padding:10px 18px;border-radius:50px;">WhatsApp&nbsp;· 06 18 70 11 18</a>
-            </div>
-          </div>
-          <div style="background:#FAFAFB;border-top:1px solid #ECECEF;padding:22px 30px 24px;">
-            <div style="display:flex;align-items:center;gap:9px;">
-              <span style="width:9px;height:9px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>
-              <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:17px;letter-spacing:.03em;color:#141417;">POSITIF, C’EST AUSSI</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:13px;">
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Enseignes &amp; façades</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Signalétique</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Marquage véhicule</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Covering</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Panneaux &amp; bâches</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Stickers &amp; adhésifs</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Impression grand format</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Marquage textile</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Objets publicitaires</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Flyers &amp; dépliants</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Cartes de visite</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>PLV &amp; stands</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Décoration vitrine</span>
-            </div>
-          </div>
-          <div style="position:relative;background:#141417;overflow:hidden;padding:28px 32px 22px;">
-            <div style="position:absolute;inset:20px;background-image:{{ dotGradient }};background-size:{{ dotCell }};background-repeat:space;opacity:.12;pointer-events:none;"></div>
-            <img src="assets/arrows.png" alt="" style="position:absolute;right:{{ arrowRight }};bottom:{{ arrowBottom }};width:{{ arrowW }};height:auto;transform:{{ arrowTransform }};transform-origin:bottom right;pointer-events:none;z-index:1;">
-            <div style="position:relative;z-index:2;">
-              <img src="assets/logo-positif-white.png" width="142" alt="Positif Design" style="display:block;width:142px;height:auto;">
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.14em;color:#8e8e96;text-transform:uppercase;margin:12px 0 0;">Communication visuelle · Imprimerie · Signalétique</div>
-              <div style="display:flex;flex-direction:column;gap:9px;margin:18px 0 0;max-width:340px;">
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Adresse</span>
-                <span style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">48 bis Bd Foch · 93800 Épinay-sur-Seine</span>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Téléphone</span>
-                <a href="tel:+33148291551" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">01.48.29.15.51</a>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">WhatsApp</span>
-                <a href="https://wa.me/33618701118" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">06 18 70 11 18</a>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Email</span>
-                <a href="mailto:contact@positif.biz" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">contact@positif.biz</a>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Web</span>
-                <a href="https://positifdesign.fr" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">positifdesign.fr</a>
-              </div>
-              </div>
-              <div style="display:flex;gap:8px;margin:18px 0 0;">
-                <a href="#" style="display:inline-block;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;color:#fff;background:#FC1D37;border-radius:50px;padding:6px 14px;">Facebook</a>
-                <a href="#" style="display:inline-block;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;color:#fff;border:1px solid #3a3a42;border-radius:50px;padding:6px 14px;">Instagram</a>
-              </div>
-              <div style="height:1px;background:#2a2a30;margin:20px 0 12px;max-width:340px;"></div>
-              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.6;color:#6c6c75;margin:0;max-width:360px;">Vous recevez cet e-mail en tant que client ou partenaire de Positif Design.<br><a href="#" style="color:#8a8a93;text-decoration:underline;">Se désabonner</a> · <a href="#" style="color:#8a8a93;text-decoration:underline;">Voir dans le navigateur</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div style="width:600px;">
-        <div style="margin:0 0 14px;">
-          <div style="font-weight:700;font-size:12px;letter-spacing:.14em;color:#56565e;text-transform:uppercase;">Modèle promo générique</div>
-          <div style="font-weight:500;font-size:13px;color:#9a9aa2;margin-top:3px;">À dupliquer — remplacez les [crochets]</div>
-        </div>
-        <div style="width:600px;background-color:#fff;background-image:radial-gradient(rgba(20,20,28,.045) 1px, transparent 1.6px);background-size:16px 16px;border-radius:10px;overflow:hidden;box-shadow:0 26px 60px -22px rgba(20,20,30,.36);border:1px solid #E2E2E8;">
-          <div style="background:#141417;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;">
-            <img src="assets/logo-positif-white.png" width="148" alt="Positif Design" style="display:block;width:148px;height:auto;">
-            <span style="display:inline-block;background:#FC1D37;color:#fff;font-weight:800;font-size:12px;letter-spacing:.1em;padding:8px 14px;border-radius:50px;font-family:Montserrat,Arial,sans-serif;">[TYPE D’OFFRE]</span>
-          </div>
-          <div style="position:relative;background:#FC1D37;overflow:hidden;min-height:332px;">
-            <div style="position:absolute;top:-40px;right:-40px;width:380px;height:380px;background-image:radial-gradient(circle, rgba(255,255,255,.9) 30%, transparent 33%);background-size:27px 27px;-webkit-mask-image:radial-gradient(circle at 72% 28%, #000 0%, transparent 56%);mask-image:radial-gradient(circle at 72% 28%, #000 0%, transparent 56%);"></div>
-            <div style="position:absolute;left:0;right:0;bottom:0;height:122px;background:#141417;clip-path:polygon(0 55%, 100% 0%, 100% 100%, 0% 100%);"></div>
-            <div style="position:relative;z-index:2;padding:28px 30px 30px;">
-              <div style="display:inline-block;background:#141417;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.14em;padding:7px 13px;transform:rotate(-2deg);white-space:nowrap;">[ACCROCHE COURTE]</div>
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:62px;line-height:.86;color:#fff;letter-spacing:.01em;margin:18px 0 0;white-space:nowrap;">[VOTRE</div>
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:62px;line-height:.98;margin:2px 0 0;white-space:nowrap;"><span style="background:#141417;color:#fff;padding:1px 11px 5px;display:inline-block;transform:skewX(-6deg);">OFFRE]</span></div>
-              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:15px;line-height:1.45;color:#fff;margin:22px 0 0;max-width:300px;">[Décrivez votre offre en une phrase claire et tentante.]</p>
-            </div>
-<div style="position:absolute;top:118px;right:22px;z-index:4;width:124px;height:124px;border-radius:50%;background:repeating-conic-gradient(#fff 0deg 9deg, #ffd0d6 9deg 18deg);display:flex;align-items:center;justify-content:center;transform:rotate(-13deg);box-shadow:0 10px 22px -8px rgba(0,0,0,.45);"><div style="width:94px;height:94px;border-radius:50%;background:#141417;display:flex;flex-direction:column;align-items:center;justify-content:center;"><span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:38px;color:#FC1D37;line-height:.9;">[%]</span><span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:9px;letter-spacing:.12em;color:#fff;margin-top:1px;">OFFRE</span></div></div>
-            <div style="position:absolute;right:28px;bottom:18px;z-index:5;transform:rotate(-7deg);width:150px;height:128px;border-radius:14px;background:rgba(255,255,255,.14);border:3px dashed rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;"><span style="font-family:'Courier New',monospace;font-size:11px;color:#fff;text-align:center;line-height:1.5;">[VISUEL<br>PRODUIT]</span></div>
-          </div>
-          <div style="padding:28px 30px 4px;">
-            <div style="position:relative;background:#141417;border-radius:16px;padding:16px 24px;display:flex;align-items:center;gap:18px;">
-              <span style="position:absolute;left:-9px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:#fff;"></span>
-              <span style="position:absolute;right:-9px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:#fff;"></span>
-              <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:42px;color:#FC1D37;line-height:.82;white-space:nowrap;">[X]</span>
-              <span style="border-left:2px dashed #3a3a42;padding-left:18px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:15px;line-height:1.2;color:#fff;">[BÉNÉFICE PRINCIPAL]<br><span style="font-weight:600;font-size:12px;color:#b9b9c0;">[précision de l’offre]</span></span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:11px 18px;margin:18px 2px 0;">
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>[AVANTAGE 1]</span>
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>[AVANTAGE 2]</span>
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>[AVANTAGE 3]</span>
-              <span style="display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#141417;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>[AVANTAGE 4]</span>
-            </div>
-          </div>
-          <div style="padding:22px 30px 26px;text-align:center;">
-            <a href="mailto:contact@positif.biz?subject=Votre%20offre" style="display:block;background:#FC1D37;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:25px;letter-spacing:.02em;padding:18px 16px;border-radius:50px;box-shadow:0 14px 26px -10px rgba(252,29,55,.55);">[TEXTE DU BOUTON] →</a>
-            <div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:15px;">
-              <a href="tel:+33148291551" style="display:inline-flex;align-items:center;gap:8px;background:#fff;border:2px solid #141417;color:#141417;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;padding:10px 18px;border-radius:50px;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>01.48.29.15.51</a>
-              <a href="https://wa.me/33618701118" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;padding:10px 18px;border-radius:50px;">WhatsApp&nbsp;· 06 18 70 11 18</a>
-            </div>
-          </div>
-          <div style="background:repeating-linear-gradient(-45deg,#FC1D37 0 20px,#d4122b 20px 40px);padding:13px 30px;text-align:center;">
-            <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:.08em;color:#fff;">[OFFRE VALABLE JUSQU’AU JJ/MM — CONDITIONS]</span>
-          </div>
-          <div style="background:#FAFAFB;border-top:1px solid #ECECEF;padding:22px 30px 24px;">
-            <div style="display:flex;align-items:center;gap:9px;">
-              <span style="width:9px;height:9px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>
-              <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:17px;letter-spacing:.03em;color:#141417;">POSITIF, C’EST AUSSI</span>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:13px;">
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Enseignes &amp; façades</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Signalétique</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Marquage véhicule</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Covering</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Panneaux &amp; bâches</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Stickers &amp; adhésifs</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Impression grand format</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Marquage textile</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Objets publicitaires</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Flyers &amp; dépliants</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Cartes de visite</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>PLV &amp; stands</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #E6E6EA;border-radius:50px;padding:6px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;color:#34343c;"><span style="width:5px;height:5px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>Décoration vitrine</span>
-            </div>
-          </div>
-          <div style="position:relative;background:#141417;overflow:hidden;padding:28px 32px 22px;">
-            <div style="position:absolute;inset:20px;background-image:{{ dotGradient }};background-size:{{ dotCell }};background-repeat:space;opacity:.12;pointer-events:none;"></div>
-            <img src="assets/arrows.png" alt="" style="position:absolute;right:{{ arrowRight }};bottom:{{ arrowBottom }};width:{{ arrowW }};height:auto;transform:{{ arrowTransform }};transform-origin:bottom right;pointer-events:none;z-index:1;">
-            <div style="position:relative;z-index:2;">
-              <img src="assets/logo-positif-white.png" width="142" alt="Positif Design" style="display:block;width:142px;height:auto;">
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.14em;color:#8e8e96;text-transform:uppercase;margin:12px 0 0;">Communication visuelle · Imprimerie · Signalétique</div>
-              <div style="display:flex;flex-direction:column;gap:9px;margin:18px 0 0;max-width:340px;">
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Adresse</span>
-                <span style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">48 bis Bd Foch · 93800 Épinay-sur-Seine</span>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Téléphone</span>
-                <a href="tel:+33148291551" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">01.48.29.15.51</a>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">WhatsApp</span>
-                <a href="https://wa.me/33618701118" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">06 18 70 11 18</a>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Email</span>
-                <a href="mailto:contact@positif.biz" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">contact@positif.biz</a>
-              </div>
-              <div style="display:flex;align-items:baseline;gap:10px;">
-                <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
-                <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Web</span>
-                <a href="https://positifdesign.fr" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">positifdesign.fr</a>
-              </div>
-              </div>
-              <div style="display:flex;gap:8px;margin:18px 0 0;">
-                <a href="#" style="display:inline-block;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;color:#fff;background:#FC1D37;border-radius:50px;padding:6px 14px;">Facebook</a>
-                <a href="#" style="display:inline-block;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;color:#fff;border:1px solid #3a3a42;border-radius:50px;padding:6px 14px;">Instagram</a>
-              </div>
-              <div style="height:1px;background:#2a2a30;margin:20px 0 12px;max-width:340px;"></div>
-              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.6;color:#6c6c75;margin:0;max-width:360px;">Vous recevez cet e-mail en tant que client ou partenaire de Positif Design.<br><a href="#" style="color:#8a8a93;text-decoration:underline;">Se désabonner</a> · <a href="#" style="color:#8a8a93;text-decoration:underline;">Voir dans le navigateur</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   </div>
   <!-- /TAB MODELES -->
 
@@ -1194,7 +455,8 @@
       <!-- RIGHT RAIL: inspector + decoration -->
       <div style="width:320px;flex:0 0 auto;position:sticky;top:24px;display:flex;flex-direction:column;gap:18px;">
 
-        <button onClick="{{ onExport }}" style="width:100%;background:#FC1D37;color:#fff;border:none;border-radius:50px;padding:14px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:.05em;cursor:pointer;box-shadow:0 12px 22px -10px rgba(252,29,55,.55);">⬇  EXPORTER HTML BREVO (.ZIP)</button>
+        <button onClick="{{ onSaveTemplate }}" style="width:100%;background:#141417;color:#fff;border:none;border-radius:50px;padding:13px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.05em;cursor:pointer;box-shadow:0 12px 22px -14px rgba(20,20,30,.55);">SAUVEGARDER COMME MOD?LE</button>
+        <button onClick="{{ onExport }}" style="width:100%;background:#FC1D37;color:#fff;border:none;border-radius:50px;padding:14px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:.05em;cursor:pointer;box-shadow:0 12px 22px -10px rgba(252,29,55,.55);">EXPORTER HTML BREVO (.ZIP)</button>
 
         <!-- INSPECTOR -->
         <div style="background:#fff;border:1px solid #E2E2E8;border-radius:14px;padding:18px;box-shadow:0 4px 14px -8px rgba(20,20,30,.3);">
@@ -1528,7 +790,7 @@ class Component extends DCLogic {
   _PAL = ['#FC1D37', '#141417', '#1F8A5B', '#2A6FDB', '#C8881B'];
   _LABELS = { banner: 'Bannière', texte: 'Texte', image: 'Image', cards: 'Cartes images', flash: 'Bandeau offre flash', cta: "Bouton « J'en profite »", contact: 'Téléphone + WhatsApp', services: "Positif, c'est aussi", oneforone: '1 acheté = 1 offert', sticker: 'Image encadree' };
   state = {
-    tab: 'modeles',
+    tab: 'builder',
     selectedId: null,
     stickers: [],
     selStickerId: null,
@@ -1545,7 +807,8 @@ class Component extends DCLogic {
     emailPreheader: 'Communication visuelle, impression et signalétique à Épinay-sur-Seine.',
     unsubscribeUrl: '{{ unsubscribe }}',
     viewOnlineUrl: '{{ mirror }}',
-    blocks: ['banner', 'oneforone', 'services', 'cta', 'contact'].map(t => this._mk(t)),
+    savedTemplates: this._loadSavedTemplates(),
+    blocks: [],
   };
 
   _mk(type) {
@@ -1567,6 +830,85 @@ class Component extends DCLogic {
     if (type === 'banner') return { id, type, title: 'VOTRE GRAND TITRE', subtitle: 'Un sous-titre accrocheur pour annoncer votre offre, votre nouveauté ou votre événement.', btnLabel: 'EN SAVOIR PLUS →', btnUrl: 'https://positifdesign.fr', btnBg: '#FC1D37', btnColor: '#FFFFFF' };
     if (type === 'sticker') return { id, type, size: 210, shape: 'rounded', radius: 18, align: 'center', frame: 'polaroid', shadow: true };
     return { id, type };
+  }
+
+  _templateKey() { return 'positif-mailing-builder-templates-v1'; }
+  _loadSavedTemplates() {
+    try {
+      const raw = localStorage.getItem(this._templateKey());
+      const list = raw ? JSON.parse(raw) : [];
+      return Array.isArray(list) ? list : [];
+    } catch (e) { return []; }
+  }
+  _writeSavedTemplates(list) {
+    try { localStorage.setItem(this._templateKey(), JSON.stringify(list)); } catch (e) {}
+  }
+  _clonePlain(v) { return JSON.parse(JSON.stringify(v)); }
+  _templatePayload() {
+    return {
+      headerTitle: this.state.headerTitle,
+      emailSubject: this.state.emailSubject,
+      emailPreheader: this.state.emailPreheader,
+      unsubscribeUrl: this.state.unsubscribeUrl,
+      viewOnlineUrl: this.state.viewOnlineUrl,
+      halftone: this.state.halftone,
+      dotSize: this.state.dotSize,
+      dotSpacing: this.state.dotSpacing,
+      dotColor: this.state.dotColor,
+      dotColor2: this.state.dotColor2,
+      sigTextColor: this.state.sigTextColor,
+      arrowSize: this.state.arrowSize,
+      arrowX: this.state.arrowX,
+      arrowY: this.state.arrowY,
+      arrowRot: this.state.arrowRot,
+      blocks: this._clonePlain(this.state.blocks),
+      stickers: this._clonePlain(this.state.stickers),
+    };
+  }
+  saveTemplate() {
+    const fallback = this.state.headerTitle || this.state.emailSubject || 'Nouveau modèle';
+    const name = (window.prompt('Nom du modèle à sauvegarder', fallback) || '').trim();
+    if (!name) return;
+    const tpl = { id: Date.now(), name, updatedAt: new Date().toISOString(), payload: this._templatePayload() };
+    const list = [tpl, ...this.state.savedTemplates.filter(x => x.name !== name)].slice(0, 24);
+    this._writeSavedTemplates(list);
+    this.setState({ savedTemplates: list, tab: 'modeles', selectedId: null, selStickerId: null, headerSelected: false });
+  }
+  _rehydrateBlocks(blocks) {
+    return (blocks || []).map((b) => ({ ...b, id: this._nextId++ }));
+  }
+  loadTemplate(id) {
+    const tpl = this.state.savedTemplates.find(x => x.id === id);
+    if (!tpl || !tpl.payload) return;
+    const p = tpl.payload;
+    this.setState({
+      tab: 'builder',
+      headerTitle: p.headerTitle || 'VOTRE E-MAIL',
+      emailSubject: p.emailSubject || 'Votre offre Positif Design',
+      emailPreheader: p.emailPreheader || '',
+      unsubscribeUrl: p.unsubscribeUrl || '{{ unsubscribe }}',
+      viewOnlineUrl: p.viewOnlineUrl || '{{ mirror }}',
+      halftone: p.halftone !== false,
+      dotSize: p.dotSize || 29,
+      dotSpacing: p.dotSpacing || 40,
+      dotColor: p.dotColor || '#474747',
+      dotColor2: p.dotColor2 || '#FC1D37',
+      sigTextColor: p.sigTextColor || '#ffffff',
+      arrowSize: p.arrowSize || 316,
+      arrowX: p.arrowX == null ? -94 : p.arrowX,
+      arrowY: p.arrowY == null ? 40 : p.arrowY,
+      arrowRot: p.arrowRot == null ? -22 : p.arrowRot,
+      blocks: this._rehydrateBlocks(p.blocks),
+      stickers: this._clonePlain(p.stickers || []),
+      selectedId: null,
+      selStickerId: null,
+      headerSelected: false,
+    });
+  }
+  deleteTemplate(id) {
+    const list = this.state.savedTemplates.filter(x => x.id !== id);
+    this._writeSavedTemplates(list);
+    this.setState({ savedTemplates: list });
   }
   add(type) { const blk = this._mk(type); this.setState(s => ({ blocks: [...s.blocks, blk], selectedId: blk.id, selStickerId: null, headerSelected: false })); }
   select(id) { this.setState({ selectedId: id, selStickerId: null, headerSelected: false }); }
@@ -2151,6 +1493,18 @@ class Component extends DCLogic {
     const sel = this.state.selectedId != null ? blocks.find(x => x.id === this.state.selectedId) : null;
     const swatchStyle = (c, activeC) => 'width:24px;height:24px;border-radius:50%;background:' + c + ';cursor:pointer;border:2px solid ' + (c === activeC ? '#fff' : 'transparent') + ';box-shadow:0 0 0 1.5px ' + (c === activeC ? c : 'rgba(0,0,0,.16)') + ';';
     const tglOn = this.state.halftone;
+    const savedTemplates = (this.state.savedTemplates || []).map((tpl) => {
+      const count = tpl.payload && tpl.payload.blocks ? tpl.payload.blocks.length : 0;
+      const date = tpl.updatedAt ? new Date(tpl.updatedAt) : null;
+      return {
+        id: tpl.id,
+        name: tpl.name || 'Modèle sans nom',
+        meta: count + ' bloc' + (count > 1 ? 's' : '') + (date ? ' · ' + date.toLocaleDateString('fr-FR') : ''),
+        dots: Array.from({ length: Math.max(1, Math.min(6, count || 1)) }, (_, i) => ({ id: i })),
+        onLoad: () => this.loadTemplate(tpl.id),
+        onDelete: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.deleteTemplate(tpl.id); },
+      };
+    });
 
     return {
       modelesDisplay: tab === 'modeles' ? 'block' : 'none',
@@ -2159,6 +1513,9 @@ class Component extends DCLogic {
       tabBuilderStyle: tab === 'builder' ? active : idle,
       showModeles: () => this.setState({ tab: 'modeles' }),
       showBuilder: () => this.setState({ tab: 'builder' }),
+      savedTemplates,
+      hasSavedTemplates: savedTemplates.length > 0,
+      noSavedTemplates: savedTemplates.length === 0,
 
       // model signatures
       dotCell: dCell + 'px ' + dCell + 'px',
@@ -2243,6 +1600,7 @@ class Component extends DCLogic {
       onDragOver: (e) => { e.preventDefault(); if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy'; },
       onDrop: (e) => { e.preventDefault(); if (this._dragBlockId != null || this.state.dragBlockId != null) { this.blockDragEnd(); return; } const t = this._dragType || (e.dataTransfer && e.dataTransfer.getData('text/plain')); if (['banner','texte','image','cards','flash','cta','contact','services','oneforone','sticker'].indexOf(t) >= 0) this.add(t); this._dragType = null; },
       clearAll: () => this.setState({ blocks: [], stickers: [], selectedId: null, selStickerId: null, headerSelected: false }),
+      onSaveTemplate: () => this.saveTemplate(),
       onExport: () => this.exportHtml(),
 
       emailSubject: this.state.emailSubject,
@@ -2280,4 +1638,3 @@ class Component extends DCLogic {
 </script>
 </body>
 </html>
-
