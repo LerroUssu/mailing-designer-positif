@@ -2,3 +2,5 @@ outputs/
 preview-server.*.log
 *.tmp
 *.bak
+
+.vercel
