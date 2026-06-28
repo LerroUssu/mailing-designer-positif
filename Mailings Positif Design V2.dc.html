@@ -352,7 +352,7 @@
                       <div style="position:absolute;left:0;right:0;bottom:0;height:122px;background:#141417;clip-path:polygon(0 55%, 100% 0%, 100% 100%, 0% 100%);z-index:1;pointer-events:none;"></div>
                       <div style="{{ b.bandTextStyle }}">{{ b.bandText }}</div>
                     </sc-if>
-                    <div style="position:relative;z-index:3;">
+                    <div style="{{ b.textGroupStyle }}">
                       <span style="{{ b.kickerStyle }}">{{ b.kicker }}</span>
                       <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:62px;line-height:.94;color:#fff;letter-spacing:.01em;margin:16px 0 0;white-space:nowrap;text-shadow:3px 4px 0 rgba(20,20,30,.20);">{{ b.line1 }}</div>
                       <sc-if value="{{ b.split }}" hint-placeholder-val="{{ true }}">
@@ -616,6 +616,18 @@
                   <textarea onChange="{{ sel.onSub }}" value="{{ sel.sub }}" rows="3" style="width:100%;box-sizing:border-box;resize:vertical;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;"></textarea>
                   <button onClick="{{ sel.onToggleSplit }}" style="{{ sel.splitBtnStyle }};width:100%;margin-top:14px;">Bandeau noir incliné · ligne 2</button>
 
+                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.06em;color:#141417;text-transform:uppercase;margin:18px 0 8px;">Position du texte</div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 6px;">
+                    <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">X</span>
+                    <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.textX }}px</span>
+                  </div>
+                  <input type="range" min="-120" max="120" step="1" value="{{ sel.textX }}" onInput="{{ sel.onTextX }}" style="width:100%;">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 6px;">
+                    <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">Y</span>
+                    <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.textY }}px</span>
+                  </div>
+                  <input type="range" min="-90" max="110" step="1" value="{{ sel.textY }}" onInput="{{ sel.onTextY }}" style="width:100%;">
+
                   <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.06em;color:#141417;text-transform:uppercase;margin:18px 0 8px;">Décoration</div>
                   <div style="display:flex;flex-direction:column;gap:8px;">
                     <button onClick="{{ sel.onToggleHalftone }}" style="{{ sel.halftoneBtnStyle }};width:100%;">Effet pois Ben-Day</button>
@@ -650,6 +662,17 @@
                       <button onClick="{{ sel.onFloatShapeRounded }}" style="{{ sel.floatShapeRoundedStyle }}">Arrondi</button>
                       <button onClick="{{ sel.onFloatShapeCircle }}" style="{{ sel.floatShapeCircleStyle }}">Rond</button>
                     </div>
+                    <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Position image déco</div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 6px;">
+                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">X</span>
+                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.floatX }}px</span>
+                    </div>
+                    <input type="range" min="-160" max="160" step="1" value="{{ sel.floatX }}" onInput="{{ sel.onFloatX }}" style="width:100%;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 6px;">
+                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">Y</span>
+                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.floatY }}px</span>
+                    </div>
+                    <input type="range" min="-140" max="140" step="1" value="{{ sel.floatY }}" onInput="{{ sel.onFloatY }}" style="width:100%;">
                   </sc-if>
                 </div>
               </sc-if>
@@ -847,7 +870,7 @@ class Component extends DCLogic {
       { title: 'Titre carte', desc: 'Un court descriptif de ce produit ou service.' },
     ] };
     if (type === 'flash') return { id, type, color: '#FC1D37', text: "OFFRE FLASH · STOCK LIMITÉ · JUSQU'AU 30 JUIN 2026" };
-    if (type === 'oneforone') return { id, type, split: true, kicker: 'SPÉCIAL AUTO-ÉCOLES · VENTE FLASH', line1: '1 ACHETÉ', line2: '1 OFFERT', sub: "Vos disques A « jeune conducteur » floqués à votre nom. Commandez-en 50, on vous en imprime 100.", halftone: false, band: false, bandText: '100 disques A pour le prix de 50', bandTextSize: 16, bandTextBottom: 34, floatImg: false, floatFrame: 'none', floatShape: 'circle', floatShadow: true };
+    if (type === 'oneforone') return { id, type, split: true, kicker: 'SPÉCIAL AUTO-ÉCOLES · VENTE FLASH', line1: '1 ACHETÉ', line2: '1 OFFERT', sub: "Vos disques A « jeune conducteur » floqués à votre nom. Commandez-en 50, on vous en imprime 100.", halftone: false, band: false, bandText: '100 disques A pour le prix de 50', bandTextSize: 16, bandTextBottom: 34, textX: 0, textY: 0, floatImg: false, floatFrame: 'none', floatShape: 'circle', floatShadow: true, floatX: 0, floatY: 0 };
     if (type === 'cta') return { id, type, text: "J'EN PROFITE MAINTENANT →", url: 'mailto:contact@positif.biz?subject=Demande%20Positif%20Design', btnBg: '#FC1D37', btnText: '#FFFFFF' };
     if (type === 'contact') return { id, type, tel: '01.48.29.15.51', wa: '06 18 70 11 18', telBg: '#FFFFFF', telText: '#141417', telBorder: '#141417', telDot: true, telDotColor: '#FC1D37', waBg: '#25D366', waText: '#FFFFFF' };
     if (type === 'texte') return { id, type, title: 'UN TITRE QUI ACCROCHE', subtitle: "Présentez ici un service, une actualité ou un produit. Deux à trois lignes suffisent pour donner envie d'en savoir plus.", showBtn: true, btnText: 'DÉCOUVRIR →', btnUrl: 'https://positifdesign.fr', btnBg: '#FFFFFF', btnTextColor: '#141417', btnBorder: '#141417', titleColor: '#141417' };
@@ -1132,8 +1155,9 @@ class Component extends DCLogic {
       return { width: tw + padX * 2, height: th + padY * 2 };
     };
 
-    const x = 60;
-    textBox((b.kicker || '').toUpperCase(), x + 2, 38, '800', 13, 14, 8, -2, 0);
+    const tx = b.textX || 0, ty = b.textY || 0;
+    const x = 60 + tx;
+    textBox((b.kicker || '').toUpperCase(), x + 2, 38 + ty, '800', 13, 14, 8, -2, 0);
 
     const line1 = String(b.line1 || '1 ACHETÉ').toUpperCase();
     const line1Size = fitText(line1, '900', 58, 430);
@@ -1145,18 +1169,18 @@ class Component extends DCLogic {
     ctx.shadowBlur = 0;
     ctx.shadowOffsetX = 5;
     ctx.shadowOffsetY = 5;
-    ctx.fillText(line1, x, 86);
+    ctx.fillText(line1, x, 86 + ty);
     ctx.restore();
 
     const line2 = String(b.line2 || '1 OFFERT').toUpperCase();
     const line2Size = fitText(line2, '900', 52, 395);
-    textBox(line2, x + 2, 154, '900', line2Size, 13, 6, 0, -0.10);
+    textBox(line2, x + 2, 154 + ty, '900', line2Size, 13, 6, 0, -0.10);
 
     ctx.fillStyle = '#ffffff';
     ctx.textBaseline = 'top';
     const subLines = wrap(b.sub || '', b.floatImg ? 330 : 500, '800', 18).slice(0, 4);
     ctx.font = '800 18px ' + font;
-    subLines.forEach((line, i) => ctx.fillText(line, x, 230 + i * 23));
+    subLines.forEach((line, i) => ctx.fillText(line, x, 230 + ty + i * 23));
 
     if (b.floatImg) {
       const baked = this._bakeSlot('slot-' + b.id + '-float', 160);
@@ -1166,7 +1190,7 @@ class Component extends DCLogic {
         const shape = b.floatShape || 'circle';
         const fx = 424, fy = 158, fs = 136;
         ctx.save();
-        ctx.translate(492, 226);
+        ctx.translate(492 + (b.floatX || 0), 226 + (b.floatY || 0));
         ctx.rotate(-7 * Math.PI / 180);
         if (frame === 'polaroid' || frame === 'tape') {
           ctx.fillStyle = '#ffffff';
@@ -1610,12 +1634,17 @@ class Component extends DCLogic {
       o.onBandText = (e) => this.setField(b.id, 'bandText', e.target.value);
       o.onBandTextSize = (e) => this.setField(b.id, 'bandTextSize', +e.target.value);
       o.onBandTextBottom = (e) => this.setField(b.id, 'bandTextBottom', +e.target.value);
+      o.textX = b.textX || 0; o.textY = b.textY || 0;
+      o.textGroupStyle = 'position:relative;z-index:3;transform:translate(' + o.textX + 'px,' + o.textY + 'px);';
+      o.onTextX = (e) => this.setField(b.id, 'textX', +e.target.value);
+      o.onTextY = (e) => this.setField(b.id, 'textY', +e.target.value);
       const floatFrame = b.floatFrame || 'none', floatShape = b.floatShape || 'circle';
+      o.floatX = b.floatX || 0; o.floatY = b.floatY || 0;
       o.floatShape = floatShape;
       o.floatRadius = floatShape === 'rounded' ? '18' : '0';
       o.floatTape = floatFrame === 'tape';
       o.floatImgStyle = 'width:130px;height:130px;display:block;';
-      o.floatFrameStyle = 'position:absolute;right:24px;bottom:30px;z-index:4;line-height:0;transform:rotate(-7deg);'
+      o.floatFrameStyle = 'position:absolute;right:' + (24 - o.floatX) + 'px;bottom:' + (30 - o.floatY) + 'px;z-index:4;line-height:0;transform:rotate(-7deg);'
         + ((floatFrame === 'polaroid' || floatFrame === 'tape') ? 'background:#fff;padding:8px 8px 24px;border:1px solid #ECECEF;' : '')
         + ((b.floatShadow !== false) ? 'filter:drop-shadow(0 14px 28px rgba(0,0,0,.4));' : '');
       o.floatTapeStyle = 'position:absolute;top:-12px;left:50%;width:72px;height:22px;transform:translateX(-50%) rotate(-4deg);background:rgba(255,221,128,.78);box-shadow:0 1px 3px rgba(0,0,0,.14);z-index:3;';
@@ -1625,6 +1654,8 @@ class Component extends DCLogic {
       o.onFloatShapeRect = () => this.setField(b.id, 'floatShape', 'rect');
       o.onFloatShapeRounded = () => this.setField(b.id, 'floatShape', 'rounded');
       o.onFloatShapeCircle = () => this.setField(b.id, 'floatShape', 'circle');
+      o.onFloatX = (e) => this.setField(b.id, 'floatX', +e.target.value);
+      o.onFloatY = (e) => this.setField(b.id, 'floatY', +e.target.value);
       o.floatFrameNoneStyle = tgl(floatFrame === 'none');
       o.floatFramePolaroidStyle = tgl(floatFrame === 'polaroid');
       o.floatFrameTapeStyle = tgl(floatFrame === 'tape');
