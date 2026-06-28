@@ -1245,6 +1245,17 @@ class Component extends DCLogic {
     const w = Math.max(1, Math.round(rect.width));
     const h = Math.max(1, Math.round(rect.height));
     const clone = src.cloneNode(true);
+    const copyComputed = (from, to) => {
+      if (!from || !to || from.nodeType !== 1 || to.nodeType !== 1) return;
+      const cs = window.getComputedStyle(from);
+      for (let i = 0; i < cs.length; i++) {
+        const prop = cs[i];
+        to.style.setProperty(prop, cs.getPropertyValue(prop), cs.getPropertyPriority(prop));
+      }
+    };
+    const srcNodes = [src].concat(Array.from(src.querySelectorAll('*')));
+    const cloneNodes = [clone].concat(Array.from(clone.querySelectorAll('*')));
+    for (let i = 0; i < Math.min(srcNodes.length, cloneNodes.length); i++) copyComputed(srcNodes[i], cloneNodes[i]);
     clone.style.width = w + 'px';
     clone.style.minHeight = h + 'px';
     clone.style.transform = 'none';
@@ -1258,6 +1269,7 @@ class Component extends DCLogic {
       const original = originals[i];
       const replacement = document.createElement('div');
       replacement.setAttribute('style', slot.getAttribute('style') || '');
+      if (original) copyComputed(original, replacement);
       replacement.style.display = replacement.style.display || 'block';
       replacement.style.overflow = 'hidden';
       const shape = slot.getAttribute('shape') || 'rounded';
@@ -1516,25 +1528,21 @@ class Component extends DCLogic {
   }
 
   async _bakeSignaturePatternImage() {
-    const W = 1200, H = 520, S = 2;
+    const dotSize = this.state.dotSize || 29;
+    const dotSpacing = Math.max(this.state.dotSpacing || 40, dotSize + 2);
+    const S = 2;
+    const W = Math.ceil(dotSpacing * S), H = Math.ceil(dotSpacing * S);
     const canvas = document.createElement('canvas');
     canvas.width = W; canvas.height = H;
     const ctx = canvas.getContext('2d');
     ctx.scale(S, S);
-    const w = W / S, h = H / S;
-    const dotSize = this.state.dotSize || 29;
-    const dotSpacing = Math.max(this.state.dotSpacing || 40, dotSize + 2);
     const dotR = dotSize / 2;
     ctx.globalAlpha = 0.34;
     ctx.fillStyle = this.state.dotColor || '#474747';
-    for (let y = -dotSpacing; y < h + dotSpacing; y += dotSpacing) {
-      for (let x = Math.round(w * 0.34); x < w + dotSpacing; x += dotSpacing) {
-        ctx.beginPath();
-        ctx.arc(x, y, dotR, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-    return { bytes: this._bytesFromDataUrl(canvas.toDataURL('image/png')), ext: 'png' };
+    ctx.beginPath();
+    ctx.arc(dotSpacing / 2, dotSpacing / 2, dotR, 0, Math.PI * 2);
+    ctx.fill();
+    return { bytes: this._bytesFromDataUrl(canvas.toDataURL('image/png')), ext: 'png', size: dotSpacing };
   }
 
   async _signatureCornerBytes() {
@@ -1641,10 +1649,12 @@ class Component extends DCLogic {
 
     // Signature: pattern and corner visual are separate assets. Text stays HTML so links remain clickable.
     let patternName = '';
+    let patternSize = 40;
     let cornerName = '';
     try {
       const bakedPattern = await this._bakeSignaturePatternImage();
       patternName = 'images/signature-pattern.png';
+      patternSize = bakedPattern.size || patternSize;
       files.push({ name: patternName, bytes: bakedPattern.bytes });
     } catch (e) {}
     try {
@@ -1653,7 +1663,7 @@ class Component extends DCLogic {
     } catch (e) {}
     const SC = this.state.sigTextColor || '#e9e9ee';
     const sigRow = (label, value, link) => '<tr><td width="84" valign="top" style="font-family:' + F + ';font-weight:800;font-size:10px;letter-spacing:1px;color:#7a7a82;text-transform:uppercase;padding:5px 10px 5px 0;vertical-align:top;">' + label + '</td><td valign="top" style="font-family:' + F + ';font-weight:600;font-size:13px;color:' + SC + ';padding:5px 0;vertical-align:top;">' + (link ? '<a href="' + link + '" style="color:' + SC + ';text-decoration:none;">' + value + '</a>' : value) + '</td></tr>';
-    const sigBg = patternName ? 'background:#141417 url(' + patternName + ') center top / cover no-repeat;' : 'background:#141417;';
+    const sigBg = patternName ? 'background-color:#141417;background-image:url(' + patternName + ');background-repeat:repeat;background-position:right top;background-size:' + patternSize + 'px ' + patternSize + 'px;' : 'background:#141417;';
     let sig = '<tr><td background="' + patternName + '" bgcolor="#141417" style="' + sigBg + 'padding:0;">' +
       '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>' +
       '<td class="px" valign="top" style="padding:34px 32px 26px 32px;vertical-align:top;">';
