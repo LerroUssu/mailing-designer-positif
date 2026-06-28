@@ -627,6 +627,12 @@
                     <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.textY }}px</span>
                   </div>
                   <input type="range" min="-90" max="110" step="1" value="{{ sel.textY }}" onInput="{{ sel.onTextY }}" style="width:100%;">
+                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.06em;color:#141417;text-transform:uppercase;margin:18px 0 8px;">Bande noire ligne 2</div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 6px;">
+                    <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">Inclinaison</span>
+                    <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.line2Tilt }}°</span>
+                  </div>
+                  <input type="range" min="-18" max="18" step="1" value="{{ sel.line2Tilt }}" onInput="{{ sel.onLine2Tilt }}" style="width:100%;">
 
                   <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.06em;color:#141417;text-transform:uppercase;margin:18px 0 8px;">Décoration</div>
                   <div style="display:flex;flex-direction:column;gap:8px;">
@@ -662,6 +668,18 @@
                       <button onClick="{{ sel.onFloatShapeRounded }}" style="{{ sel.floatShapeRoundedStyle }}">Arrondi</button>
                       <button onClick="{{ sel.onFloatShapeCircle }}" style="{{ sel.floatShapeCircleStyle }}">Rond</button>
                     </div>
+                    <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Taille image déco</div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 6px;">
+                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">Taille</span>
+                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.floatSize }}px</span>
+                    </div>
+                    <input type="range" min="70" max="230" step="1" value="{{ sel.floatSize }}" onInput="{{ sel.onFloatSize }}" style="width:100%;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 6px;">
+                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">Rotation</span>
+                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.floatRot }}°</span>
+                    </div>
+                    <input type="range" min="-35" max="35" step="1" value="{{ sel.floatRot }}" onInput="{{ sel.onFloatRot }}" style="width:100%;">
+                    <button onClick="{{ sel.onFloatReframe }}" style="width:100%;border:none;border-radius:50px;padding:9px;margin-top:10px;background:#141417;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;">Recadrer l’image uploadée</button>
                     <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Position image déco</div>
                     <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 6px;">
                       <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">X</span>
@@ -870,7 +888,7 @@ class Component extends DCLogic {
       { title: 'Titre carte', desc: 'Un court descriptif de ce produit ou service.' },
     ] };
     if (type === 'flash') return { id, type, color: '#FC1D37', text: "OFFRE FLASH · STOCK LIMITÉ · JUSQU'AU 30 JUIN 2026" };
-    if (type === 'oneforone') return { id, type, split: true, kicker: 'SPÉCIAL AUTO-ÉCOLES · VENTE FLASH', line1: '1 ACHETÉ', line2: '1 OFFERT', sub: "Vos disques A « jeune conducteur » floqués à votre nom. Commandez-en 50, on vous en imprime 100.", halftone: false, band: false, bandText: '100 disques A pour le prix de 50', bandTextSize: 16, bandTextBottom: 34, textX: 0, textY: 0, floatImg: false, floatFrame: 'none', floatShape: 'circle', floatShadow: true, floatX: 0, floatY: 0 };
+    if (type === 'oneforone') return { id, type, split: true, kicker: 'SPÉCIAL AUTO-ÉCOLES · VENTE FLASH', line1: '1 ACHETÉ', line2: '1 OFFERT', sub: "Vos disques A « jeune conducteur » floqués à votre nom. Commandez-en 50, on vous en imprime 100.", halftone: false, band: false, bandText: '100 disques A pour le prix de 50', bandTextSize: 16, bandTextBottom: 34, textX: 0, textY: 0, line2Tilt: -7, floatImg: false, floatFrame: 'none', floatShape: 'circle', floatShadow: true, floatX: 0, floatY: 0, floatSize: 130, floatRot: -7 };
     if (type === 'cta') return { id, type, text: "J'EN PROFITE MAINTENANT →", url: 'mailto:contact@positif.biz?subject=Demande%20Positif%20Design', btnBg: '#FC1D37', btnText: '#FFFFFF' };
     if (type === 'contact') return { id, type, tel: '01.48.29.15.51', wa: '06 18 70 11 18', telBg: '#FFFFFF', telText: '#141417', telBorder: '#141417', telDot: true, telDotColor: '#FC1D37', waBg: '#25D366', waText: '#FFFFFF' };
     if (type === 'texte') return { id, type, title: 'UN TITRE QUI ACCROCHE', subtitle: "Présentez ici un service, une actualité ou un produit. Deux à trois lignes suffisent pour donner envie d'en savoir plus.", showBtn: true, btnText: 'DÉCOUVRIR →', btnUrl: 'https://positifdesign.fr', btnBg: '#FFFFFF', btnTextColor: '#141417', btnBorder: '#141417', titleColor: '#141417' };
@@ -1173,8 +1191,9 @@ class Component extends DCLogic {
     ctx.restore();
 
     const line2 = String(b.line2 || '1 OFFERT').toUpperCase();
+    const line2Tilt = b.line2Tilt == null ? -7 : b.line2Tilt;
     const line2Size = fitText(line2, '900', 52, 395);
-    textBox(line2, x + 2, 154 + ty, '900', line2Size, 13, 6, 0, -0.10);
+    textBox(line2, x + 2, 154 + ty, '900', line2Size, 13, 6, 0, Math.tan(line2Tilt * Math.PI / 180));
 
     ctx.fillStyle = '#ffffff';
     ctx.textBaseline = 'top';
@@ -1188,23 +1207,26 @@ class Component extends DCLogic {
       if (bmp) {
         const frame = b.floatFrame || 'none';
         const shape = b.floatShape || 'circle';
-        const fx = 424, fy = 158, fs = 136;
+        const fs = Math.max(70, Math.min(230, b.floatSize || 130));
+        const rot = b.floatRot == null ? -7 : b.floatRot;
+        const framePad = frame === 'none' ? 0 : 8;
+        const frameBottom = frame === 'none' ? 0 : 24;
         ctx.save();
         ctx.translate(492 + (b.floatX || 0), 226 + (b.floatY || 0));
-        ctx.rotate(-7 * Math.PI / 180);
+        ctx.rotate(rot * Math.PI / 180);
         if (frame === 'polaroid' || frame === 'tape') {
           ctx.fillStyle = '#ffffff';
           ctx.shadowColor = 'rgba(0,0,0,.34)';
           ctx.shadowBlur = 22;
           ctx.shadowOffsetY = 12;
-          ctx.fillRect(-76, -76, 152, 176);
+          ctx.fillRect(-fs / 2 - framePad, -fs / 2 - framePad, fs + framePad * 2, fs + framePad * 2 + frameBottom);
           ctx.shadowColor = 'transparent';
           if (frame === 'tape') {
             ctx.save();
-            ctx.translate(0, -86);
+            ctx.translate(0, -fs / 2 - 18);
             ctx.rotate(-4 * Math.PI / 180);
             ctx.fillStyle = 'rgba(255,221,128,.78)';
-            ctx.fillRect(-40, 0, 80, 24);
+            ctx.fillRect(-Math.max(34, fs * .28), 0, Math.max(68, fs * .56), 24);
             ctx.restore();
           }
         }
@@ -1614,12 +1636,14 @@ class Component extends DCLogic {
     } else if (b.type === 'oneforone') {
       o.kicker = b.kicker; o.line1 = b.line1; o.line2 = b.line2; o.sub = b.sub;
       o.split = !!b.split; o.notSplit = !b.split; o.splitDisplay = b.split ? 'block' : 'none';
-      o.line2PlainStyle = 'display:inline-block;font-family:Montserrat,Arial,sans-serif;font-weight:900;font-size:50px;line-height:1;letter-spacing:-0.01em;color:#fff;transform:skewX(-7deg);';
+      o.line2Tilt = b.line2Tilt == null ? -7 : b.line2Tilt;
+      o.line2PlainStyle = 'display:inline-block;font-family:Montserrat,Arial,sans-serif;font-weight:900;font-size:50px;line-height:1;letter-spacing:-0.01em;color:#fff;transform:skewX(' + o.line2Tilt + 'deg);';
       o.kickerStyle = 'display:inline-block;background:#141417;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.14em;padding:7px 13px;transform:rotate(-2deg);';
-      o.line2Style = 'display:inline-block;background:#141417;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:900;font-size:50px;line-height:1;letter-spacing:-0.01em;padding:2px 14px 6px;transform:skewX(-7deg);';
+      o.line2Style = 'display:inline-block;background:#141417;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:900;font-size:50px;line-height:1;letter-spacing:-0.01em;padding:2px 14px 6px;transform:skewX(' + o.line2Tilt + 'deg);';
       o.onKicker = (e) => this.setField(b.id, 'kicker', e.target.value);
       o.onLine1 = (e) => this.setField(b.id, 'line1', e.target.value);
       o.onLine2 = (e) => this.setField(b.id, 'line2', e.target.value);
+      o.onLine2Tilt = (e) => this.setField(b.id, 'line2Tilt', +e.target.value);
       o.onSub = (e) => this.setField(b.id, 'sub', e.target.value);
       o.onToggleSplit = () => this.toggle(b.id, 'split');
       o.splitBtnStyle = 'flex:1;border:none;border-radius:50px;padding:9px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (b.split ? 'background:#141417;color:#fff;' : 'background:#ECECEF;color:#56565e;');
@@ -1639,12 +1663,12 @@ class Component extends DCLogic {
       o.onTextX = (e) => this.setField(b.id, 'textX', +e.target.value);
       o.onTextY = (e) => this.setField(b.id, 'textY', +e.target.value);
       const floatFrame = b.floatFrame || 'none', floatShape = b.floatShape || 'circle';
-      o.floatX = b.floatX || 0; o.floatY = b.floatY || 0;
+      o.floatX = b.floatX || 0; o.floatY = b.floatY || 0; o.floatSize = b.floatSize || 130; o.floatRot = b.floatRot == null ? -7 : b.floatRot;
       o.floatShape = floatShape;
       o.floatRadius = floatShape === 'rounded' ? '18' : '0';
       o.floatTape = floatFrame === 'tape';
-      o.floatImgStyle = 'width:130px;height:130px;display:block;';
-      o.floatFrameStyle = 'position:absolute;right:' + (24 - o.floatX) + 'px;bottom:' + (30 - o.floatY) + 'px;z-index:4;line-height:0;transform:rotate(-7deg);'
+      o.floatImgStyle = 'width:' + o.floatSize + 'px;height:' + o.floatSize + 'px;display:block;';
+      o.floatFrameStyle = 'position:absolute;right:' + (24 - o.floatX) + 'px;bottom:' + (30 - o.floatY) + 'px;z-index:4;line-height:0;transform:rotate(' + o.floatRot + 'deg);'
         + ((floatFrame === 'polaroid' || floatFrame === 'tape') ? 'background:#fff;padding:8px 8px 24px;border:1px solid #ECECEF;' : '')
         + ((b.floatShadow !== false) ? 'filter:drop-shadow(0 14px 28px rgba(0,0,0,.4));' : '');
       o.floatTapeStyle = 'position:absolute;top:-12px;left:50%;width:72px;height:22px;transform:translateX(-50%) rotate(-4deg);background:rgba(255,221,128,.78);box-shadow:0 1px 3px rgba(0,0,0,.14);z-index:3;';
@@ -1656,6 +1680,9 @@ class Component extends DCLogic {
       o.onFloatShapeCircle = () => this.setField(b.id, 'floatShape', 'circle');
       o.onFloatX = (e) => this.setField(b.id, 'floatX', +e.target.value);
       o.onFloatY = (e) => this.setField(b.id, 'floatY', +e.target.value);
+      o.onFloatSize = (e) => this.setField(b.id, 'floatSize', +e.target.value);
+      o.onFloatRot = (e) => this.setField(b.id, 'floatRot', +e.target.value);
+      o.onFloatReframe = () => { const el = this._canvasEl && this._canvasEl.querySelector('#' + o.slotFloat); if (!el) return; if (typeof el.reframe === 'function') el.reframe(); else el.dispatchEvent(new MouseEvent('dblclick', { bubbles: true, composed: true })); };
       o.floatFrameNoneStyle = tgl(floatFrame === 'none');
       o.floatFramePolaroidStyle = tgl(floatFrame === 'polaroid');
       o.floatFrameTapeStyle = tgl(floatFrame === 'tape');
