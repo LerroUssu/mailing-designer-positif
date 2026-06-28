@@ -1086,7 +1086,17 @@ class Component extends DCLogic {
     let n = 0;
     const esc = (s) => this._esc(s);
     const href = (s) => esc((s || '').trim() || 'https://positifdesign.fr');
-    const pushImg = (slotId, outW) => { const b = this._bakeSlot(slotId, outW); if (!b) return null; const name = 'images/photo-' + (++n) + '.' + b.ext; files.push({ name, bytes: b.bytes }); return name; };
+    const imgNameCounts = {};
+    const imgName = (label, ext) => {
+      const base = String(label || 'image-email')
+        .toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'image-email';
+      imgNameCounts[base] = (imgNameCounts[base] || 0) + 1;
+      return 'images/' + base + (imgNameCounts[base] > 1 ? '-' + imgNameCounts[base] : '') + '.' + ext;
+    };
+    const pushImg = (slotId, outW, label) => { const b = this._bakeSlot(slotId, outW); if (!b) return null; const name = imgName(label || ('image-email-' + (++n)), b.ext); files.push({ name, bytes: b.bytes }); return name; };
     const btn = (url, label, bg, color, border) => '<a href="' + href(url) + '" style="display:inline-block;background:' + bg + ';color:' + color + ';font-family:' + F + ';font-weight:800;font-size:16px;line-height:1;padding:14px 30px;border-radius:50px;text-decoration:none;' + (border ? 'border:2px solid ' + border + ';' : '') + '">' + esc(label) + '</a>';
 
     let logoName = null;
@@ -1099,7 +1109,7 @@ class Component extends DCLogic {
       '</tr></table></td></tr>';
     for (const b of this.state.blocks) {
       if (b.type === 'banner') {
-        const im = pushImg('slot-' + b.id + '-a', 600);
+        const im = pushImg('slot-' + b.id + '-a', 600, 'banniere-hero');
         if (im) rows += '<tr><td style="padding:0;font-size:0;line-height:0;"><img src="' + im + '" width="600" alt="" style="display:block;width:100%;max-width:600px;height:auto;"></td></tr>';
         rows += '<tr><td class="px" bgcolor="#ffffff" style="background:#ffffff;padding:30px 36px 34px;text-align:center;">' +
           '<div style="font-family:' + F + ';font-weight:800;font-size:36px;line-height:1.02;color:#141417;">' + esc(b.title) + '</div>' +
@@ -1111,11 +1121,11 @@ class Component extends DCLogic {
           '<div style="font-family:' + F + ';font-weight:500;font-size:15px;line-height:1.6;color:#5c5c64;padding-top:12px;">' + esc(b.subtitle) + '</div>' +
           (b.showBtn ? '<div style="padding-top:18px;">' + btn(b.btnUrl, b.btnText, b.btnBg, b.btnTextColor, b.btnBorder) + '</div>' : '') + '</td></tr>';
       } else if (b.type === 'image') {
-        const im = pushImg('slot-' + b.id + '-a', 540);
+        const im = pushImg('slot-' + b.id + '-a', 540, 'image-pleine-largeur');
         rows += '<tr><td class="px" bgcolor="#ffffff" style="background:#ffffff;padding:24px 32px;font-size:0;">' +
           (im ? '<img src="' + im + '" width="536" alt="" style="display:block;width:100%;height:auto;border-radius:14px;">' : '<div style="height:200px;background:#ECECEF;border-radius:14px;"></div>') + '</td></tr>';
       } else if (b.type === 'sticker') {
-        const im = pushImg('slot-' + b.id + '-sticker', b.size || 210);
+        const im = pushImg('slot-' + b.id + '-sticker', b.size || 210, 'image-encadree');
         const rad = b.shape === 'circle' ? '50%' : b.shape === 'rounded' ? ((b.radius || 18) + 'px') : '0';
         const ta = b.align === 'left' ? 'left' : b.align === 'right' ? 'right' : 'center';
         const framed = b.frame === 'polaroid' || b.frame === 'tape';
@@ -1126,7 +1136,7 @@ class Component extends DCLogic {
         if (b.showTitle) inner += '<div style="font-family:' + F + ';font-weight:800;font-size:22px;color:#141417;padding-bottom:16px;"><span style="color:#FC1D37;">&#9679;</span> ' + esc(b.title) + '</div>';
         let cells = '';
         b.cards.forEach((c, idx) => {
-          const im = pushImg('slot-' + b.id + '-c' + idx, 180);
+          const im = pushImg('slot-' + b.id + '-c' + idx, 180, 'cartes-image-' + (idx + 1));
           cells += '<td class="stack" width="' + Math.floor(100 / b.cards.length) + '%" valign="top" style="padding:0 7px;vertical-align:top;">' +
             (im ? '<img src="' + im + '" width="170" alt="" style="display:block;width:100%;height:auto;border-radius:11px;">' : '<div style="height:120px;background:#ECECEF;border-radius:11px;"></div>') +
             '<div style="font-family:' + F + ';font-weight:800;font-size:13px;color:#141417;padding-top:10px;">' + esc(c.title) + '</div>' +
@@ -1148,7 +1158,7 @@ class Component extends DCLogic {
         b.services.forEach((s) => { pills += '<span style="display:inline-block;background:' + s.bg + ';border:1px solid ' + s.border + ';border-radius:50px;padding:6px 12px;font-family:' + F + ';font-weight:700;font-size:11.5px;color:' + s.fg + ';margin:0 6px 8px 0;white-space:nowrap;"><span style="color:' + s.dot + ';">&#9679;</span> ' + esc(s.text) + '</span>'; });
         rows += '<tr><td bgcolor="#FAFAFB" style="background:#FAFAFB;border-top:1px solid #ECECEF;padding:22px 30px;"><div style="font-family:' + F + ';font-weight:800;font-size:17px;color:#141417;padding-bottom:12px;"><span style="color:#FC1D37;">&#9679;</span> POSITIF, C&rsquo;EST AUSSI</div><div style="line-height:1.9;">' + pills + '</div></td></tr>';
       } else if (b.type === 'oneforone') {
-        const im = b.floatImg ? pushImg('slot-' + b.id + '-float', 150) : null;
+        const im = b.floatImg ? pushImg('slot-' + b.id + '-float', 150, 'offre-disque-a-visuel') : null;
         let inner = '<div style="display:inline-block;background:#141417;color:#ffffff;font-family:' + F + ';font-weight:800;font-size:11px;letter-spacing:2px;padding:7px 13px;">' + esc(b.kicker) + '</div>';
         inner += '<div style="font-family:' + F + ';font-weight:800;font-size:54px;line-height:0.96;color:#ffffff;padding-top:16px;">' + esc(b.line1) + '</div>';
         inner += '<div style="padding-top:6px;"><span style="display:inline-block;background:#141417;color:#ffffff;font-family:' + F + ';font-weight:900;font-size:48px;line-height:1.12;padding:2px 14px;">' + esc(b.line2) + '</span></div>';
@@ -1161,7 +1171,7 @@ class Component extends DCLogic {
 
     // floating stickers → centered (absolute positioning isn't email-safe)
     for (const st of this.state.stickers) {
-      const im = pushImg('sticker-' + st.id, st.size || 150);
+      const im = pushImg('sticker-' + st.id, st.size || 150, 'sticker-flottant');
       if (!im) continue;
       const rad = st.shape === 'circle' ? '50%' : st.shape === 'rounded' ? ((st.radius || 18) + 'px') : '0';
       const framed = st.frame === 'polaroid' || st.frame === 'tape';
