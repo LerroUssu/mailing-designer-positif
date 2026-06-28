@@ -1171,7 +1171,8 @@ class Component extends DCLogic {
   _esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 
   // Bake a slot's CURRENT crop (pan/zoom) into a flat JPEG sized for email — no CSS crop needed downstream.
-  _bakeSlot(slotId, outW) {
+  _bakeSlot(slotId, outW, opts) {
+    opts = opts || {};
     const sel = (window.CSS && CSS.escape) ? CSS.escape(slotId) : slotId;
     const el = this._canvasEl && this._canvasEl.querySelector('#' + sel);
     if (!el || !el.shadowRoot) return null;
@@ -1196,13 +1197,14 @@ class Component extends DCLogic {
     const canvas = document.createElement('canvas');
     canvas.width = W; canvas.height = H;
     const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#ECECEF'; ctx.fillRect(0, 0, W, H);
+    if (!opts.transparent) { ctx.fillStyle = '#ECECEF'; ctx.fillRect(0, 0, W, H); }
     try { ctx.drawImage(img, sx, sy, sw, sh, 0, 0, W, H); } catch (e) { return null; }
-    let url; try { url = canvas.toDataURL('image/jpeg', 0.85); } catch (e) { return null; }
+    const ext = opts.format === 'png' || opts.transparent ? 'png' : 'jpg';
+    let url; try { url = ext === 'png' ? canvas.toDataURL('image/png') : canvas.toDataURL('image/jpeg', 0.85); } catch (e) { return null; }
     const bin = atob(url.split(',')[1]);
     const bytes = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-    return { bytes, ext: 'jpg' };
+    return { bytes, ext, dataUrl: url };
   }
 
   _bytesFromDataUrl(url) {
@@ -1223,7 +1225,72 @@ class Component extends DCLogic {
     try { return await createImageBitmap(new Blob([bytes], { type: type || 'image/png' })); } catch (e) { return null; }
   }
 
+  async _captureBlockImage(b) {
+    if (document.fonts && document.fonts.ready) {
+      try { await document.fonts.ready; } catch (e) {}
+    }
+    const sel = (window.CSS && CSS.escape) ? CSS.escape(String(b.id)) : String(b.id);
+    const src = this._canvasEl && this._canvasEl.querySelector('[data-block="' + sel + '"]');
+    if (!src) return null;
+    const rect = src.getBoundingClientRect();
+    const w = Math.max(1, Math.round(rect.width));
+    const h = Math.max(1, Math.round(rect.height));
+    const clone = src.cloneNode(true);
+    clone.style.width = w + 'px';
+    clone.style.minHeight = h + 'px';
+    clone.style.transform = 'none';
+    clone.style.outline = 'none';
+    clone.style.boxShadow = 'none';
+    clone.removeAttribute('data-block');
+    clone.removeAttribute('data-sel');
+    clone.querySelectorAll('[data-tools]').forEach((el) => el.remove());
+    const originals = Array.from(src.querySelectorAll('image-slot'));
+    Array.from(clone.querySelectorAll('image-slot')).forEach((slot, i) => {
+      const original = originals[i];
+      const replacement = document.createElement('div');
+      replacement.setAttribute('style', slot.getAttribute('style') || '');
+      replacement.style.display = replacement.style.display || 'block';
+      replacement.style.overflow = 'hidden';
+      const shape = slot.getAttribute('shape') || 'rounded';
+      if (shape === 'circle') replacement.style.borderRadius = '50%';
+      else if (shape === 'rounded') replacement.style.borderRadius = (slot.getAttribute('radius') || '12') + 'px';
+      const baked = original && original.id ? this._bakeSlot(original.id, original.clientWidth || 160, { transparent: true, format: 'png' }) : null;
+      if (baked && baked.dataUrl) {
+        const img = document.createElement('img');
+        img.src = baked.dataUrl;
+        img.setAttribute('style', 'display:block;width:100%;height:100%;object-fit:cover;border:0;');
+        replacement.appendChild(img);
+      } else {
+        replacement.style.background = 'rgba(255,255,255,.14)';
+      }
+      slot.replaceWith(replacement);
+    });
+    const wrap = document.createElement('div');
+    wrap.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
+    wrap.style.width = w + 'px';
+    wrap.style.minHeight = h + 'px';
+    wrap.style.background = '#FC1D37';
+    wrap.style.fontFamily = 'Montserrat,Arial,Helvetica,sans-serif';
+    wrap.appendChild(clone);
+    const html = new XMLSerializer().serializeToString(wrap);
+    const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '"><foreignObject width="100%" height="100%">' + html + '</foreignObject></svg>';
+    const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    const img = new Image();
+    img.decoding = 'async';
+    await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; img.src = url; });
+    const scale = 2;
+    const canvas = document.createElement('canvas');
+    canvas.width = w * scale; canvas.height = h * scale;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(scale, scale);
+    ctx.drawImage(img, 0, 0);
+    const png = canvas.toDataURL('image/png');
+    return { bytes: this._bytesFromDataUrl(png), ext: 'png', width: w, height: h };
+  }
+
   async _bakeOneforoneImage(b) {
+    const captured = await this._captureBlockImage(b);
+    if (captured) return captured;
     if (document.fonts && document.fonts.ready) {
       try { await document.fonts.ready; } catch (e) {}
     }
@@ -1323,8 +1390,8 @@ class Component extends DCLogic {
     subLines.forEach((line, i) => ctx.fillText(line, x, 230 + ty + i * 23));
 
     if (b.floatImg) {
-      const baked = this._bakeSlot('slot-' + b.id + '-float', 160);
-      const bmp = baked ? await this._bitmapFromBytes(baked.bytes, 'image/jpeg') : null;
+      const baked = this._bakeSlot('slot-' + b.id + '-float', 160, { transparent: true, format: 'png' });
+      const bmp = baked ? await this._bitmapFromBytes(baked.bytes, 'image/png') : null;
       if (bmp) {
         const frame = b.floatFrame || 'none';
         const shape = b.floatShape || 'circle';
@@ -1437,6 +1504,34 @@ class Component extends DCLogic {
     return { bytes: this._bytesFromDataUrl(canvas.toDataURL('image/png')), ext: 'png' };
   }
 
+  async _bakeSignaturePatternImage() {
+    const W = 1200, H = 520, S = 2;
+    const canvas = document.createElement('canvas');
+    canvas.width = W; canvas.height = H;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(S, S);
+    const w = W / S, h = H / S;
+    const dotSize = this.state.dotSize || 29;
+    const dotSpacing = Math.max(this.state.dotSpacing || 40, dotSize + 2);
+    const dotR = dotSize / 2;
+    ctx.globalAlpha = 0.34;
+    ctx.fillStyle = this.state.dotColor || '#474747';
+    for (let y = -dotSpacing; y < h + dotSpacing; y += dotSpacing) {
+      for (let x = Math.round(w * 0.34); x < w + dotSpacing; x += dotSpacing) {
+        ctx.beginPath();
+        ctx.arc(x, y, dotR, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    return { bytes: this._bytesFromDataUrl(canvas.toDataURL('image/png')), ext: 'png' };
+  }
+
+  async _signatureCornerBytes() {
+    const r = await fetch('assets/arrows.png');
+    if (!r.ok) return null;
+    return new Uint8Array(await r.arrayBuffer());
+  }
+
   // Build email-safe (table-based, inline-styled, light-locked) HTML + image files, zipped for ESP import.
   async exportHtml() {
     const F = "'Montserrat',Arial,Helvetica,sans-serif";
@@ -1533,23 +1628,29 @@ class Component extends DCLogic {
       rows += '<tr><td bgcolor="#ffffff" style="background:#ffffff;padding:18px 32px;text-align:center;">' + (framed ? '<div style="display:inline-block;background:#fff;padding:9px 9px 26px;box-shadow:0 12px 26px -10px rgba(0,0,0,.35);">' + imgTag + '</div>' : imgTag) + '</td></tr>';
     }
 
-    // Signature background is baked as one image. Text stays HTML so links remain clickable.
-    let decoName = '';
+    // Signature: pattern and corner visual are separate assets. Text stays HTML so links remain clickable.
+    let patternName = '';
+    let cornerName = '';
     try {
-      const bakedDecor = await this._bakeSignatureDecorImage();
-      decoName = 'images/signature-bg.png';
-      files.push({ name: decoName, bytes: bakedDecor.bytes });
+      const bakedPattern = await this._bakeSignaturePatternImage();
+      patternName = 'images/signature-pattern.png';
+      files.push({ name: patternName, bytes: bakedPattern.bytes });
+    } catch (e) {}
+    try {
+      const cornerBytes = await this._signatureCornerBytes();
+      if (cornerBytes) { cornerName = 'images/signature-corner.png'; files.push({ name: cornerName, bytes: cornerBytes }); }
     } catch (e) {}
     const SC = this.state.sigTextColor || '#e9e9ee';
     const sigRow = (label, value, link) => '<tr><td width="84" valign="top" style="font-family:' + F + ';font-weight:800;font-size:10px;letter-spacing:1px;color:#7a7a82;text-transform:uppercase;padding:5px 10px 5px 0;vertical-align:top;">' + label + '</td><td valign="top" style="font-family:' + F + ';font-weight:600;font-size:13px;color:' + SC + ';padding:5px 0;vertical-align:top;">' + (link ? '<a href="' + link + '" style="color:' + SC + ';text-decoration:none;">' + value + '</a>' : value) + '</td></tr>';
-    const sigBg = decoName ? 'background:#141417 url(' + decoName + ') center top / cover no-repeat;' : 'background:#141417;';
-    let sig = '<tr><td background="' + decoName + '" bgcolor="#141417" style="' + sigBg + 'padding:0;">' +
+    const sigBg = patternName ? 'background:#141417 url(' + patternName + ') center top / cover no-repeat;' : 'background:#141417;';
+    let sig = '<tr><td background="' + patternName + '" bgcolor="#141417" style="' + sigBg + 'padding:0;">' +
       '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>' +
       '<td class="px" valign="top" style="padding:34px 32px 26px 32px;vertical-align:top;">';
     if (logoName) sig += '<img src="' + logoName + '" width="142" alt="Positif Design" style="display:block;width:142px;height:auto;">';
     sig += '<div style="font-family:' + F + ';font-weight:700;font-size:11px;letter-spacing:1.5px;color:#8e8e96;text-transform:uppercase;padding:12px 0 4px;">Communication visuelle &middot; Imprimerie &middot; Signal&eacute;tique</div>';
     sig += '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:12px;">' + sigRow('Adresse', '48 bis Bd Foch &middot; 93800 &Eacute;pinay-sur-Seine') + sigRow('T&eacute;l&eacute;phone', '01.48.29.15.51', 'tel:+33148291551') + sigRow('WhatsApp', '06 18 70 11 18', 'https://wa.me/33618701118') + sigRow('Email', 'contact@positif.biz', 'mailto:contact@positif.biz') + sigRow('Web', 'positifdesign.fr', 'https://positifdesign.fr') + '</table>';
-    sig += '<div style="border-top:1px solid #2a2a30;margin-top:18px;padding-top:12px;font-family:' + F + ';font-weight:500;font-size:11px;line-height:1.6;color:#6c6c75;">Vous recevez cet e-mail en tant que client ou partenaire de Positif Design.<br><a href="' + href(this.state.unsubscribeUrl) + '" style="color:#8a8a93;text-decoration:underline;">Se d&eacute;sabonner</a> &middot; <a href="' + href(this.state.viewOnlineUrl) + '" style="color:#8a8a93;text-decoration:underline;">Voir dans le navigateur</a></div>';
+    sig += '<div style="border-top:1px solid #2a2a30;margin-top:18px;padding-top:12px;font-family:' + F + ';font-weight:500;font-size:11px;line-height:1.6;color:#6c6c75;max-width:360px;">Vous recevez cet e-mail en tant que client ou partenaire de Positif Design.<br><a href="' + href(this.state.unsubscribeUrl) + '" style="color:#8a8a93;text-decoration:underline;">Se d&eacute;sabonner</a> &middot; <a href="' + href(this.state.viewOnlineUrl) + '" style="color:#8a8a93;text-decoration:underline;">Voir dans le navigateur</a></div>';
+    if (cornerName) sig += '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="right" style="padding:0;font-size:0;line-height:0;"><img src="' + cornerName + '" width="230" alt="" style="display:block;width:230px;max-width:48%;height:auto;margin-top:-118px;border:0;"></td></tr></table>';
     sig += '</td></tr></table></td></tr>';
 
     const head = '<!doctype html>\n<html lang="fr" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head>' +
