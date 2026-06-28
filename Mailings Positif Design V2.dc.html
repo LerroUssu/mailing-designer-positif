@@ -17,6 +17,23 @@
   a{text-decoration:none;}
   [data-block] [data-tools]{opacity:0;transition:opacity .15s ease;}
   [data-block]:hover [data-tools],[data-block][data-sel="1"] [data-tools]{opacity:1;}
+  .pd-panel{display:flex;flex-direction:column;gap:12px;}
+  .pd-section{border:1px solid #ECECF1;background:#FBFBFC;border-radius:12px;padding:12px;}
+  .pd-section-title{font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10.5px;letter-spacing:.08em;color:#141417;text-transform:uppercase;margin:0 0 10px;}
+  .pd-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+  .pd-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+  .pd-field{display:flex;flex-direction:column;gap:6px;min-width:0;}
+  .pd-label{font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;}
+  .pd-input{width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:9px 11px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;background:#fff;}
+  .pd-textarea{width:100%;box-sizing:border-box;resize:vertical;border:1px solid #E2E2E8;border-radius:10px;padding:9px 11px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;background:#fff;}
+  .pd-slider{display:flex;flex-direction:column;gap:5px;min-width:0;}
+  .pd-slider-head{display:flex;align-items:center;justify-content:space-between;gap:8px;font-family:Montserrat,Arial,sans-serif;}
+  .pd-slider-name{font-weight:700;font-size:10px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .pd-slider-val{font-weight:800;font-size:11px;color:#141417;white-space:nowrap;}
+  .pd-slider input{width:100%;accent-color:#FC1D37;}
+  .pd-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+  .pd-actions button{width:100%;}
+  @media (max-width:520px){.pd-grid-2,.pd-grid-3,.pd-actions{grid-template-columns:1fr;}}
 </style>
 <script src="./image-slot.js"></script>
 </helmet>
@@ -599,7 +616,129 @@
 
               <!-- oneforone -->
               <sc-if value="{{ selIsOneforone }}" hint-placeholder-val="{{ false }}">
-                <div>
+                <div class="pd-panel">
+                  <div class="pd-section">
+                    <div class="pd-section-title">Contenu</div>
+                    <div class="pd-field">
+                      <div class="pd-label">Accroche</div>
+                      <input class="pd-input" onChange="{{ sel.onKicker }}" value="{{ sel.kicker }}">
+                    </div>
+                    <div class="pd-grid-2" style="margin-top:10px;">
+                      <div class="pd-field">
+                        <div class="pd-label">Ligne 1</div>
+                        <input class="pd-input" onChange="{{ sel.onLine1 }}" value="{{ sel.line1 }}">
+                      </div>
+                      <div class="pd-field">
+                        <div class="pd-label">Ligne 2</div>
+                        <input class="pd-input" onChange="{{ sel.onLine2 }}" value="{{ sel.line2 }}">
+                      </div>
+                    </div>
+                    <div class="pd-field" style="margin-top:10px;">
+                      <div class="pd-label">Sous-texte</div>
+                      <textarea class="pd-textarea" onChange="{{ sel.onSub }}" value="{{ sel.sub }}" rows="2"></textarea>
+                    </div>
+                  </div>
+
+                  <div class="pd-section">
+                    <div class="pd-section-title">Texte principal</div>
+                    <div class="pd-grid-2">
+                      <div class="pd-slider">
+                        <div class="pd-slider-head"><span class="pd-slider-name">Position X</span><span class="pd-slider-val">{{ sel.textX }}px</span></div>
+                        <input type="range" min="-120" max="120" step="1" value="{{ sel.textX }}" onInput="{{ sel.onTextX }}">
+                      </div>
+                      <div class="pd-slider">
+                        <div class="pd-slider-head"><span class="pd-slider-name">Position Y</span><span class="pd-slider-val">{{ sel.textY }}px</span></div>
+                        <input type="range" min="-90" max="110" step="1" value="{{ sel.textY }}" onInput="{{ sel.onTextY }}">
+                      </div>
+                    </div>
+                    <div style="height:1px;background:#ECECF1;margin:12px 0;"></div>
+                    <div class="pd-grid-2">
+                      <button onClick="{{ sel.onToggleSplit }}" style="{{ sel.splitBtnStyle }}">Bande noire ligne 2</button>
+                      <div class="pd-slider">
+                        <div class="pd-slider-head"><span class="pd-slider-name">Inclinaison</span><span class="pd-slider-val">{{ sel.line2Tilt }}°</span></div>
+                        <input type="range" min="-18" max="18" step="1" value="{{ sel.line2Tilt }}" onInput="{{ sel.onLine2Tilt }}">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="pd-section">
+                    <div class="pd-section-title">Décorations</div>
+                    <div class="pd-actions">
+                      <button onClick="{{ sel.onToggleHalftone }}" style="{{ sel.halftoneBtnStyle }}">Pois Ben-Day</button>
+                      <button onClick="{{ sel.onToggleFloat }}" style="{{ sel.floatBtnStyle }}">Image déco</button>
+                      <button onClick="{{ sel.onToggleBand }}" style="{{ sel.bandBtnStyle }}">Bande bas</button>
+                    </div>
+                  </div>
+
+                  <sc-if value="{{ sel.band }}" hint-placeholder-val="{{ false }}">
+                    <div class="pd-section">
+                      <div class="pd-section-title">Bande noire du bas</div>
+                      <div class="pd-field">
+                        <div class="pd-label">Texte de la bande</div>
+                        <input class="pd-input" onChange="{{ sel.onBandText }}" value="{{ sel.bandText }}">
+                      </div>
+                      <div class="pd-grid-3" style="margin-top:10px;">
+                        <div class="pd-slider">
+                          <div class="pd-slider-head"><span class="pd-slider-name">Taille</span><span class="pd-slider-val">{{ sel.bandTextSize }}px</span></div>
+                          <input type="range" min="12" max="26" step="1" value="{{ sel.bandTextSize }}" onInput="{{ sel.onBandTextSize }}">
+                        </div>
+                        <div class="pd-slider">
+                          <div class="pd-slider-head"><span class="pd-slider-name">Texte Y</span><span class="pd-slider-val">{{ sel.bandTextBottom }}px</span></div>
+                          <input type="range" min="10" max="70" step="1" value="{{ sel.bandTextBottom }}" onInput="{{ sel.onBandTextBottom }}">
+                        </div>
+                        <div class="pd-slider">
+                          <div class="pd-slider-head"><span class="pd-slider-name">Inclinaison</span><span class="pd-slider-val">{{ sel.bandTilt }}px</span></div>
+                          <input type="range" min="0" max="110" step="1" value="{{ sel.bandTilt }}" onInput="{{ sel.onBandTilt }}">
+                        </div>
+                      </div>
+                    </div>
+                  </sc-if>
+
+                  <sc-if value="{{ sel.floatImg }}" hint-placeholder-val="{{ false }}">
+                    <div class="pd-section">
+                      <div class="pd-section-title">Image déco</div>
+                      <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12px;line-height:1.45;color:#9a9aa2;margin:0 0 10px;">Déposez votre image dans la zone déco du bloc.</p>
+                      <div class="pd-grid-2">
+                        <div>
+                          <div class="pd-label" style="margin-bottom:6px;">Cadre</div>
+                          <div class="pd-grid-3">
+                            <button onClick="{{ sel.onFloatFrameNone }}" style="{{ sel.floatFrameNoneStyle }}">Simple</button>
+                            <button onClick="{{ sel.onFloatFramePolaroid }}" style="{{ sel.floatFramePolaroidStyle }}">Polaroïd</button>
+                            <button onClick="{{ sel.onFloatFrameTape }}" style="{{ sel.floatFrameTapeStyle }}">Scotch</button>
+                          </div>
+                        </div>
+                        <div>
+                          <div class="pd-label" style="margin-bottom:6px;">Forme</div>
+                          <div class="pd-grid-3">
+                            <button onClick="{{ sel.onFloatShapeRect }}" style="{{ sel.floatShapeRectStyle }}">Carré</button>
+                            <button onClick="{{ sel.onFloatShapeRounded }}" style="{{ sel.floatShapeRoundedStyle }}">Arrondi</button>
+                            <button onClick="{{ sel.onFloatShapeCircle }}" style="{{ sel.floatShapeCircleStyle }}">Rond</button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="pd-grid-2" style="margin-top:12px;">
+                        <div class="pd-slider">
+                          <div class="pd-slider-head"><span class="pd-slider-name">Taille</span><span class="pd-slider-val">{{ sel.floatSize }}px</span></div>
+                          <input type="range" min="70" max="230" step="1" value="{{ sel.floatSize }}" onInput="{{ sel.onFloatSize }}">
+                        </div>
+                        <div class="pd-slider">
+                          <div class="pd-slider-head"><span class="pd-slider-name">Rotation</span><span class="pd-slider-val">{{ sel.floatRot }}°</span></div>
+                          <input type="range" min="-35" max="35" step="1" value="{{ sel.floatRot }}" onInput="{{ sel.onFloatRot }}">
+                        </div>
+                        <div class="pd-slider">
+                          <div class="pd-slider-head"><span class="pd-slider-name">Position X</span><span class="pd-slider-val">{{ sel.floatX }}px</span></div>
+                          <input type="range" min="-160" max="160" step="1" value="{{ sel.floatX }}" onInput="{{ sel.onFloatX }}">
+                        </div>
+                        <div class="pd-slider">
+                          <div class="pd-slider-head"><span class="pd-slider-name">Position Y</span><span class="pd-slider-val">{{ sel.floatY }}px</span></div>
+                          <input type="range" min="-140" max="140" step="1" value="{{ sel.floatY }}" onInput="{{ sel.onFloatY }}">
+                        </div>
+                      </div>
+                      <button onClick="{{ sel.onFloatReframe }}" style="width:100%;border:none;border-radius:50px;padding:9px;margin-top:12px;background:#141417;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;">Recadrer l'image uploadée</button>
+                    </div>
+                  </sc-if>
+                </div>
+                <div style="display:none;">
                   <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin-bottom:6px;">Accroche</div>
                   <input onChange="{{ sel.onKicker }}" value="{{ sel.kicker }}" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;">
                   <div style="display:flex;gap:10px;margin-top:12px;">
