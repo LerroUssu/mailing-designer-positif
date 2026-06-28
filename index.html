@@ -413,7 +413,7 @@
 
           <!-- dark signature footer (carte de visite) -->
           <div style="position:relative;background:#141417;overflow:hidden;padding:28px 32px 22px;">
-            <div style="position:absolute;inset:20px;display:{{ sigDotsDisplay }};background-image:{{ sigGradient }};background-size:{{ sigCell }};background-position:{{ sigPos }};background-repeat:space;opacity:.12;pointer-events:none;"></div>
+            <div style="position:absolute;inset:20px;display:{{ sigDotsDisplay }};background-image:{{ sigPatternBgImage }};background-size:{{ sigPatternBgSize }};background-position:{{ sigPos }};background-repeat:repeat;opacity:{{ sigPatternOpacity }};pointer-events:none;"></div>
             <img src="assets/arrows.png" alt="" style="position:absolute;right:{{ sigArrowRight }};bottom:{{ sigArrowBottom }};width:{{ sigArrowW }};height:auto;transform:{{ sigArrowTransform }};transform-origin:bottom right;pointer-events:none;z-index:1;">
             <div style="position:relative;z-index:2;">
               <img src="assets/logo-positif-white.png" width="142" alt="Positif Design" style="display:block;width:142px;height:auto;">
@@ -936,6 +936,15 @@
             <button onClick="{{ onToggleHalftone }}" style="{{ halftoneBtnStyle }}">Points</button>
           </div>
 
+          <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 7px;">Image motif signature</div>
+          <input type="file" accept="image/png,image/jpeg,image/webp,image/avif" onChange="{{ onSigPatternFile }}" style="width:100%;box-sizing:border-box;border:1px dashed #34343c;border-radius:10px;padding:10px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;color:#e9e9ee;">
+          <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
+            <button onClick="{{ onSigPatternClear }}" style="border:none;border-radius:50px;padding:8px 12px;background:#2a2a30;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10.5px;cursor:pointer;">Retirer</button>
+            <span style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11px;color:#8e8e96;">{{ sigPatternLabel }}</span>
+          </div>
+          <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:14px 0 7px;">Motif - taille - {{ sigPatternSizeVal }}px</div>
+          <input type="range" min="24" max="260" step="2" value="{{ sigPatternSizeVal }}" onChange="{{ onSigPatternSize }}" style="width:100%;accent-color:#FC1D37;">
+
           <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 7px;">Points · taille</div>
           <input type="range" min="4" max="40" step="1" value="{{ dotSizeVal }}" onChange="{{ onDotSize }}" style="width:100%;accent-color:#FC1D37;">
           <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:14px 0 7px;">Points · espacement</div>
@@ -993,6 +1002,8 @@ class Component extends DCLogic {
     halftone: true,
     dotSize: 29, dotSpacing: 40, dotColor: '#474747', dotColor2: '#FC1D37',
     sigTextColor: '#ffffff',
+    sigPatternDataUrl: '',
+    sigPatternSize: 160,
     arrowSize: 316, arrowX: -94, arrowY: 40, arrowRot: -22,
     emailSubject: 'Votre offre Positif Design',
     emailPreheader: 'Communication visuelle, impression et signalétique à Épinay-sur-Seine.',
@@ -1048,6 +1059,8 @@ class Component extends DCLogic {
       dotColor: this.state.dotColor,
       dotColor2: this.state.dotColor2,
       sigTextColor: this.state.sigTextColor,
+      sigPatternDataUrl: this.state.sigPatternDataUrl,
+      sigPatternSize: this.state.sigPatternSize,
       arrowSize: this.state.arrowSize,
       arrowX: this.state.arrowX,
       arrowY: this.state.arrowY,
@@ -1093,6 +1106,8 @@ class Component extends DCLogic {
       dotColor: p.dotColor || '#474747',
       dotColor2: p.dotColor2 || '#FC1D37',
       sigTextColor: p.sigTextColor || '#ffffff',
+      sigPatternDataUrl: p.sigPatternDataUrl || '',
+      sigPatternSize: p.sigPatternSize || 160,
       arrowSize: p.arrowSize || 316,
       arrowX: p.arrowX == null ? -94 : p.arrowX,
       arrowY: p.arrowY == null ? 40 : p.arrowY,
@@ -1183,6 +1198,14 @@ class Component extends DCLogic {
   svcProp(id, idx, key, val) { this.setState(s => ({ blocks: s.blocks.map(b => b.id !== id ? b : { ...b, services: b.services.map((x, k) => k !== idx ? x : { ...x, [key]: val }) }) })); }
   cardItem(id, idx, k, v) { this.setState(s => ({ blocks: s.blocks.map(b => b.id !== id ? b : { ...b, cards: b.cards.map((c, k2) => k2 !== idx ? c : { ...c, [k]: v }) }) })); }
   cardCount(id, delta) { this.setState(s => ({ blocks: s.blocks.map(b => { if (b.id !== id) return b; let n = Math.max(1, Math.min(6, b.cards.length + delta)); let cards = b.cards.slice(); while (cards.length < n) cards.push({ title: 'Titre carte', desc: 'Un court descriptif de ce produit ou service.' }); if (cards.length > n) cards = cards.slice(0, n); return { ...b, cards }; }) })); }
+  onSigPatternFile(e) {
+    const file = e && e.target && e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => this.setState({ sigPatternDataUrl: String(reader.result || '') });
+    reader.readAsDataURL(file);
+  }
+  onSigPatternClear() { this.setState({ sigPatternDataUrl: '' }); }
   _normHex(v) { v = (v || '').trim(); if (/^#?[0-9a-fA-F]{6}$/.test(v)) return v[0] === '#' ? v : '#' + v; if (/^#?[0-9a-fA-F]{3}$/.test(v)) { v = v.replace('#', ''); return '#' + v[0] + v[0] + v[1] + v[1] + v[2] + v[2]; } return null; }
 
   _esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
@@ -1536,6 +1559,11 @@ class Component extends DCLogic {
   }
 
   async _bakeSignaturePatternImage() {
+    if (this.state.sigPatternDataUrl) {
+      const mime = (this.state.sigPatternDataUrl.match(/^data:([^;]+);/) || [])[1] || 'image/png';
+      const ext = mime.indexOf('jpeg') >= 0 ? 'jpg' : mime.indexOf('webp') >= 0 ? 'webp' : mime.indexOf('avif') >= 0 ? 'avif' : 'png';
+      return { bytes: this._bytesFromDataUrl(this.state.sigPatternDataUrl), ext, size: this.state.sigPatternSize || 160 };
+    }
     const dotSize = this.state.dotSize || 29;
     const dotSpacing = Math.max(this.state.dotSpacing || 40, dotSize + 2);
     const S = 2;
@@ -1553,10 +1581,24 @@ class Component extends DCLogic {
     return { bytes: this._bytesFromDataUrl(canvas.toDataURL('image/png')), ext: 'png', size: dotSpacing };
   }
 
-  async _signatureCornerBytes() {
-    const r = await fetch('assets/arrows.png');
-    if (!r.ok) return null;
-    return new Uint8Array(await r.arrayBuffer());
+  async _signatureCornerImage() {
+    const arrows = await this._assetBitmap('assets/arrows.png');
+    if (!arrows) return null;
+    const aw = Math.max(160, Math.min(440, this.state.arrowSize || 316));
+    const ah = aw * arrows.height / arrows.width;
+    const rot = (this.state.arrowRot || 0) * Math.PI / 180;
+    const boxW = Math.ceil(Math.abs(Math.cos(rot)) * aw + Math.abs(Math.sin(rot)) * ah + 24);
+    const boxH = Math.ceil(Math.abs(Math.sin(rot)) * aw + Math.abs(Math.cos(rot)) * ah + 24);
+    const S = 2;
+    const canvas = document.createElement('canvas');
+    canvas.width = boxW * S; canvas.height = boxH * S;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(S, S);
+    ctx.translate(boxW - 12, boxH - 12);
+    ctx.rotate(rot);
+    ctx.drawImage(arrows, -aw, -ah, aw, ah);
+    if (arrows.close) arrows.close();
+    return { bytes: this._bytesFromDataUrl(canvas.toDataURL('image/png')), width: boxW, height: boxH };
   }
 
   // Build email-safe (table-based, inline-styled, light-locked) HTML + image files, zipped for ESP import.
@@ -1641,7 +1683,7 @@ class Component extends DCLogic {
         const bakedOffer = await this._bakeOneforoneImage(b);
         const offerName = imgName('offre-1-achete-1-offert', bakedOffer.ext);
         files.push({ name: offerName, bytes: bakedOffer.bytes });
-        rows += '<tr><td bgcolor="#FC1D37" style="background:#FC1D37;padding:0;font-size:0;line-height:0;"><img src="' + offerName + '" width="600" alt="' + esc((b.line1 || '') + ' ' + (b.line2 || '')) + '" style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;text-decoration:none;"></td></tr>';
+        rows += '<tr><td bgcolor="#141417" style="background:#141417;padding:0;font-size:0;line-height:0;"><img src="' + offerName + '" width="600" alt="' + esc((b.line1 || '') + ' ' + (b.line2 || '')) + '" style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;text-decoration:none;"></td></tr>';
       }
     }
 
@@ -1659,15 +1701,16 @@ class Component extends DCLogic {
     let patternName = '';
     let patternSize = 40;
     let cornerName = '';
+    let cornerMeta = null;
     try {
       const bakedPattern = await this._bakeSignaturePatternImage();
-      patternName = 'images/signature-pattern.png';
+      patternName = 'images/signature-pattern.' + (bakedPattern.ext || 'png');
       patternSize = bakedPattern.size || patternSize;
       files.push({ name: patternName, bytes: bakedPattern.bytes });
     } catch (e) {}
     try {
-      const cornerBytes = await this._signatureCornerBytes();
-      if (cornerBytes) { cornerName = 'images/signature-corner.png'; files.push({ name: cornerName, bytes: cornerBytes }); }
+      cornerMeta = await this._signatureCornerImage();
+      if (cornerMeta) { cornerName = 'images/signature-corner.png'; files.push({ name: cornerName, bytes: cornerMeta.bytes }); }
     } catch (e) {}
     const SC = this.state.sigTextColor || '#e9e9ee';
     const sigRow = (label, value, link) => '<tr><td width="84" valign="top" style="font-family:' + F + ';font-weight:800;font-size:10px;letter-spacing:1px;color:#7a7a82;text-transform:uppercase;padding:5px 10px 5px 0;vertical-align:top;">' + label + '</td><td valign="top" style="font-family:' + F + ';font-weight:600;font-size:13px;color:' + SC + ';padding:5px 0;vertical-align:top;">' + (link ? '<a href="' + link + '" style="color:' + SC + ';text-decoration:none;">' + value + '</a>' : value) + '</td></tr>';
@@ -1679,7 +1722,13 @@ class Component extends DCLogic {
     sig += '<div style="font-family:' + F + ';font-weight:700;font-size:11px;letter-spacing:1.5px;color:#8e8e96;text-transform:uppercase;padding:12px 0 4px;">Communication visuelle &middot; Imprimerie &middot; Signal&eacute;tique</div>';
     sig += '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:12px;">' + sigRow('Adresse', '48 bis Bd Foch &middot; 93800 &Eacute;pinay-sur-Seine') + sigRow('T&eacute;l&eacute;phone', '01.48.29.15.51', 'tel:+33148291551') + sigRow('WhatsApp', '06 18 70 11 18', 'https://wa.me/33618701118') + sigRow('Email', 'contact@positif.biz', 'mailto:contact@positif.biz') + sigRow('Web', 'positifdesign.fr', 'https://positifdesign.fr') + '</table>';
     sig += '<div style="border-top:1px solid #2a2a30;margin-top:18px;padding-top:12px;font-family:' + F + ';font-weight:500;font-size:11px;line-height:1.6;color:#6c6c75;max-width:360px;">Vous recevez cet e-mail en tant que client ou partenaire de Positif Design.<br><a href="' + href(this.state.unsubscribeUrl) + '" style="color:#8a8a93;text-decoration:underline;">Se d&eacute;sabonner</a> &middot; <a href="' + href(this.state.viewOnlineUrl) + '" style="color:#8a8a93;text-decoration:underline;">Voir dans le navigateur</a></div>';
-    if (cornerName) sig += '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="right" style="padding:0;font-size:0;line-height:0;"><img src="' + cornerName + '" width="230" alt="" style="display:block;width:230px;max-width:48%;height:auto;margin-top:-118px;border:0;"></td></tr></table>';
+    if (cornerName) {
+      const cornerW = cornerMeta && cornerMeta.width ? cornerMeta.width : Math.max(160, Math.min(440, this.state.arrowSize || 316));
+      const cornerH = cornerMeta && cornerMeta.height ? cornerMeta.height : Math.round(cornerW * 0.55);
+      const cornerTop = -Math.round(cornerH * 0.62 + (this.state.arrowY || 0));
+      const cornerRight = this.state.arrowX || 0;
+      sig += '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="right" style="padding:0;font-size:0;line-height:0;"><img src="' + cornerName + '" width="' + cornerW + '" alt="" style="display:block;width:' + cornerW + 'px;height:auto;margin-top:' + cornerTop + 'px;margin-right:' + cornerRight + 'px;border:0;"></td></tr></table>';
+    }
     sig += '</td></tr></table></td></tr>';
 
     const head = '<!doctype html>\n<html lang="fr" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head>' +
@@ -2019,6 +2068,8 @@ class Component extends DCLogic {
 
     // builder signature decoration (in-app state)
     const bds = this.state.dotSize, bdp = this.state.dotSpacing, bdc = this.state.dotColor, bdc2 = this.state.dotColor2;
+    const sigPatternDataUrl = this.state.sigPatternDataUrl || '';
+    const sigPatternSize = this.state.sigPatternSize || 160;
     const bcell = Math.max(bdp, bds + 2), br = bds / 2, bhalf = (bcell / 2).toFixed(1);
     const stepBtn = 'width:36px;height:36px;border:1px solid #DADADE;background:#fff;border-radius:10px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:18px;line-height:1;color:#141417;cursor:pointer;flex:0 0 auto;';
 
@@ -2059,6 +2110,9 @@ class Component extends DCLogic {
       // builder signature (two-tone halftone)
       sigCell: bcell + 'px ' + bcell + 'px',
       sigGradient: 'radial-gradient(circle, ' + bdc + ' ' + br.toFixed(1) + 'px, transparent ' + (br + 1).toFixed(1) + 'px)',
+      sigPatternBgImage: sigPatternDataUrl ? 'url("' + sigPatternDataUrl + '")' : 'radial-gradient(circle, ' + bdc + ' ' + br.toFixed(1) + 'px, transparent ' + (br + 1).toFixed(1) + 'px)',
+      sigPatternBgSize: sigPatternDataUrl ? sigPatternSize + 'px ' + sigPatternSize + 'px' : bcell + 'px ' + bcell + 'px',
+      sigPatternOpacity: sigPatternDataUrl ? '1' : '.12',
       sigPos: '0 0',
       sigTextColor: this.state.sigTextColor,
       sigDotsDisplay: tglOn ? 'block' : 'none',
@@ -2158,6 +2212,11 @@ class Component extends DCLogic {
       dotColor2Val: bdc2,
       onDotColor2Pick: (e) => this.setS('dotColor2', e.target.value),
       onDotColor2Hex: (e) => { const v = this._normHex(e.target.value); if (v) this.setS('dotColor2', v); },
+      sigPatternLabel: sigPatternDataUrl ? 'Image motif active' : 'Aucune image, points générés',
+      sigPatternSizeVal: sigPatternSize,
+      onSigPatternFile: (e) => this.onSigPatternFile(e),
+      onSigPatternClear: () => this.onSigPatternClear(),
+      onSigPatternSize: (e) => this.setS('sigPatternSize', +e.target.value),
       onSigTextPick: (e) => this.setS('sigTextColor', e.target.value),
       onSigTextHex: (e) => { const v = this._normHex(e.target.value); if (v) this.setS('sigTextColor', v); },
       arrowSizeVal: this.state.arrowSize, onArrowSize: (e) => this.setS('arrowSize', +e.target.value),
