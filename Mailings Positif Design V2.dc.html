@@ -660,7 +660,7 @@
                         </div>
                         <div class="pd-slider">
                           <div class="pd-slider-head"><span class="pd-slider-name">Hauteur</span><span class="pd-slider-val">{{ sel.bandHeight }}px</span></div>
-                          <input type="range" min="80" max="220" step="2" value="{{ sel.bandHeight }}" onInput="{{ sel.onBandHeight }}">
+                          <input type="range" min="58" max="180" step="2" value="{{ sel.bandHeight }}" onInput="{{ sel.onBandHeight }}">
                         </div>
                         <div class="pd-slider">
                           <div class="pd-slider-head"><span class="pd-slider-name">Inclinaison</span><span class="pd-slider-val">{{ sel.bandTilt }}px</span></div>
@@ -777,7 +777,7 @@
                       <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">Hauteur bande</span>
                       <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.bandHeight }}px</span>
                     </div>
-                    <input type="range" min="80" max="220" step="2" value="{{ sel.bandHeight }}" onInput="{{ sel.onBandHeight }}" style="width:100%;">
+                    <input type="range" min="58" max="180" step="2" value="{{ sel.bandHeight }}" onInput="{{ sel.onBandHeight }}" style="width:100%;">
                   </sc-if>
                   <sc-if value="{{ sel.floatImg }}" hint-placeholder-val="{{ false }}">
                     <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12px;line-height:1.5;color:#9a9aa2;margin:12px 0 0;">Déposez votre image dans la zone déco du bloc.</p>
@@ -1013,7 +1013,7 @@ class Component extends DCLogic {
       { title: 'Titre carte', desc: 'Un court descriptif de ce produit ou service.' },
     ] };
     if (type === 'flash') return { id, type, color: '#FC1D37', text: "OFFRE FLASH · STOCK LIMITÉ · JUSQU'AU 30 JUIN 2026" };
-    if (type === 'oneforone') return { id, type, split: true, kicker: 'SPÉCIAL AUTO-ÉCOLES · VENTE FLASH', line1: '1 ACHETÉ', line2: '1 OFFERT', sub: "Vos disques A « jeune conducteur » floqués à votre nom. Commandez-en 50, on vous en imprime 100.", halftone: false, band: false, bandText: '100 disques A pour le prix de 50', bandTextSize: 16, bandTextBottom: 34, bandHeight: 132, bandTilt: 68, textX: 0, textY: 0, line2Tilt: -7, floatImg: false, floatFrame: 'none', floatShape: 'circle', floatShadow: true, floatX: 0, floatY: 0, floatSize: 130, floatRot: -7 };
+    if (type === 'oneforone') return { id, type, split: true, kicker: 'SPÉCIAL AUTO-ÉCOLES · VENTE FLASH', line1: '1 ACHETÉ', line2: '1 OFFERT', sub: "Vos disques A « jeune conducteur » floqués à votre nom. Commandez-en 50, on vous en imprime 100.", halftone: false, band: false, bandText: '100 disques A pour le prix de 50', bandTextSize: 16, bandTextBottom: 24, bandHeight: 94, bandTilt: 34, textX: 0, textY: 0, line2Tilt: -7, floatImg: false, floatFrame: 'none', floatShape: 'circle', floatShadow: true, floatX: 0, floatY: 0, floatSize: 130, floatRot: -7 };
     if (type === 'cta') return { id, type, text: "J'EN PROFITE MAINTENANT →", url: 'mailto:contact@positif.biz?subject=Demande%20Positif%20Design', btnBg: '#FC1D37', btnText: '#FFFFFF' };
     if (type === 'contact') return { id, type, tel: '01.48.29.15.51', wa: '06 18 70 11 18', telBg: '#FFFFFF', telText: '#141417', telBorder: '#141417', telDot: true, telDotColor: '#FC1D37', waBg: '#25D366', waText: '#FFFFFF' };
     if (type === 'texte') return { id, type, title: 'UN TITRE QUI ACCROCHE', subtitle: "Présentez ici un service, une actualité ou un produit. Deux à trois lignes suffisent pour donner envie d'en savoir plus.", showBtn: true, btnText: 'DÉCOUVRIR →', btnUrl: 'https://positifdesign.fr', btnBg: '#FFFFFF', btnTextColor: '#141417', btnBorder: '#141417', titleColor: '#141417' };
@@ -1066,7 +1066,15 @@ class Component extends DCLogic {
     this.setState({ savedTemplates: list, tab: 'modeles', selectedId: null, selStickerId: null, headerSelected: false });
   }
   _rehydrateBlocks(blocks) {
-    return (blocks || []).map((b) => ({ ...b, id: this._nextId++ }));
+    return (blocks || []).map((b) => {
+      const next = { ...b, id: this._nextId++ };
+      if (next.type === 'oneforone') {
+        if (next.bandHeight == null || next.bandHeight === 132) next.bandHeight = 94;
+        if (next.bandTextBottom == null || next.bandTextBottom === 34) next.bandTextBottom = 24;
+        if (next.bandTilt == null || next.bandTilt === 68) next.bandTilt = 34;
+      }
+      return next;
+    });
   }
   loadTemplate(id) {
     const tpl = this.state.savedTemplates.find(x => x.id === id);
@@ -1462,8 +1470,8 @@ class Component extends DCLogic {
       ctx.save();
       ctx.fillStyle = '#141417';
       ctx.beginPath();
-      const bandTilt = b.bandTilt == null ? 68 : b.bandTilt;
-      const bandHeight = b.bandHeight == null ? 132 : b.bandHeight;
+      const bandTilt = b.bandTilt == null ? 34 : b.bandTilt;
+      const bandHeight = b.bandHeight == null ? 94 : b.bandHeight;
       const bandTop = Math.max(0, h - bandHeight);
       ctx.moveTo(0, bandTop);
       ctx.lineTo(w, bandTop - bandTilt);
@@ -1472,7 +1480,7 @@ class Component extends DCLogic {
       ctx.closePath();
       ctx.fill();
       const bandSize = b.bandTextSize || 16;
-      const bandBottom = b.bandTextBottom == null ? 34 : b.bandTextBottom;
+      const bandBottom = b.bandTextBottom == null ? 24 : b.bandTextBottom;
       ctx.fillStyle = '#ffffff';
       ctx.font = '800 ' + bandSize + 'px ' + font;
       ctx.textBaseline = 'middle';
@@ -1891,8 +1899,8 @@ class Component extends DCLogic {
       o.onSub = (e) => this.setField(b.id, 'sub', e.target.value);
       o.onToggleSplit = () => this.toggle(b.id, 'split');
       o.splitBtnStyle = 'flex:1;border:none;border-radius:50px;padding:9px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (b.split ? 'background:#141417;color:#fff;' : 'background:#ECECEF;color:#56565e;');
-      o.halftone = !!b.halftone; o.band = !!b.band; o.bandText = b.bandText; o.bandTextSize = b.bandTextSize || 16; o.bandTextBottom = b.bandTextBottom == null ? 34 : b.bandTextBottom; o.bandHeight = b.bandHeight == null ? 132 : b.bandHeight; o.bandTilt = b.bandTilt == null ? 68 : b.bandTilt; o.floatImg = !!b.floatImg;
-      o.ofWrapStyle = 'position:relative;overflow:hidden;background:#FC1D37;min-height:' + (b.floatImg || b.band ? '360px' : '0') + ';padding:30px 34px ' + (b.band ? Math.max(96, o.bandHeight) + 'px' : '32px') + ';';
+      o.halftone = !!b.halftone; o.band = !!b.band; o.bandText = b.bandText; o.bandTextSize = b.bandTextSize || 16; o.bandTextBottom = b.bandTextBottom == null ? 24 : b.bandTextBottom; o.bandHeight = b.bandHeight == null ? 94 : b.bandHeight; o.bandTilt = b.bandTilt == null ? 34 : b.bandTilt; o.floatImg = !!b.floatImg;
+      o.ofWrapStyle = 'position:relative;overflow:hidden;background:#FC1D37;min-height:' + (b.floatImg || b.band ? '360px' : '0') + ';padding:30px 34px ' + (b.band ? Math.max(72, o.bandHeight) + 'px' : '32px') + ';';
       o.bandTextStyle = 'position:absolute;left:0;right:0;bottom:' + o.bandTextBottom + 'px;z-index:3;text-align:center;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:' + o.bandTextSize + 'px;letter-spacing:.03em;color:#fff;padding:0 24px;';
       const bandRightPct = Math.max(0, Math.min(58, 58 - o.bandTilt / 1.32));
       o.bandShapeStyle = 'position:absolute;left:0;right:0;bottom:0;height:' + o.bandHeight + 'px;background:#141417;clip-path:polygon(0 58%, 100% ' + bandRightPct.toFixed(1) + '%, 100% 100%, 0% 100%);z-index:1;pointer-events:none;';
