@@ -1037,6 +1037,142 @@ class Component extends DCLogic {
     try { return await createImageBitmap(blob); } catch (e) { return null; }
   }
 
+  async _bitmapFromBytes(bytes, type) {
+    try { return await createImageBitmap(new Blob([bytes], { type: type || 'image/png' })); } catch (e) { return null; }
+  }
+
+  async _bakeOneforoneImage(b) {
+    if (document.fonts && document.fonts.ready) {
+      try { await document.fonts.ready; } catch (e) {}
+    }
+    const W = 1200, H = b.band || b.floatImg ? 640 : 560, S = 2;
+    const canvas = document.createElement('canvas');
+    canvas.width = W; canvas.height = H;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(S, S);
+    const w = W / S, h = H / S;
+    ctx.fillStyle = '#FC1D37';
+    ctx.fillRect(0, 0, w, h);
+
+    if (b.halftone) {
+      ctx.save();
+      ctx.globalAlpha = 0.22;
+      ctx.fillStyle = '#ffffff';
+      for (let y = -30; y < 150; y += 18) {
+        for (let x = 390; x < 650; x += 18) {
+          ctx.beginPath();
+          ctx.arc(x, y, 6.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      ctx.restore();
+    }
+
+    const font = 'Montserrat, Arial, Helvetica, sans-serif';
+    const fitText = (text, weight, size, maxW) => {
+      let s = size;
+      do {
+        ctx.font = weight + ' ' + s + 'px ' + font;
+        if (ctx.measureText(text).width <= maxW || s <= 28) return s;
+        s -= 2;
+      } while (true);
+    };
+    const wrap = (text, maxW, weight, size) => {
+      ctx.font = weight + ' ' + size + 'px ' + font;
+      const words = String(text || '').split(/\s+/);
+      const lines = [];
+      let line = '';
+      for (const word of words) {
+        const test = line ? line + ' ' + word : word;
+        if (ctx.measureText(test).width > maxW && line) { lines.push(line); line = word; }
+        else line = test;
+      }
+      if (line) lines.push(line);
+      return lines;
+    };
+    const textBox = (text, x, y, weight, size, padX, padY, rot, skew) => {
+      ctx.font = weight + ' ' + size + 'px ' + font;
+      const tw = ctx.measureText(text).width;
+      const th = size * 1.05;
+      ctx.save();
+      ctx.translate(x, y);
+      if (rot) ctx.rotate(rot * Math.PI / 180);
+      if (skew) ctx.transform(1, 0, skew, 1, 0, 0);
+      ctx.fillStyle = '#141417';
+      ctx.fillRect(0, 0, tw + padX * 2, th + padY * 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.textBaseline = 'top';
+      ctx.fillText(text, padX, padY + 1);
+      ctx.restore();
+      return { width: tw + padX * 2, height: th + padY * 2 };
+    };
+
+    const x = 60;
+    textBox((b.kicker || '').toUpperCase(), x + 2, 38, '800', 13, 14, 8, -2, 0);
+
+    const line1 = String(b.line1 || '1 ACHETÉ').toUpperCase();
+    const line1Size = fitText(line1, '900', 58, 430);
+    ctx.save();
+    ctx.font = '900 ' + line1Size + 'px ' + font;
+    ctx.fillStyle = '#ffffff';
+    ctx.textBaseline = 'top';
+    ctx.shadowColor = 'rgba(0,0,0,.18)';
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetX = 5;
+    ctx.shadowOffsetY = 5;
+    ctx.fillText(line1, x, 86);
+    ctx.restore();
+
+    const line2 = String(b.line2 || '1 OFFERT').toUpperCase();
+    const line2Size = fitText(line2, '900', 52, 395);
+    textBox(line2, x + 2, 154, '900', line2Size, 13, 6, 0, -0.10);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.textBaseline = 'top';
+    const subLines = wrap(b.sub || '', b.floatImg ? 330 : 500, '800', 18).slice(0, 4);
+    ctx.font = '800 18px ' + font;
+    subLines.forEach((line, i) => ctx.fillText(line, x, 230 + i * 23));
+
+    if (b.floatImg) {
+      const baked = this._bakeSlot('slot-' + b.id + '-float', 160);
+      const bmp = baked ? await this._bitmapFromBytes(baked.bytes, 'image/jpeg') : null;
+      if (bmp) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(492, 226, 68, 0, Math.PI * 2);
+        ctx.clip();
+        ctx.drawImage(bmp, 424, 158, 136, 136);
+        ctx.restore();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.arc(492, 226, 68, 0, Math.PI * 2);
+        ctx.stroke();
+        if (bmp.close) bmp.close();
+      }
+    }
+
+    if (b.band) {
+      ctx.save();
+      ctx.fillStyle = '#141417';
+      ctx.beginPath();
+      ctx.moveTo(0, h - 78);
+      ctx.lineTo(w, h - 112);
+      ctx.lineTo(w, h);
+      ctx.lineTo(0, h);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '800 16px ' + font;
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.fillText(String(b.bandText || '').toUpperCase(), w / 2, h - 43);
+      ctx.restore();
+    }
+
+    return { bytes: this._bytesFromDataUrl(canvas.toDataURL('image/png')), ext: 'png', width: 600, height: Math.round(H / S) };
+  }
+
   async _bakeSignatureDecorImage() {
     const W = 520, H = 360, S = 2;
     const canvas = document.createElement('canvas');
@@ -1158,14 +1294,10 @@ class Component extends DCLogic {
         b.services.forEach((s) => { pills += '<span style="display:inline-block;background:' + s.bg + ';border:1px solid ' + s.border + ';border-radius:50px;padding:6px 12px;font-family:' + F + ';font-weight:700;font-size:11.5px;color:' + s.fg + ';margin:0 6px 8px 0;white-space:nowrap;"><span style="color:' + s.dot + ';">&#9679;</span> ' + esc(s.text) + '</span>'; });
         rows += '<tr><td bgcolor="#FAFAFB" style="background:#FAFAFB;border-top:1px solid #ECECEF;padding:22px 30px;"><div style="font-family:' + F + ';font-weight:800;font-size:17px;color:#141417;padding-bottom:12px;"><span style="color:#FC1D37;">&#9679;</span> POSITIF, C&rsquo;EST AUSSI</div><div style="line-height:1.9;">' + pills + '</div></td></tr>';
       } else if (b.type === 'oneforone') {
-        const im = b.floatImg ? pushImg('slot-' + b.id + '-float', 150, 'offre-disque-a-visuel') : null;
-        let inner = '<div style="display:inline-block;background:#141417;color:#ffffff;font-family:' + F + ';font-weight:800;font-size:11px;letter-spacing:2px;padding:7px 13px;">' + esc(b.kicker) + '</div>';
-        inner += '<div style="font-family:' + F + ';font-weight:800;font-size:54px;line-height:0.96;color:#ffffff;padding-top:16px;">' + esc(b.line1) + '</div>';
-        inner += '<div style="padding-top:6px;"><span style="display:inline-block;background:#141417;color:#ffffff;font-family:' + F + ';font-weight:900;font-size:48px;line-height:1.12;padding:2px 14px;">' + esc(b.line2) + '</span></div>';
-        inner += '<div style="font-family:' + F + ';font-weight:700;font-size:15px;line-height:1.45;color:#ffffff;padding-top:18px;">' + esc(b.sub) + '</div>';
-        if (im) inner += '<div style="padding-top:18px;"><img src="' + im + '" width="140" alt="" style="display:inline-block;width:140px;height:140px;border-radius:50%;"></div>';
-        if (b.band) inner += '<div style="margin-top:18px;background:#141417;color:#ffffff;font-family:' + F + ';font-weight:800;font-size:13px;letter-spacing:.5px;padding:10px 14px;text-align:center;">' + esc(b.bandText) + '</div>';
-        rows += '<tr><td bgcolor="#FC1D37" style="background:#FC1D37;padding:34px 32px;">' + inner + '</td></tr>';
+        const bakedOffer = await this._bakeOneforoneImage(b);
+        const offerName = imgName('offre-1-achete-1-offert', bakedOffer.ext);
+        files.push({ name: offerName, bytes: bakedOffer.bytes });
+        rows += '<tr><td bgcolor="#FC1D37" style="background:#FC1D37;padding:0;font-size:0;line-height:0;"><img src="' + offerName + '" width="600" alt="' + esc((b.line1 || '') + ' ' + (b.line2 || '')) + '" style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;text-decoration:none;"></td></tr>';
       }
     }
 
