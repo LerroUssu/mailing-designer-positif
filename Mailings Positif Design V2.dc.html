@@ -113,7 +113,7 @@
 
   <!-- TAB: BUILDER -->
   <div style="display:{{ builderDisplay }};">
-    <div style="max-width:1300px;margin:34px auto 0;display:flex;gap:30px;align-items:flex-start;flex-wrap:wrap;">
+    <div style="max-width:1440px;margin:34px auto 0;display:flex;gap:30px;align-items:flex-start;flex-wrap:wrap;">
 
       <!-- PALETTE -->
       <div style="width:280px;flex:0 0 auto;position:sticky;top:24px;">
@@ -349,7 +349,7 @@
                       <div style="position:absolute;top:-40px;right:-40px;width:380px;height:380px;background-image:radial-gradient(circle, rgba(255,255,255,.9) 30%, transparent 33%);background-size:27px 27px;-webkit-mask-image:radial-gradient(circle at 72% 28%, #000 0%, transparent 56%);mask-image:radial-gradient(circle at 72% 28%, #000 0%, transparent 56%);z-index:1;pointer-events:none;"></div>
                     </sc-if>
                     <sc-if value="{{ b.band }}" hint-placeholder-val="{{ false }}">
-                      <div style="position:absolute;left:0;right:0;bottom:0;height:132px;background:#141417;clip-path:polygon(0 58%, 100% 22%, 100% 100%, 0% 100%);z-index:1;pointer-events:none;"></div>
+                      <div style="{{ b.bandShapeStyle }}"></div>
                       <div style="{{ b.bandTextStyle }}">{{ b.bandText }}</div>
                     </sc-if>
                     <div style="{{ b.textGroupStyle }}">
@@ -456,7 +456,7 @@
       </div>
 
       <!-- RIGHT RAIL: inspector + decoration -->
-      <div style="width:320px;flex:0 0 auto;position:sticky;top:24px;display:flex;flex-direction:column;gap:18px;">
+      <div style="width:420px;flex:0 0 auto;position:sticky;top:24px;display:flex;flex-direction:column;gap:18px;">
 
         <button onClick="{{ onSaveTemplate }}" style="width:100%;background:#141417;color:#fff;border:none;border-radius:50px;padding:13px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.05em;cursor:pointer;box-shadow:0 12px 22px -14px rgba(20,20,30,.55);">SAUVEGARDER COMME MODÈLE</button>
         <button onClick="{{ onExport }}" style="width:100%;background:#FC1D37;color:#fff;border:none;border-radius:50px;padding:14px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:.05em;cursor:pointer;box-shadow:0 12px 22px -10px rgba(252,29,55,.55);">EXPORTER HTML BREVO (.ZIP)</button>
@@ -653,6 +653,11 @@
                       <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.bandTextBottom }}px</span>
                     </div>
                     <input type="range" min="10" max="70" step="1" value="{{ sel.bandTextBottom }}" onInput="{{ sel.onBandTextBottom }}" style="width:100%;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 6px;">
+                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">Inclinaison bande</span>
+                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.bandTilt }}px</span>
+                    </div>
+                    <input type="range" min="0" max="110" step="1" value="{{ sel.bandTilt }}" onInput="{{ sel.onBandTilt }}" style="width:100%;">
                   </sc-if>
                   <sc-if value="{{ sel.floatImg }}" hint-placeholder-val="{{ false }}">
                     <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12px;line-height:1.5;color:#9a9aa2;margin:12px 0 0;">Déposez votre image dans la zone déco du bloc.</p>
@@ -888,7 +893,7 @@ class Component extends DCLogic {
       { title: 'Titre carte', desc: 'Un court descriptif de ce produit ou service.' },
     ] };
     if (type === 'flash') return { id, type, color: '#FC1D37', text: "OFFRE FLASH · STOCK LIMITÉ · JUSQU'AU 30 JUIN 2026" };
-    if (type === 'oneforone') return { id, type, split: true, kicker: 'SPÉCIAL AUTO-ÉCOLES · VENTE FLASH', line1: '1 ACHETÉ', line2: '1 OFFERT', sub: "Vos disques A « jeune conducteur » floqués à votre nom. Commandez-en 50, on vous en imprime 100.", halftone: false, band: false, bandText: '100 disques A pour le prix de 50', bandTextSize: 16, bandTextBottom: 34, textX: 0, textY: 0, line2Tilt: -7, floatImg: false, floatFrame: 'none', floatShape: 'circle', floatShadow: true, floatX: 0, floatY: 0, floatSize: 130, floatRot: -7 };
+    if (type === 'oneforone') return { id, type, split: true, kicker: 'SPÉCIAL AUTO-ÉCOLES · VENTE FLASH', line1: '1 ACHETÉ', line2: '1 OFFERT', sub: "Vos disques A « jeune conducteur » floqués à votre nom. Commandez-en 50, on vous en imprime 100.", halftone: false, band: false, bandText: '100 disques A pour le prix de 50', bandTextSize: 16, bandTextBottom: 34, bandTilt: 68, textX: 0, textY: 0, line2Tilt: -7, floatImg: false, floatFrame: 'none', floatShape: 'circle', floatShadow: true, floatX: 0, floatY: 0, floatSize: 130, floatRot: -7 };
     if (type === 'cta') return { id, type, text: "J'EN PROFITE MAINTENANT →", url: 'mailto:contact@positif.biz?subject=Demande%20Positif%20Design', btnBg: '#FC1D37', btnText: '#FFFFFF' };
     if (type === 'contact') return { id, type, tel: '01.48.29.15.51', wa: '06 18 70 11 18', telBg: '#FFFFFF', telText: '#141417', telBorder: '#141417', telDot: true, telDotColor: '#FC1D37', waBg: '#25D366', waText: '#FFFFFF' };
     if (type === 'texte') return { id, type, title: 'UN TITRE QUI ACCROCHE', subtitle: "Présentez ici un service, une actualité ou un produit. Deux à trois lignes suffisent pour donner envie d'en savoir plus.", showBtn: true, btnText: 'DÉCOUVRIR →', btnUrl: 'https://positifdesign.fr', btnBg: '#FFFFFF', btnTextColor: '#141417', btnBorder: '#141417', titleColor: '#141417' };
@@ -1122,12 +1127,17 @@ class Component extends DCLogic {
 
     if (b.halftone) {
       ctx.save();
-      ctx.globalAlpha = 0.22;
-      ctx.fillStyle = '#ffffff';
-      for (let y = -30; y < 150; y += 18) {
-        for (let x = 390; x < 650; x += 18) {
+      for (let y = -36; y < 220; y += 18) {
+        for (let x0 = 360; x0 < 660; x0 += 18) {
+          const dx = (x0 - 535) / 190;
+          const dy = (y - 50) / 160;
+          const falloff = Math.max(0, 1 - Math.sqrt(dx * dx + dy * dy));
+          if (falloff <= 0.03) continue;
+          const r = 2.5 + falloff * 6.5;
+          ctx.globalAlpha = 0.08 + falloff * 0.34;
+          ctx.fillStyle = '#ffffff';
           ctx.beginPath();
-          ctx.arc(x, y, 6.5, 0, Math.PI * 2);
+          ctx.arc(x0, y, r, 0, Math.PI * 2);
           ctx.fill();
         }
       }
@@ -1253,8 +1263,9 @@ class Component extends DCLogic {
       ctx.save();
       ctx.fillStyle = '#141417';
       ctx.beginPath();
+      const bandTilt = b.bandTilt == null ? 68 : b.bandTilt;
       ctx.moveTo(0, h - 104);
-      ctx.lineTo(w, h - 142);
+      ctx.lineTo(w, h - 104 - bandTilt);
       ctx.lineTo(w, h);
       ctx.lineTo(0, h);
       ctx.closePath();
@@ -1647,9 +1658,11 @@ class Component extends DCLogic {
       o.onSub = (e) => this.setField(b.id, 'sub', e.target.value);
       o.onToggleSplit = () => this.toggle(b.id, 'split');
       o.splitBtnStyle = 'flex:1;border:none;border-radius:50px;padding:9px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (b.split ? 'background:#141417;color:#fff;' : 'background:#ECECEF;color:#56565e;');
-      o.halftone = !!b.halftone; o.band = !!b.band; o.bandText = b.bandText; o.bandTextSize = b.bandTextSize || 16; o.bandTextBottom = b.bandTextBottom == null ? 34 : b.bandTextBottom; o.floatImg = !!b.floatImg;
+      o.halftone = !!b.halftone; o.band = !!b.band; o.bandText = b.bandText; o.bandTextSize = b.bandTextSize || 16; o.bandTextBottom = b.bandTextBottom == null ? 34 : b.bandTextBottom; o.bandTilt = b.bandTilt == null ? 68 : b.bandTilt; o.floatImg = !!b.floatImg;
       o.ofWrapStyle = 'position:relative;overflow:hidden;background:#FC1D37;min-height:' + (b.floatImg || b.band ? '360px' : '0') + ';padding:30px 34px ' + (b.band ? '132px' : '32px') + ';';
       o.bandTextStyle = 'position:absolute;left:0;right:0;bottom:' + o.bandTextBottom + 'px;z-index:3;text-align:center;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:' + o.bandTextSize + 'px;letter-spacing:.03em;color:#fff;padding:0 24px;';
+      const bandRightPct = Math.max(0, Math.min(58, 58 - o.bandTilt / 1.32));
+      o.bandShapeStyle = 'position:absolute;left:0;right:0;bottom:0;height:132px;background:#141417;clip-path:polygon(0 58%, 100% ' + bandRightPct.toFixed(1) + '%, 100% 100%, 0% 100%);z-index:1;pointer-events:none;';
       const tgl = (on) => 'border:none;border-radius:50px;padding:9px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (on ? 'background:#141417;color:#fff;' : 'background:#ECECEF;color:#56565e;');
       o.halftoneBtnStyle = tgl(b.halftone); o.bandBtnStyle = tgl(b.band); o.floatBtnStyle = tgl(b.floatImg);
       o.onToggleHalftone = () => this.toggle(b.id, 'halftone');
@@ -1658,6 +1671,7 @@ class Component extends DCLogic {
       o.onBandText = (e) => this.setField(b.id, 'bandText', e.target.value);
       o.onBandTextSize = (e) => this.setField(b.id, 'bandTextSize', +e.target.value);
       o.onBandTextBottom = (e) => this.setField(b.id, 'bandTextBottom', +e.target.value);
+      o.onBandTilt = (e) => this.setField(b.id, 'bandTilt', +e.target.value);
       o.textX = b.textX || 0; o.textY = b.textY || 0;
       o.textGroupStyle = 'position:relative;z-index:3;transform:translate(' + o.textX + 'px,' + o.textY + 'px);';
       o.onTextX = (e) => this.setField(b.id, 'textX', +e.target.value);
