@@ -144,7 +144,25 @@
             <div style="flex:0 0 70px;height:52px;border-radius:7px;background:repeating-linear-gradient(45deg,#D6D6DC 0 7px,#E2E2E8 7px 14px);"></div>
             <div>
               <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:14px;color:#141417;">Image</div>
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12px;color:#9a9aa2;margin-top:2px;">Une photo pleine largeur</div>
+              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12px;color:#9a9aa2;margin-top:2px;">Encadrée ou pleine largeur</div>
+            </div>
+          </div>
+        </div>
+
+        <div draggable="true" onDragStart="{{ dragProduit }}" onClick="{{ addProduit }}" style="cursor:grab;background:#fff;border:1px solid #E2E2E8;border-radius:13px;padding:14px;margin-bottom:13px;box-shadow:0 3px 10px -6px rgba(20,20,30,.25);">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="flex:0 0 70px;height:52px;border-radius:7px;background:#ECECEF;display:flex;align-items:center;gap:5px;padding:7px;">
+              <div style="flex:0 0 24px;height:100%;border-radius:6px;background:#DFC98F;display:flex;align-items:center;justify-content:center;"><div style="width:13px;height:22px;background:repeating-linear-gradient(45deg,#CFCFD5 0 4px,#E9E9EE 4px 8px);"></div></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:3px;">
+                <div style="height:5px;width:88%;border-radius:3px;background:#141417;"></div>
+                <div style="height:3px;width:70%;border-radius:2px;background:#CFCFD5;"></div>
+                <div style="height:3px;width:60%;border-radius:2px;background:#CFCFD5;"></div>
+                <div style="height:8px;width:38%;border-radius:2px;background:#141417;"></div>
+              </div>
+            </div>
+            <div>
+              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:14px;color:#141417;">Produit + prix</div>
+              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12px;color:#9a9aa2;margin-top:2px;">Visuel d'un côté, texte + gros prix</div>
             </div>
           </div>
         </div>
@@ -278,21 +296,23 @@
                 <!-- BANNER -->
                 <sc-if value="{{ b.isBanner }}" hint-placeholder-val="{{ false }}">
                   <div>
-                    <image-slot id="{{ b.slotA }}" style="width:600px;max-width:100%;height:284px;display:block;" shape="rect" placeholder="Déposez votre bannière · 600 × 284"></image-slot>
-                    <div style="padding:28px 36px 32px;text-align:center;">
-                      <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:40px;line-height:.96;color:#141417;letter-spacing:.01em;">{{ b.title }}</div>
-                      <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:15px;line-height:1.6;color:#5c5c64;margin:13px auto 0;max-width:420px;">{{ b.subtitle }}</p>
-                      <a href="#" style="{{ b.bnBtnStyle }}">{{ b.btnLabel }}</a>
-                    </div>
+                    <image-slot id="{{ b.slotA }}" style="{{ b.bnSlotStyle }}" shape="rect" placeholder="Déposez votre bannière · 600 px de large"></image-slot>
+                    <sc-if value="{{ b.showText }}" hint-placeholder-val="{{ true }}">
+                      <div style="padding:28px 36px 32px;text-align:center;">
+                        <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:40px;line-height:.96;color:#141417;letter-spacing:.01em;">{{ b.title }}</div>
+                        <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:15px;line-height:1.6;color:#5c5c64;margin:13px auto 0;max-width:420px;">{{ b.subtitle }}</p>
+                        <a href="#" style="{{ b.bnBtnStyle }}">{{ b.btnLabel }}</a>
+                      </div>
+                    </sc-if>
                   </div>
                 </sc-if>
 
                 <!-- TEXT + IMAGE -->
                 <!-- TEXTE -->
                 <sc-if value="{{ b.isTexte }}" hint-placeholder-val="{{ false }}">
-                  <div style="padding:30px 34px;">
-                    <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:28px;line-height:1.04;color:{{ b.titleColor }};letter-spacing:.01em;">{{ b.title }}</div>
-                    <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:15px;line-height:1.6;color:#5c5c64;margin:12px 0 0;">{{ b.subtitle }}</p>
+                  <div style="{{ b.txtWrapStyle }}">
+                    <div style="{{ b.txtTitleStyle }}">{{ b.title }}</div>
+                    <p style="{{ b.txtBodyStyle }}">{{ b.subtitle }}</p>
                     <sc-if value="{{ b.showBtn }}" hint-placeholder-val="{{ true }}">
                       <a href="#" style="{{ b.txtBtnStyle }}">{{ b.btnText }}</a>
                     </sc-if>
@@ -301,8 +321,32 @@
 
                 <!-- IMAGE -->
                 <sc-if value="{{ b.isImage }}" hint-placeholder-val="{{ false }}">
-                  <div style="padding:26px 32px;">
-                    <image-slot id="{{ b.slotA }}" style="width:100%;height:300px;display:block;" shape="rounded" radius="14" placeholder="Votre photo"></image-slot>
+                  <div style="{{ b.imgWrapStyle }}">
+                    <image-slot id="{{ b.slotA }}" style="{{ b.imgSlotStyle }}" shape="{{ b.imgShape }}" radius="{{ b.imgRadius }}" placeholder="Votre photo"></image-slot>
+                  </div>
+                </sc-if>
+
+                <!-- PRODUIT + PRIX -->
+                <sc-if value="{{ b.isProduit }}" hint-placeholder-val="{{ false }}">
+                  <div style="{{ b.pdWrapStyle }}">
+                    <div style="{{ b.pdImgColStyle }}">
+                      <image-slot id="{{ b.slotA }}" style="{{ b.pdSlotStyle }}" shape="{{ b.pdShape }}" radius="{{ b.imgRadius }}" placeholder="Votre visuel"></image-slot>
+                    </div>
+                    <div style="{{ b.pdTextColStyle }}">
+                      <div style="{{ b.pdTitleStyle }}">{{ b.title }}</div>
+                      <div style="{{ b.pdDescStyle }}">
+                        <sc-for list="{{ b.descLines }}" as="l" hint-placeholder-count="0">
+                          <div>{{ l.text }}</div>
+                        </sc-for>
+                      </div>
+                      <div style="{{ b.pdPriceStyle }}">{{ b.price }}</div>
+                      <sc-if value="{{ b.hasPriceNote }}" hint-placeholder-val="{{ false }}">
+                        <div style="{{ b.pdPriceNoteStyle }}">{{ b.priceNote }}</div>
+                      </sc-if>
+                      <sc-if value="{{ b.showBtn }}" hint-placeholder-val="{{ false }}">
+                        <a href="#" style="{{ b.pdBtnStyle }}">{{ b.btnText }}</a>
+                      </sc-if>
+                    </div>
                   </div>
                 </sc-if>
 
@@ -325,7 +369,7 @@
                     <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:18px;">
                       <sc-for list="{{ b.cardItems }}" as="c" hint-placeholder-count="3">
                         <div style="flex:1 1 150px;min-width:140px;">
-                          <image-slot id="{{ c.slot }}" style="width:100%;height:120px;display:block;" shape="rounded" radius="11" placeholder="Photo"></image-slot>
+                          <image-slot id="{{ c.slot }}" style="{{ b.cardSlotStyle }}" shape="rounded" radius="{{ b.cardRadius }}" placeholder="Photo"></image-slot>
                           <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;color:#141417;margin:10px 0 0;">{{ c.title }}</div>
                           <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12px;line-height:1.5;color:#8a8a93;margin:4px 0 0;">{{ c.desc }}</p>
                         </div>
@@ -367,7 +411,7 @@
                 <!-- BANDEAU OFFRE FLASH -->
                 <sc-if value="{{ b.isFlash }}" hint-placeholder-val="{{ false }}">
                   <div style="{{ b.flashStyle }}">
-                    <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:.08em;color:#fff;">{{ b.text }}</span>
+                    <span style="{{ b.flashTextStyle }}">{{ b.text }}</span>
                   </div>
                 </sc-if>
 
@@ -411,8 +455,46 @@
             </sc-for>
           </div>
 
+          <!-- ALT SIGNATURE: newsletter (mentions + réseaux + bandeau noir) -->
+          <sc-if value="{{ sigIsNewsletter }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="background:#ffffff;padding:30px 34px 34px;text-align:center;">
+                <sc-if value="{{ sigShowLegal }}" hint-placeholder-val="{{ true }}">
+                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:14px;line-height:1.5;color:#141417;margin:0 0 26px;">
+                    <sc-for list="{{ sigLegalLines }}" as="l" hint-placeholder-count="0">
+                      <div>{{ l.text }}</div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+                <div style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;">
+                  <sc-for list="{{ sigSocialIcons }}" as="ic" hint-placeholder-count="0">
+                    <a href="{{ ic.url }}" style="display:inline-block;line-height:0;"><img src="{{ ic.src }}" width="52" height="52" alt="" style="display:block;width:52px;height:52px;"></a>
+                  </sc-for>
+                </div>
+                <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13.5px;line-height:1.5;color:#141417;margin:28px 0 0;">{{ sigSenderNote }}</div>
+                <div style="margin:22px 0 0;">
+                  <a href="{{ sigPrefsUrl }}" style="{{ sigLinkStyle }}">{{ sigPrefsLabel }}</a>
+                  <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:14px;color:#141417;">&nbsp;|&nbsp;</span>
+                  <a href="{{ unsubscribeUrl }}" style="{{ sigLinkStyle }}">{{ sigUnsubLabel }}</a>
+                </div>
+                <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;line-height:1.5;color:#141417;margin:22px 0 0;">{{ sigBottomNote }}</div>
+              </div>
+              <div style="{{ sigBarStyle }}">
+                <div style="flex:1 1 200px;min-width:0;">
+                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:15px;line-height:1.45;color:#ffffff;">{{ sigCompany }}</div>
+                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:14px;line-height:1.5;color:#ffffff;margin-top:2px;">
+                    <sc-for list="{{ sigAddrLines }}" as="l" hint-placeholder-count="0">
+                      <div>{{ l.text }}</div>
+                    </sc-for>
+                  </div>
+                </div>
+                <img src="assets/logo-positif-white.png" width="230" alt="Positif Design" style="display:block;width:230px;max-width:55%;height:auto;flex:0 0 auto;">
+              </div>
+            </div>
+          </sc-if>
+
           <!-- dark signature footer (carte de visite) -->
-          <div style="position:relative;background:#141417;overflow:hidden;padding:28px 32px 22px;">
+          <div style="position:relative;background:#141417;overflow:hidden;padding:28px 32px 22px;display:{{ sigCarteDisplay }};">
             <div style="position:absolute;inset:20px;display:{{ sigDotsDisplay }};background-image:{{ sigPatternBgImage }};background-size:{{ sigPatternBgSize }};background-position:{{ sigPos }};background-repeat:repeat;opacity:{{ sigPatternOpacity }};pointer-events:none;"></div>
             <img src="assets/arrows.png" alt="" style="position:absolute;right:{{ sigArrowRight }};bottom:{{ sigArrowBottom }};width:{{ sigArrowW }};height:auto;transform:{{ sigArrowTransform }};transform-origin:bottom right;pointer-events:none;z-index:1;">
             <div style="position:relative;z-index:2;">
@@ -475,10 +557,20 @@
                 <div>
                   <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin-bottom:6px;">Texte du bandeau</div>
                   <textarea onChange="{{ sel.onText }}" value="{{ sel.text }}" rows="3" style="width:100%;box-sizing:border-box;resize:vertical;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;"></textarea>
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Couleur</div>
+                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Couleur du bandeau</div>
                   <div style="display:flex;align-items:center;gap:10px;">
                     <input type="color" value="{{ sel.color }}" onInput="{{ sel.onColorPick }}" style="width:46px;height:38px;padding:2px;border:1px solid #E2E2E8;border-radius:10px;background:#fff;cursor:pointer;flex:0 0 auto;">
                     <input value="{{ sel.color }}" onChange="{{ sel.onColorHex }}" style="flex:1;min-width:0;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12.5px;letter-spacing:.04em;color:#34343c;text-transform:uppercase;outline:none;">
+                  </div>
+                  <div class="pd-grid-2" style="margin-top:14px;">
+                    <div class="pd-field">
+                      <div class="pd-label">Couleur du texte</div>
+                      <input type="color" value="{{ sel.textColor }}" onInput="{{ sel.onTextColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;">
+                    </div>
+                    <div class="pd-slider">
+                      <div class="pd-slider-head"><span class="pd-slider-name">Taille</span><span class="pd-slider-val">{{ sel.textSize }}px</span></div>
+                      <input type="range" min="10" max="24" step="1" value="{{ sel.textSize }}" onInput="{{ sel.onTextSize }}">
+                    </div>
                   </div>
                 </div>
               </sc-if>
@@ -494,6 +586,10 @@
                     <label style="flex:1;display:flex;flex-direction:column;gap:6px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">Fond du bouton<input type="color" value="{{ sel.btnBg }}" onInput="{{ sel.onBtnBg }}" style="width:100%;height:34px;padding:2px;border:1px solid #E2E2E8;border-radius:9px;background:#fff;cursor:pointer;"></label>
                     <label style="flex:1;display:flex;flex-direction:column;gap:6px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">Couleur du texte<input type="color" value="{{ sel.btnText }}" onInput="{{ sel.onBtnText }}" style="width:100%;height:34px;padding:2px;border:1px solid #E2E2E8;border-radius:9px;background:#fff;cursor:pointer;"></label>
                   </div>
+                  <div class="pd-slider" style="margin-top:14px;">
+                    <div class="pd-slider-head"><span class="pd-slider-name">Taille du bouton</span><span class="pd-slider-val">{{ sel.size }}px</span></div>
+                    <input type="range" min="13" max="34" step="1" value="{{ sel.size }}" onInput="{{ sel.onSize }}">
+                  </div>
                 </div>
               </sc-if>
 
@@ -504,8 +600,27 @@
                   <input onChange="{{ sel.onTitle }}" value="{{ sel.title }}" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12.5px;color:#34343c;outline:none;">
                   <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Sous-titre</div>
                   <textarea onChange="{{ sel.onSubtitle }}" value="{{ sel.subtitle }}" rows="3" style="width:100%;box-sizing:border-box;resize:vertical;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12.5px;color:#34343c;outline:none;"></textarea>
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:16px 0 8px;">Couleur du titre</div>
-                  <input type="color" value="{{ sel.titleColor }}" onInput="{{ sel.onTitleColor }}" style="width:100%;height:34px;padding:2px;border:1px solid #E2E2E8;border-radius:9px;background:#fff;cursor:pointer;">
+                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:16px 0 8px;">Alignement</div>
+                  <div style="display:flex;gap:7px;">
+                    <button onClick="{{ sel.onAlignLeft }}" style="{{ sel.alignLeftStyle }}">Gauche</button>
+                    <button onClick="{{ sel.onAlignCenter }}" style="{{ sel.alignCenterStyle }}">Centre</button>
+                    <button onClick="{{ sel.onAlignRight }}" style="{{ sel.alignRightStyle }}">Droite</button>
+                  </div>
+                  <div class="pd-grid-2" style="margin-top:14px;">
+                    <div class="pd-slider">
+                      <div class="pd-slider-head"><span class="pd-slider-name">Titre</span><span class="pd-slider-val">{{ sel.titleSize }}px</span></div>
+                      <input type="range" min="16" max="48" step="1" value="{{ sel.titleSize }}" onInput="{{ sel.onTitleSize }}">
+                    </div>
+                    <div class="pd-slider">
+                      <div class="pd-slider-head"><span class="pd-slider-name">Texte</span><span class="pd-slider-val">{{ sel.textSize }}px</span></div>
+                      <input type="range" min="11" max="24" step="1" value="{{ sel.textSize }}" onInput="{{ sel.onTextSize }}">
+                    </div>
+                  </div>
+                  <div class="pd-grid-3" style="margin-top:14px;">
+                    <div class="pd-field"><div class="pd-label">Titre</div><input type="color" value="{{ sel.titleColor }}" onInput="{{ sel.onTitleColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
+                    <div class="pd-field"><div class="pd-label">Texte</div><input type="color" value="{{ sel.textColor }}" onInput="{{ sel.onTextColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
+                    <div class="pd-field"><div class="pd-label">Fond</div><input type="color" value="{{ sel.bg }}" onInput="{{ sel.onBg }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
+                  </div>
                   <div style="height:1px;background:#EFEFF2;margin:18px 0 14px;"></div>
                   <button onClick="{{ sel.onToggleBtn }}" style="{{ sel.btnToggleStyle }};width:100%;">Afficher le bouton</button>
                   <sc-if value="{{ sel.showBtn }}" hint-placeholder-val="{{ true }}">
@@ -524,10 +639,160 @@
 
               <!-- image -->
               <sc-if value="{{ selIsImage }}" hint-placeholder-val="{{ false }}">
-                <div>
-                  <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12.5px;line-height:1.55;color:#9a9aa2;margin:0 0 14px;">Déposez votre photo dans la zone grise du bloc.</p>
-                  <button onClick="{{ sel.onReframe }}" style="width:100%;background:#141417;color:#fff;border:none;border-radius:50px;padding:11px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.03em;cursor:pointer;">↕  Repositionner l'image</button>
-                  <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11.5px;line-height:1.55;color:#b1b1b8;margin:12px 0 0;">Astuce : double-cliquez l'image pour la recadrer. Glissez pour déplacer, tirez les coins pour zoomer, puis cliquez ailleurs pour valider.</p>
+                <div class="pd-panel">
+                  <div class="pd-section">
+                    <div class="pd-section-title">Format</div>
+                    <div class="pd-grid-2">
+                      <button onClick="{{ sel.onToggleFull }}" style="{{ sel.fullBtnStyle }}">Pleine largeur</button>
+                      <button onClick="{{ sel.onToggleShadow }}" style="{{ sel.shadowBtnStyle }}">Ombre portée</button>
+                    </div>
+                    <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11.5px;line-height:1.45;color:#9a9aa2;margin:10px 0 0;">Pleine largeur : l'image touche les bords de l'e-mail, comme une bannière — sans titre ni bouton.</p>
+                  </div>
+
+                  <div class="pd-section">
+                    <div class="pd-section-title">Dimensions</div>
+                    <div class="pd-grid-2">
+                      <div class="pd-slider">
+                        <div class="pd-slider-head"><span class="pd-slider-name">Hauteur</span><span class="pd-slider-val">{{ sel.height }}px</span></div>
+                        <input type="range" min="120" max="620" step="2" value="{{ sel.height }}" onInput="{{ sel.onHeight }}">
+                      </div>
+                      <sc-if value="{{ sel.notFull }}" hint-placeholder-val="{{ true }}">
+                        <div class="pd-slider">
+                          <div class="pd-slider-head"><span class="pd-slider-name">Arrondi</span><span class="pd-slider-val">{{ sel.radius }}px</span></div>
+                          <input type="range" min="0" max="40" step="1" value="{{ sel.radius }}" onInput="{{ sel.onRadius }}">
+                        </div>
+                      </sc-if>
+                    </div>
+                  </div>
+
+                  <div class="pd-section">
+                    <div class="pd-section-title">Photo</div>
+                    <button onClick="{{ sel.onReframe }}" style="width:100%;background:#141417;color:#fff;border:none;border-radius:50px;padding:11px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.03em;cursor:pointer;">Repositionner l'image</button>
+                    <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11.5px;line-height:1.45;color:#9a9aa2;margin:10px 0 0;">Déposez votre photo dans la zone grise. Double-cliquez pour recadrer : glissez pour déplacer, tirez les coins pour zoomer.</p>
+                  </div>
+                </div>
+              </sc-if>
+
+              <!-- produit + prix -->
+              <sc-if value="{{ selIsProduit }}" hint-placeholder-val="{{ false }}">
+                <div class="pd-panel">
+                  <div class="pd-section">
+                    <div class="pd-section-title">Contenu</div>
+                    <div class="pd-field">
+                      <div class="pd-label">Titre</div>
+                      <input class="pd-input" onChange="{{ sel.onTitle }}" value="{{ sel.title }}">
+                    </div>
+                    <div class="pd-field" style="margin-top:10px;">
+                      <div class="pd-label">Descriptif (une ligne par retour)</div>
+                      <textarea class="pd-textarea" onChange="{{ sel.onDesc }}" value="{{ sel.desc }}" rows="4"></textarea>
+                    </div>
+                    <div class="pd-grid-2" style="margin-top:10px;">
+                      <div class="pd-field">
+                        <div class="pd-label">Prix</div>
+                        <input class="pd-input" onChange="{{ sel.onPrice }}" value="{{ sel.price }}">
+                      </div>
+                      <div class="pd-field">
+                        <div class="pd-label">Mention sous le prix</div>
+                        <input class="pd-input" onChange="{{ sel.onPriceNote }}" value="{{ sel.priceNote }}" placeholder="HT · départ atelier">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="pd-section">
+                    <div class="pd-section-title">Mise en page</div>
+                    <div class="pd-grid-2">
+                      <div>
+                        <div class="pd-label" style="margin-bottom:6px;">Image à</div>
+                        <div style="display:flex;gap:7px;">
+                          <button onClick="{{ sel.onSideLeft }}" style="{{ sel.sideLeftStyle }}">Gauche</button>
+                          <button onClick="{{ sel.onSideRight }}" style="{{ sel.sideRightStyle }}">Droite</button>
+                        </div>
+                      </div>
+                      <div>
+                        <div class="pd-label" style="margin-bottom:6px;">Texte aligné</div>
+                        <div style="display:flex;gap:7px;">
+                          <button onClick="{{ sel.onAlignLeft }}" style="{{ sel.alignLeftStyle }}">G</button>
+                          <button onClick="{{ sel.onAlignCenter }}" style="{{ sel.alignCenterStyle }}">C</button>
+                          <button onClick="{{ sel.onAlignRight }}" style="{{ sel.alignRightStyle }}">D</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="pd-grid-3" style="margin-top:12px;">
+                      <div class="pd-slider">
+                        <div class="pd-slider-head"><span class="pd-slider-name">Titre</span><span class="pd-slider-val">{{ sel.titleSize }}px</span></div>
+                        <input type="range" min="18" max="52" step="1" value="{{ sel.titleSize }}" onInput="{{ sel.onTitleSize }}">
+                      </div>
+                      <div class="pd-slider">
+                        <div class="pd-slider-head"><span class="pd-slider-name">Texte</span><span class="pd-slider-val">{{ sel.textSize }}px</span></div>
+                        <input type="range" min="11" max="24" step="1" value="{{ sel.textSize }}" onInput="{{ sel.onTextSize }}">
+                      </div>
+                      <div class="pd-slider">
+                        <div class="pd-slider-head"><span class="pd-slider-name">Prix</span><span class="pd-slider-val">{{ sel.priceSize }}px</span></div>
+                        <input type="range" min="20" max="80" step="1" value="{{ sel.priceSize }}" onInput="{{ sel.onPriceSize }}">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="pd-section">
+                    <div class="pd-section-title">Visuel</div>
+                    <div class="pd-grid-2">
+                      <button onClick="{{ sel.onTogglePanel }}" style="{{ sel.panelBtnStyle }}">Fond coloré</button>
+                      <button onClick="{{ sel.onToggleImgShadow }}" style="{{ sel.imgShadowBtnStyle }}">Ombre portée</button>
+                    </div>
+                    <div class="pd-label" style="margin:12px 0 6px;">Forme de l'image</div>
+                    <div style="display:flex;gap:7px;">
+                      <button onClick="{{ sel.onShapeRect }}" style="{{ sel.pdShapeRectStyle }}">Carré</button>
+                      <button onClick="{{ sel.onShapeRounded }}" style="{{ sel.pdShapeRoundedStyle }}">Arrondi</button>
+                      <button onClick="{{ sel.onShapeCircle }}" style="{{ sel.pdShapeCircleStyle }}">Rond</button>
+                    </div>
+                    <div class="pd-grid-2" style="margin-top:12px;">
+                      <div class="pd-slider">
+                        <div class="pd-slider-head"><span class="pd-slider-name">Largeur colonne</span><span class="pd-slider-val">{{ sel.imgW }}%</span></div>
+                        <input type="range" min="28" max="70" step="1" value="{{ sel.imgW }}" onInput="{{ sel.onImgW }}">
+                      </div>
+                      <div class="pd-slider">
+                        <div class="pd-slider-head"><span class="pd-slider-name">Hauteur</span><span class="pd-slider-val">{{ sel.imgH }}px</span></div>
+                        <input type="range" min="120" max="460" step="2" value="{{ sel.imgH }}" onInput="{{ sel.onImgH }}">
+                      </div>
+                      <div class="pd-slider">
+                        <div class="pd-slider-head"><span class="pd-slider-name">Arrondi image</span><span class="pd-slider-val">{{ sel.imgRadiusVal }}px</span></div>
+                        <input type="range" min="0" max="40" step="1" value="{{ sel.imgRadiusVal }}" onInput="{{ sel.onImgRadius }}">
+                      </div>
+                      <div class="pd-slider">
+                        <div class="pd-slider-head"><span class="pd-slider-name">Arrondi fond</span><span class="pd-slider-val">{{ sel.panelRadius }}px</span></div>
+                        <input type="range" min="0" max="60" step="1" value="{{ sel.panelRadius }}" onInput="{{ sel.onPanelRadius }}">
+                      </div>
+                    </div>
+                    <button onClick="{{ sel.onReframe }}" style="width:100%;margin-top:12px;background:#141417;color:#fff;border:none;border-radius:50px;padding:11px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.03em;cursor:pointer;">Repositionner l'image</button>
+                  </div>
+
+                  <div class="pd-section">
+                    <div class="pd-section-title">Couleurs</div>
+                    <div class="pd-grid-3">
+                      <div class="pd-field"><div class="pd-label">Fond bloc</div><input type="color" value="{{ sel.bg }}" onInput="{{ sel.onBg }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
+                      <div class="pd-field"><div class="pd-label">Fond visuel</div><input type="color" value="{{ sel.panelBg }}" onInput="{{ sel.onPanelBg }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
+                      <div class="pd-field"><div class="pd-label">Titre</div><input type="color" value="{{ sel.titleColor }}" onInput="{{ sel.onTitleColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
+                      <div class="pd-field"><div class="pd-label">Texte</div><input type="color" value="{{ sel.textColor }}" onInput="{{ sel.onTextColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
+                      <div class="pd-field"><div class="pd-label">Prix</div><input type="color" value="{{ sel.priceColor }}" onInput="{{ sel.onPriceColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
+                    </div>
+                  </div>
+
+                  <div class="pd-section">
+                    <div class="pd-section-title">Bouton</div>
+                    <button onClick="{{ sel.onToggleBtn }}" style="{{ sel.btnToggleStyle }};width:100%;">Afficher le bouton</button>
+                    <sc-if value="{{ sel.showBtn }}" hint-placeholder-val="{{ false }}">
+                      <div>
+                        <div class="pd-grid-2" style="margin-top:10px;">
+                          <div class="pd-field"><div class="pd-label">Texte</div><input class="pd-input" onChange="{{ sel.onBtnText }}" value="{{ sel.btnText }}"></div>
+                          <div class="pd-field"><div class="pd-label">Lien</div><input class="pd-input" onChange="{{ sel.onBtnUrl }}" value="{{ sel.btnUrl }}"></div>
+                        </div>
+                        <div class="pd-grid-2" style="margin-top:10px;">
+                          <div class="pd-field"><div class="pd-label">Fond bouton</div><input type="color" value="{{ sel.btnBg }}" onInput="{{ sel.onBtnBg }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
+                          <div class="pd-field"><div class="pd-label">Texte bouton</div><input type="color" value="{{ sel.btnTextColor }}" onInput="{{ sel.onBtnTextColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
+                        </div>
+                      </div>
+                    </sc-if>
+                  </div>
                 </div>
               </sc-if>
 
@@ -863,10 +1128,22 @@
                   <div style="display:flex;flex-direction:column;gap:9px;">
                     <sc-for list="{{ sel.cardEdits }}" as="c" hint-placeholder-count="0">
                       <div style="padding:9px;border:1px solid #EFEFF2;border-radius:11px;background:#FBFBFC;display:flex;flex-direction:column;gap:6px;">
+                        <div class="pd-label">{{ c.num }}</div>
                         <input onChange="{{ c.onTitle }}" value="{{ c.title }}" placeholder="Titre" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:9px;padding:8px 10px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#34343c;outline:none;">
                         <textarea onChange="{{ c.onDesc }}" value="{{ c.desc }}" rows="2" placeholder="Descriptif" style="width:100%;box-sizing:border-box;resize:vertical;border:1px solid #E2E2E8;border-radius:9px;padding:8px 10px;font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12px;color:#34343c;outline:none;"></textarea>
+                        <button onClick="{{ c.onReframe }}" style="width:100%;background:#fff;border:1px solid #DADADE;color:#141417;border-radius:50px;padding:8px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;cursor:pointer;">Repositionner la photo</button>
                       </div>
                     </sc-for>
+                  </div>
+                  <div class="pd-grid-2" style="margin-top:14px;">
+                    <div class="pd-slider">
+                      <div class="pd-slider-head"><span class="pd-slider-name">Hauteur photos</span><span class="pd-slider-val">{{ sel.cardH }}px</span></div>
+                      <input type="range" min="70" max="260" step="2" value="{{ sel.cardH }}" onInput="{{ sel.onCardH }}">
+                    </div>
+                    <div class="pd-slider">
+                      <div class="pd-slider-head"><span class="pd-slider-name">Arrondi</span><span class="pd-slider-val">{{ sel.cardRadius }}px</span></div>
+                      <input type="range" min="0" max="30" step="1" value="{{ sel.cardRadius }}" onInput="{{ sel.onCardRadius }}">
+                    </div>
                   </div>
                   <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12px;line-height:1.5;color:#9a9aa2;margin:12px 0 0;">Déposez vos photos dans les zones grises du bloc.</p>
                 </div>
@@ -887,7 +1164,15 @@
                     <label style="flex:1;display:flex;flex-direction:column;gap:4px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#9a9aa2;text-transform:uppercase;">Fond bouton<input type="color" value="{{ sel.btnBg }}" onInput="{{ sel.onBnBg }}" style="width:100%;height:30px;padding:1px;border:1px solid #E2E2E8;border-radius:7px;background:#fff;cursor:pointer;"></label>
                     <label style="flex:1;display:flex;flex-direction:column;gap:4px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#9a9aa2;text-transform:uppercase;">Texte bouton<input type="color" value="{{ sel.btnColor }}" onInput="{{ sel.onBnColor }}" style="width:100%;height:30px;padding:1px;border:1px solid #E2E2E8;border-radius:7px;background:#fff;cursor:pointer;"></label>
                   </div>
-                  <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12px;line-height:1.5;color:#9a9aa2;margin:14px 0 0;">Déposez votre visuel dans la zone grise du bloc.</p>
+                  <div style="height:1px;background:#EFEFF2;margin:16px 0 14px;"></div>
+                  <div class="pd-label" style="margin-bottom:8px;">Visuel</div>
+                  <button onClick="{{ sel.onToggleText }}" style="{{ sel.bnTextBtnStyle }};width:100%;">Afficher le bloc texte</button>
+                  <div class="pd-slider" style="margin-top:12px;">
+                    <div class="pd-slider-head"><span class="pd-slider-name">Hauteur image</span><span class="pd-slider-val">{{ sel.imgH }}px</span></div>
+                    <input type="range" min="120" max="620" step="2" value="{{ sel.imgH }}" onInput="{{ sel.onImgH }}">
+                  </div>
+                  <button onClick="{{ sel.onReframe }}" style="width:100%;margin-top:12px;background:#141417;color:#fff;border:none;border-radius:50px;padding:11px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.03em;cursor:pointer;">Repositionner l'image</button>
+                  <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12px;line-height:1.5;color:#9a9aa2;margin:12px 0 0;">Déposez votre visuel dans la zone grise du bloc.</p>
                 </div>
               </sc-if>
             </div>
@@ -932,7 +1217,73 @@
         </div>
         <div style="background:#141417;border-radius:14px;padding:18px;box-shadow:0 4px 14px -8px rgba(20,20,30,.4);">
           <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:.1em;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:8px;">
-            <span style="display:flex;align-items:center;gap:8px;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>DÉCO SIGNATURE</span>
+            <span style="display:flex;align-items:center;gap:8px;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>SIGNATURE</span>
+          </div>
+
+          <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:16px 0 8px;">Style de signature</div>
+          <div style="display:flex;gap:7px;">
+            <button onClick="{{ onSigStyleCarte }}" style="{{ sigCarteBtnStyle }}">Carte de visite</button>
+            <button onClick="{{ onSigStyleNews }}" style="{{ sigNewsBtnStyle }}">Newsletter</button>
+          </div>
+
+          <!-- NEWSLETTER SIGNATURE -->
+          <sc-if value="{{ sigIsNewsletter }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:20px 0 7px;">
+                <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;">Mentions légales</span>
+                <button onClick="{{ onToggleSigLegal }}" style="{{ sigLegalBtnStyle }}">Afficher</button>
+              </div>
+              <textarea value="{{ sigLegal }}" onChange="{{ onSigLegal }}" rows="4" style="width:100%;box-sizing:border-box;resize:vertical;border:1px solid #34343c;border-radius:10px;padding:10px 12px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12px;line-height:1.5;color:#e9e9ee;outline:none;"></textarea>
+
+              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 8px;">Réseaux sociaux</div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <sc-for list="{{ sigSocialRows }}" as="s" hint-placeholder-count="0">
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <img src="{{ s.src }}" width="28" height="28" alt="" style="display:block;width:28px;height:28px;border-radius:50%;flex:0 0 auto;">
+                    <input value="{{ s.url }}" onChange="{{ s.onUrl }}" placeholder="https://" style="flex:1;min-width:0;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:8px 10px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
+                    <button onClick="{{ s.onToggle }}" style="{{ s.btnStyle }}">{{ s.label }}</button>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 7px;">Expéditeur</div>
+              <input value="{{ sigSenderNote }}" onChange="{{ onSigSenderNote }}" style="width:100%;box-sizing:border-box;border:1px solid #34343c;border-radius:10px;padding:10px 12px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12px;color:#e9e9ee;outline:none;">
+
+              <div style="display:flex;gap:8px;margin-top:12px;">
+                <div style="flex:1;min-width:0;">
+                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin-bottom:6px;">Lien préférences</div>
+                  <input value="{{ sigPrefsLabel }}" onChange="{{ onSigPrefsLabel }}" style="width:100%;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:8px 10px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
+                  <input value="{{ sigPrefsUrl }}" onChange="{{ onSigPrefsUrl }}" placeholder="URL" style="width:100%;margin-top:6px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:8px 10px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#8e8e96;outline:none;">
+                </div>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin-bottom:6px;">Lien désinscription</div>
+                  <input value="{{ sigUnsubLabel }}" onChange="{{ onSigUnsubLabel }}" style="width:100%;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:8px 10px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
+                  <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:6px 0 0;">URL reprise du champ « Lien de désinscription » de l'export.</p>
+                </div>
+              </div>
+
+              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:14px 0 7px;">Phrase de bas de page</div>
+              <input value="{{ sigBottomNote }}" onChange="{{ onSigBottomNote }}" style="width:100%;box-sizing:border-box;border:1px solid #34343c;border-radius:10px;padding:10px 12px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12px;color:#e9e9ee;outline:none;">
+
+              <div style="height:1px;background:#2a2a30;margin:18px 0;"></div>
+
+              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:0 0 7px;">Bandeau noir · raison sociale</div>
+              <input value="{{ sigCompany }}" onChange="{{ onSigCompany }}" style="width:100%;box-sizing:border-box;border:1px solid #34343c;border-radius:10px;padding:10px 12px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12px;color:#e9e9ee;outline:none;">
+              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:14px 0 7px;">Bandeau noir · coordonnées</div>
+              <textarea value="{{ sigAddr }}" onChange="{{ onSigAddr }}" rows="4" style="width:100%;box-sizing:border-box;resize:vertical;border:1px solid #34343c;border-radius:10px;padding:10px 12px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12px;line-height:1.5;color:#e9e9ee;outline:none;"></textarea>
+
+              <div style="display:flex;gap:10px;margin-top:14px;">
+                <label style="flex:1;display:flex;flex-direction:column;gap:6px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:.06em;color:#8e8e96;text-transform:uppercase;">Fond bandeau<input type="color" value="{{ sigBarBg }}" onInput="{{ onSigBarBg }}" style="width:100%;height:32px;padding:2px;border:1px solid #34343c;border-radius:9px;background:#1d1d22;cursor:pointer;"></label>
+                <label style="flex:1;display:flex;flex-direction:column;gap:6px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:.06em;color:#8e8e96;text-transform:uppercase;">Couleur liens<input type="color" value="{{ sigLinkColor }}" onInput="{{ onSigLinkColor }}" style="width:100%;height:32px;padding:2px;border:1px solid #34343c;border-radius:9px;background:#1d1d22;cursor:pointer;"></label>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- CARTE DE VISITE SIGNATURE -->
+          <sc-if value="{{ sigIsCarte }}" hint-placeholder-val="{{ true }}">
+          <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:20px 0 0;">
+            <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;">Motif de fond</span>
             <button onClick="{{ onToggleHalftone }}" style="{{ halftoneBtnStyle }}">Points</button>
           </div>
 
@@ -971,6 +1322,8 @@
           <input type="range" min="-180" max="40" step="2" value="{{ arrowYVal }}" onChange="{{ onArrowY }}" style="width:100%;accent-color:#FC1D37;">
           <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:14px 0 7px;">Flèches · rotation · {{ arrowRotVal }}°</div>
           <input type="range" min="-180" max="180" step="1" value="{{ arrowRotVal }}" onChange="{{ onArrowRot }}" style="width:100%;accent-color:#FC1D37;">
+          </div>
+          </sc-if>
         </div>
 
       </div>
@@ -988,7 +1341,23 @@ class Component extends DCLogic {
   _dragType = null;
   _dragBlockId = null;
   _PAL = ['#FC1D37', '#141417', '#1F8A5B', '#2A6FDB', '#C8881B'];
-  _LABELS = { banner: 'Bannière', texte: 'Texte', image: 'Image', cards: 'Cartes images', flash: 'Bandeau offre flash', cta: "Bouton « J'en profite »", contact: 'Téléphone + WhatsApp', services: "Positif, c'est aussi", oneforone: 'Message promo spécial', sticker: 'Image encadree' };
+  _LABELS = { banner: 'Bannière', texte: 'Texte', image: 'Image', produit: 'Produit + prix', cards: 'Cartes images', flash: 'Bandeau offre flash', cta: "Bouton « J'en profite »", contact: 'Téléphone + WhatsApp', services: "Positif, c'est aussi", oneforone: 'Message promo spécial', sticker: 'Image encadree' };
+  // Monochrome glyphs (24×24 viewBox) for the newsletter signature social row.
+  _SOCIAL = {
+    web: { label: 'Site web', path: 'M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm7.94 7h-3.03a15.7 15.7 0 0 0-1.61-3.85A10.03 10.03 0 0 1 19.94 7zM12 2.04c.83 1.2 1.48 2.53 1.91 4.96h-3.82c.43-2.43 1.08-3.76 1.91-4.96zM2.26 14a9.98 9.98 0 0 1 0-4h3.47a17.6 17.6 0 0 0 0 4H2.26zm.82 2h3.03c.36 1.4.89 2.71 1.61 3.85A10.03 10.03 0 0 1 3.08 16zm3.03-9H3.08a10.03 10.03 0 0 1 4.64-3.85A15.7 15.7 0 0 0 6.11 7zM12 21.96c-.83-1.2-1.48-2.53-1.91-4.96h3.82c-.43 2.43-1.08 3.76-1.91 4.96zM14.34 15H9.66a15.6 15.6 0 0 1 0-6h4.68a15.6 15.6 0 0 1 0 6zm.6 4.85c.72-1.14 1.25-2.45 1.61-3.85h3.03a10.03 10.03 0 0 1-4.64 3.85zM18.27 14a17.6 17.6 0 0 0 0-4h3.47a9.98 9.98 0 0 1 0 4h-3.47z' },
+    tiktok: { label: 'TikTok', path: 'M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z' },
+    whatsapp: { label: 'WhatsApp', path: 'M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.42.25-.69.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.22-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.89 9.89-9.89 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 0 1 2.89 6.99c0 5.45-4.43 9.89-9.88 9.89M20.46 3.49A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.69 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.17-3.48-8.42' },
+    instagram: { label: 'Instagram', path: 'M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.43.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38c-.42.42-.82.68-1.38.9-.43.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.43-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.43-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.72-2.13 1.38C1.35 2.68.93 3.35.63 4.14.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13.67.67 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56a5.9 5.9 0 0 0 2.13-1.38 5.9 5.9 0 0 0 1.38-2.13c.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91a5.9 5.9 0 0 0-1.38-2.13A5.9 5.9 0 0 0 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0m0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8m7.85-10.41a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0' },
+    facebook: { label: 'Facebook', path: 'M9.1 23.69v-7.98H6.63v-3.67H9.1v-1.58c0-4.08 1.85-5.98 5.86-5.98.4 0 .96.04 1.47.1.51.06.96.14 1.14.2v3.32a8.6 8.6 0 0 0-.65-.04c-.28-.01-.53-.01-.73-.01-.71 0-1.26.1-1.68.31a1.7 1.7 0 0 0-.68.62c-.26.42-.37 1-.37 1.75v1.3h3.92l-.39 2.1-.29 1.57h-3.25v8.24C19.4 23.24 24 18.18 24 12.04 24 5.42 18.63.04 12 .04S0 5.42 0 12.04c0 5.63 3.87 10.35 9.1 11.65' },
+  };
+  _socialSvg(key, glyph, bg) {
+    const g = this._SOCIAL[key];
+    if (!g) return '';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 56" width="56" height="56">'
+      + '<circle cx="28" cy="28" r="28" fill="' + (bg || '#E7ECEF') + '"/>'
+      + '<g transform="translate(14 14) scale(1.1667)"><path d="' + g.path + '" fill="' + (glyph || '#141417') + '"/></g></svg>';
+  }
+  _socialDataUrl(key, glyph, bg) { return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(this._socialSvg(key, glyph, bg)); }
   state = {
     tab: 'builder',
     selectedId: null,
@@ -1004,6 +1373,25 @@ class Component extends DCLogic {
     sigTextColor: '#ffffff',
     sigPatternDataUrl: '',
     sigPatternSize: 160,
+    sigStyle: 'carte',
+    sigLegal: "*offre valable jusqu'au 31 juillet 2026. Non cumulable avec d'autres actions.\nRéduction non échangeable en espèces ni contre d'autres produits.\nPositif Design se réserve le droit d'interrompre cette offre à tout moment...",
+    sigShowLegal: true,
+    sigSenderNote: 'Cette newsletter a été écrite et envoyée de contact@positif.biz',
+    sigPrefsLabel: 'Mettre à jour vos préférences',
+    sigPrefsUrl: '{{ update_profile }}',
+    sigUnsubLabel: 'Se désinscrire',
+    sigBottomNote: 'Si vous souhaitez vous désinscrire de notre newsletter, cliquez ici',
+    sigCompany: 'Positif Design',
+    sigAddr: "48 bis Bd Foch\n93800 Épinay-sur-Seine\nTél: 01.48.29.15.51\ncontact@positif.biz",
+    sigBarBg: '#141417',
+    sigLinkColor: '#FC1D37',
+    sigSocial: [
+      { key: 'web', url: 'https://positifdesign.fr', on: true },
+      { key: 'tiktok', url: 'https://www.tiktok.com/', on: true },
+      { key: 'whatsapp', url: 'https://wa.me/33618701118', on: true },
+      { key: 'instagram', url: 'https://www.instagram.com/', on: true },
+      { key: 'facebook', url: 'https://www.facebook.com/', on: true },
+    ],
     arrowSize: 316, arrowX: -94, arrowY: 40, arrowRot: -22,
     emailSubject: 'Votre offre Positif Design',
     emailPreheader: 'Communication visuelle, impression et signalétique à Épinay-sur-Seine.',
@@ -1023,13 +1411,23 @@ class Component extends DCLogic {
       { title: 'Titre carte', desc: 'Un court descriptif de ce produit ou service.' },
       { title: 'Titre carte', desc: 'Un court descriptif de ce produit ou service.' },
     ] };
-    if (type === 'flash') return { id, type, color: '#FC1D37', text: "OFFRE FLASH · STOCK LIMITÉ · JUSQU'AU 30 JUIN 2026" };
+    if (type === 'flash') return { id, type, color: '#FC1D37', textColor: '#FFFFFF', textSize: 13, text: "OFFRE FLASH · STOCK LIMITÉ · JUSQU'AU 30 JUIN 2026" };
     if (type === 'oneforone') return { id, type, split: true, kicker: 'SPÉCIAL AUTO-ÉCOLES · VENTE FLASH', line1: '1 ACHETÉ', line2: '1 OFFERT', sub: "Vos disques A « jeune conducteur » floqués à votre nom. Commandez-en 50, on vous en imprime 100.", halftone: false, band: false, bandText: '100 disques A pour le prix de 50', bandTextSize: 16, bandTextBottom: 24, bandHeight: 94, bandTilt: 34, textX: 0, textY: 0, line2Tilt: -7, floatImg: false, floatFrame: 'none', floatShape: 'circle', floatShadow: true, floatX: 0, floatY: 0, floatSize: 130, floatRot: -7 };
-    if (type === 'cta') return { id, type, text: "J'EN PROFITE MAINTENANT →", url: 'mailto:contact@positif.biz?subject=Demande%20Positif%20Design', btnBg: '#FC1D37', btnText: '#FFFFFF' };
+    if (type === 'cta') return { id, type, text: "J'EN PROFITE MAINTENANT →", url: 'mailto:contact@positif.biz?subject=Demande%20Positif%20Design', btnBg: '#FC1D37', btnText: '#FFFFFF', size: 21 };
     if (type === 'contact') return { id, type, tel: '01.48.29.15.51', wa: '06 18 70 11 18', telBg: '#FFFFFF', telText: '#141417', telBorder: '#141417', telDot: true, telDotColor: '#FC1D37', waBg: '#25D366', waText: '#FFFFFF' };
-    if (type === 'texte') return { id, type, title: 'UN TITRE QUI ACCROCHE', subtitle: "Présentez ici un service, une actualité ou un produit. Deux à trois lignes suffisent pour donner envie d'en savoir plus.", showBtn: true, btnText: 'DÉCOUVRIR →', btnUrl: 'https://positifdesign.fr', btnBg: '#FFFFFF', btnTextColor: '#141417', btnBorder: '#141417', titleColor: '#141417' };
-    if (type === 'image') return { id, type };
-    if (type === 'banner') return { id, type, title: 'VOTRE GRAND TITRE', subtitle: 'Un sous-titre accrocheur pour annoncer votre offre, votre nouveauté ou votre événement.', btnLabel: 'EN SAVOIR PLUS →', btnUrl: 'https://positifdesign.fr', btnBg: '#FC1D37', btnColor: '#FFFFFF' };
+    if (type === 'texte') return { id, type, title: 'UN TITRE QUI ACCROCHE', subtitle: "Présentez ici un service, une actualité ou un produit. Deux à trois lignes suffisent pour donner envie d'en savoir plus.", showBtn: true, btnText: 'DÉCOUVRIR →', btnUrl: 'https://positifdesign.fr', btnBg: '#FFFFFF', btnTextColor: '#141417', btnBorder: '#141417', titleColor: '#141417', textColor: '#5C5C64', bg: '#FFFFFF', align: 'left', titleSize: 28, textSize: 15 };
+    if (type === 'image') return { id, type, full: false, height: 300, radius: 14, shadow: false };
+    if (type === 'produit') return { id, type,
+      title: 'VISIBILITÉ CHANTIER',
+      desc: "Panneau Posimax 5 mm épaisseur\nDimensions 2000 x 1500 mm\nFichier fourni par vos soins\nPrix départ atelier Épinay/Seine",
+      price: 'Prix', priceNote: '',
+      imgSide: 'left', align: 'right',
+      panel: true, panelBg: '#DFC98F', panelRadius: 34, bg: '#FFFFFF',
+      titleColor: '#141417', textColor: '#141417', priceColor: '#141417',
+      titleSize: 34, textSize: 16, priceSize: 42,
+      imgW: 46, imgH: 300, imgShape: 'rect', imgRadius: 8, imgShadow: true,
+      showBtn: false, btnText: 'JE COMMANDE →', btnUrl: 'mailto:contact@positif.biz', btnBg: '#FC1D37', btnTextColor: '#FFFFFF' };
+    if (type === 'banner') return { id, type, title: 'VOTRE GRAND TITRE', subtitle: 'Un sous-titre accrocheur pour annoncer votre offre, votre nouveauté ou votre événement.', btnLabel: 'EN SAVOIR PLUS →', btnUrl: 'https://positifdesign.fr', btnBg: '#FC1D37', btnColor: '#FFFFFF', imgH: 284, showText: true };
     if (type === 'sticker') return { id, type, size: 210, shape: 'rounded', radius: 18, align: 'center', frame: 'polaroid', shadow: true };
     return { id, type };
   }
@@ -1061,6 +1459,19 @@ class Component extends DCLogic {
       sigTextColor: this.state.sigTextColor,
       sigPatternDataUrl: this.state.sigPatternDataUrl,
       sigPatternSize: this.state.sigPatternSize,
+      sigStyle: this.state.sigStyle,
+      sigLegal: this.state.sigLegal,
+      sigShowLegal: this.state.sigShowLegal,
+      sigSenderNote: this.state.sigSenderNote,
+      sigPrefsLabel: this.state.sigPrefsLabel,
+      sigPrefsUrl: this.state.sigPrefsUrl,
+      sigUnsubLabel: this.state.sigUnsubLabel,
+      sigBottomNote: this.state.sigBottomNote,
+      sigCompany: this.state.sigCompany,
+      sigAddr: this.state.sigAddr,
+      sigBarBg: this.state.sigBarBg,
+      sigLinkColor: this.state.sigLinkColor,
+      sigSocial: this._clonePlain(this.state.sigSocial),
       arrowSize: this.state.arrowSize,
       arrowX: this.state.arrowX,
       arrowY: this.state.arrowY,
@@ -1108,6 +1519,19 @@ class Component extends DCLogic {
       sigTextColor: p.sigTextColor || '#ffffff',
       sigPatternDataUrl: p.sigPatternDataUrl || '',
       sigPatternSize: p.sigPatternSize || 160,
+      sigStyle: p.sigStyle === 'newsletter' ? 'newsletter' : 'carte',
+      sigLegal: p.sigLegal == null ? this.state.sigLegal : p.sigLegal,
+      sigShowLegal: p.sigShowLegal !== false,
+      sigSenderNote: p.sigSenderNote == null ? this.state.sigSenderNote : p.sigSenderNote,
+      sigPrefsLabel: p.sigPrefsLabel == null ? this.state.sigPrefsLabel : p.sigPrefsLabel,
+      sigPrefsUrl: p.sigPrefsUrl == null ? this.state.sigPrefsUrl : p.sigPrefsUrl,
+      sigUnsubLabel: p.sigUnsubLabel == null ? this.state.sigUnsubLabel : p.sigUnsubLabel,
+      sigBottomNote: p.sigBottomNote == null ? this.state.sigBottomNote : p.sigBottomNote,
+      sigCompany: p.sigCompany == null ? this.state.sigCompany : p.sigCompany,
+      sigAddr: p.sigAddr == null ? this.state.sigAddr : p.sigAddr,
+      sigBarBg: p.sigBarBg || '#141417',
+      sigLinkColor: p.sigLinkColor || '#FC1D37',
+      sigSocial: Array.isArray(p.sigSocial) && p.sigSocial.length ? this._clonePlain(p.sigSocial) : this._clonePlain(this.state.sigSocial),
       arrowSize: p.arrowSize || 316,
       arrowX: p.arrowX == null ? -94 : p.arrowX,
       arrowY: p.arrowY == null ? 40 : p.arrowY,
@@ -1176,6 +1600,7 @@ class Component extends DCLogic {
   setField(id, k, v) { this.setState(s => ({ blocks: s.blocks.map(b => b.id === id ? { ...b, [k]: v } : b) })); }
   toggle(id, k) { this.setState(s => ({ blocks: s.blocks.map(b => b.id === id ? { ...b, [k]: !b[k] } : b) })); }
   setS(k, v) { this.setState({ [k]: v }); }
+  setSocial(idx, k, v) { this.setState(s => ({ sigSocial: s.sigSocial.map((x, i) => i === idx ? { ...x, [k]: v } : x) })); }
   addSticker() { const id = this._nextId++; const st = { id, x: 220, y: 150, size: 150, rot: -7, shape: 'circle', radius: 18, shadow: true, frame: 'none' }; this.setState(s => ({ stickers: [...s.stickers, st], selStickerId: id, selectedId: null, headerSelected: false })); }
   selSticker(id) { this.setState({ selStickerId: id, selectedId: null, headerSelected: false }); }
   removeSticker(id) { this.setState(s => ({ stickers: s.stickers.filter(x => x.id !== id), selStickerId: null })); }
@@ -1252,6 +1677,18 @@ class Component extends DCLogic {
     const bytes = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
     return bytes;
+  }
+
+  async _rasterizeSvg(svg, size) {
+    const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    const img = new Image();
+    img.decoding = 'async';
+    await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; img.src = url; });
+    const canvas = document.createElement('canvas');
+    canvas.width = size * 2; canvas.height = size * 2;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, size * 2, size * 2);
+    return this._bytesFromDataUrl(canvas.toDataURL('image/png'));
   }
 
   async _assetBitmap(src) {
@@ -1633,19 +2070,56 @@ class Component extends DCLogic {
       if (b.type === 'banner') {
         const im = pushImg('slot-' + b.id + '-a', 600, 'banniere-hero');
         if (im) rows += '<tr><td style="padding:0;font-size:0;line-height:0;"><img src="' + im + '" width="600" alt="" style="display:block;width:100%;max-width:600px;height:auto;"></td></tr>';
-        rows += '<tr><td class="px" bgcolor="#ffffff" style="background:#ffffff;padding:30px 36px 34px;text-align:center;">' +
+        if (b.showText !== false) rows += '<tr><td class="px" bgcolor="#ffffff" style="background:#ffffff;padding:30px 36px 34px;text-align:center;">' +
           '<div style="font-family:' + F + ';font-weight:800;font-size:36px;line-height:1.02;color:#141417;">' + esc(b.title) + '</div>' +
           '<div style="font-family:' + F + ';font-weight:500;font-size:16px;line-height:1.5;color:#5c5c64;padding-top:12px;">' + esc(b.subtitle) + '</div>' +
           '<div style="padding-top:20px;">' + btn(b.btnUrl, b.btnLabel, b.btnBg, b.btnColor) + '</div></td></tr>';
       } else if (b.type === 'texte') {
-        rows += '<tr><td class="px" bgcolor="#ffffff" style="background:#ffffff;padding:30px 36px;">' +
-          '<div style="font-family:' + F + ';font-weight:800;font-size:27px;line-height:1.05;color:' + (b.titleColor || '#141417') + ';">' + esc(b.title) + '</div>' +
-          '<div style="font-family:' + F + ';font-weight:500;font-size:15px;line-height:1.6;color:#5c5c64;padding-top:12px;">' + esc(b.subtitle) + '</div>' +
+        const tal = b.align === 'center' ? 'center' : b.align === 'right' ? 'right' : 'left';
+        const tbg = b.bg || '#FFFFFF';
+        rows += '<tr><td class="px" bgcolor="' + tbg + '" align="' + tal + '" style="background:' + tbg + ';padding:30px 36px;text-align:' + tal + ';">' +
+          '<div style="font-family:' + F + ';font-weight:800;font-size:' + (b.titleSize || 28) + 'px;line-height:1.05;color:' + (b.titleColor || '#141417') + ';">' + esc(b.title) + '</div>' +
+          '<div style="font-family:' + F + ';font-weight:500;font-size:' + (b.textSize || 15) + 'px;line-height:1.6;color:' + (b.textColor || '#5c5c64') + ';padding-top:12px;">' + esc(b.subtitle) + '</div>' +
           (b.showBtn ? '<div style="padding-top:18px;">' + btn(b.btnUrl, b.btnText, b.btnBg, b.btnTextColor, b.btnBorder) + '</div>' : '') + '</td></tr>';
       } else if (b.type === 'image') {
-        const im = pushImg('slot-' + b.id + '-a', 540, 'image-pleine-largeur');
-        rows += '<tr><td class="px" bgcolor="#ffffff" style="background:#ffffff;padding:24px 32px;font-size:0;">' +
-          (im ? '<img src="' + im + '" width="536" alt="" style="display:block;width:100%;height:auto;border-radius:14px;">' : '<div style="height:200px;background:#ECECEF;border-radius:14px;"></div>') + '</td></tr>';
+        if (b.full) {
+          const im = pushImg('slot-' + b.id + '-a', 600, 'image-pleine-largeur');
+          rows += '<tr><td bgcolor="#ffffff" style="background:#ffffff;padding:0;font-size:0;line-height:0;">' +
+            (im ? '<img src="' + im + '" width="600" alt="" style="display:block;width:100%;max-width:600px;height:auto;">' : '<div style="height:' + (b.height || 300) + 'px;background:#ECECEF;"></div>') + '</td></tr>';
+        } else {
+          const im = pushImg('slot-' + b.id + '-a', 540, 'image');
+          const rad = (b.radius == null ? 14 : b.radius) + 'px';
+          rows += '<tr><td class="px" bgcolor="#ffffff" style="background:#ffffff;padding:24px 32px;font-size:0;">' +
+            (im ? '<img src="' + im + '" width="536" alt="" style="display:block;width:100%;height:auto;border-radius:' + rad + ';">' : '<div style="height:' + (b.height || 300) + 'px;background:#ECECEF;border-radius:' + rad + ';"></div>') + '</td></tr>';
+        }
+      } else if (b.type === 'produit') {
+        const side = b.imgSide === 'right' ? 'right' : 'left';
+        const al = b.align === 'left' ? 'left' : b.align === 'center' ? 'center' : 'right';
+        const imgW = Math.max(28, Math.min(70, b.imgW == null ? 46 : b.imgW));
+        const panel = b.panel !== false;
+        const bg = b.bg || '#FFFFFF';
+        const colW = Math.round(536 * imgW / 100);
+        const innerW = Math.max(80, panel ? colW - 44 : colW);
+        const im = pushImg('slot-' + b.id + '-a', innerW, 'produit-' + (b.title || 'visuel'));
+        const rad = b.imgShape === 'circle' ? '50%' : b.imgShape === 'rounded' ? ((b.imgRadius == null ? 8 : b.imgRadius) + 'px') : '0';
+        const imgTag = im
+          ? '<img src="' + im + '" width="' + innerW + '" alt="' + esc(b.title) + '" style="display:block;width:100%;height:auto;border-radius:' + rad + ';">'
+          : '<div style="height:' + (b.imgH || 300) + 'px;background:#ECECEF;border-radius:' + rad + ';"></div>';
+        const imgCell = '<td class="stack" width="' + imgW + '%" valign="middle" style="vertical-align:middle;padding:0 9px;">'
+          + (panel
+            ? '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="' + (b.panelBg || '#DFC98F') + '" align="center" style="background:' + (b.panelBg || '#DFC98F') + ';border-radius:' + (b.panelRadius == null ? 34 : b.panelRadius) + 'px;padding:22px;">' + imgTag + '</td></tr></table>'
+            : imgTag) + '</td>';
+        let txt = '<div style="font-family:' + F + ';font-weight:800;font-size:' + (b.titleSize || 34) + 'px;line-height:1.04;color:' + (b.titleColor || '#141417') + ';">' + esc(b.title) + '</div>';
+        const lines = String(b.desc || '').split('\n').filter((t) => t !== '').map((t) => esc(t)).join('<br>');
+        if (lines) txt += '<div style="font-family:' + F + ';font-weight:500;font-size:' + (b.textSize || 16) + 'px;line-height:1.5;color:' + (b.textColor || '#141417') + ';padding-top:16px;">' + lines + '</div>';
+        if ((b.price || '').trim()) txt += '<div style="font-family:' + F + ';font-weight:800;font-size:' + (b.priceSize || 42) + 'px;line-height:1.05;color:' + (b.priceColor || '#141417') + ';padding-top:14px;">' + esc(b.price) + '</div>';
+        if ((b.priceNote || '').trim()) txt += '<div style="font-family:' + F + ';font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#8a8a93;padding-top:6px;">' + esc(b.priceNote) + '</div>';
+        if (b.showBtn) txt += '<div style="padding-top:18px;">' + btn(b.btnUrl, b.btnText, b.btnBg, b.btnTextColor) + '</div>';
+        const txtCell = '<td class="stack" valign="middle" align="' + al + '" style="vertical-align:middle;text-align:' + al + ';padding:0 9px;">' + txt + '</td>';
+        rows += '<tr><td class="px" bgcolor="' + bg + '" style="background:' + bg + ';padding:28px 26px;">'
+          + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>'
+          + (side === 'right' ? txtCell + imgCell : imgCell + txtCell)
+          + '</tr></table></td></tr>';
       } else if (b.type === 'sticker') {
         const im = pushImg('slot-' + b.id + '-sticker', b.size || 210, 'image-encadree');
         const rad = b.shape === 'circle' ? '50%' : b.shape === 'rounded' ? ((b.radius || 18) + 'px') : '0';
@@ -1657,19 +2131,21 @@ class Component extends DCLogic {
         let inner = '';
         if (b.showTitle) inner += '<div style="font-family:' + F + ';font-weight:800;font-size:22px;color:#141417;padding-bottom:16px;"><span style="color:#FC1D37;">&#9679;</span> ' + esc(b.title) + '</div>';
         let cells = '';
+        const cRad = (b.cardRadius == null ? 11 : b.cardRadius) + 'px';
         b.cards.forEach((c, idx) => {
           const im = pushImg('slot-' + b.id + '-c' + idx, 180, 'cartes-image-' + (idx + 1));
           cells += '<td class="stack" width="' + Math.floor(100 / b.cards.length) + '%" valign="top" style="padding:0 7px;vertical-align:top;">' +
-            (im ? '<img src="' + im + '" width="170" alt="" style="display:block;width:100%;height:auto;border-radius:11px;">' : '<div style="height:120px;background:#ECECEF;border-radius:11px;"></div>') +
+            (im ? '<img src="' + im + '" width="170" alt="" style="display:block;width:100%;height:auto;border-radius:' + cRad + ';">' : '<div style="height:' + (b.cardH || 120) + 'px;background:#ECECEF;border-radius:' + cRad + ';"></div>') +
             '<div style="font-family:' + F + ';font-weight:800;font-size:13px;color:#141417;padding-top:10px;">' + esc(c.title) + '</div>' +
             '<div style="font-family:' + F + ';font-weight:500;font-size:12px;line-height:1.5;color:#8a8a93;padding-top:4px;">' + esc(c.desc) + '</div></td>';
         });
         inner += '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>' + cells + '</tr></table>';
         rows += '<tr><td class="px" bgcolor="#ffffff" style="background:#ffffff;padding:26px 26px 30px;">' + inner + '</td></tr>';
       } else if (b.type === 'flash') {
-        rows += '<tr><td bgcolor="' + b.color + '" style="background:' + b.color + ';padding:14px 22px;text-align:center;font-family:' + F + ';font-weight:800;font-size:13px;letter-spacing:1px;color:#ffffff;">' + esc(b.text) + '</td></tr>';
+        rows += '<tr><td bgcolor="' + b.color + '" style="background:' + b.color + ';padding:14px 22px;text-align:center;font-family:' + F + ';font-weight:800;font-size:' + (b.textSize || 13) + 'px;letter-spacing:1px;color:' + (b.textColor || '#ffffff') + ';">' + esc(b.text) + '</td></tr>';
       } else if (b.type === 'cta') {
-        rows += '<tr><td bgcolor="#ffffff" style="background:#ffffff;padding:26px 34px;text-align:center;"><a href="' + href(b.url) + '" style="display:inline-block;background:' + b.btnBg + ';color:' + b.btnText + ';font-family:' + F + ';font-weight:900;font-size:20px;line-height:1;padding:18px 40px;border-radius:50px;text-decoration:none;">' + esc(b.text) + '</a></td></tr>';
+        const cs = b.size || 21;
+        rows += '<tr><td bgcolor="#ffffff" style="background:#ffffff;padding:26px 34px;text-align:center;"><a href="' + href(b.url) + '" style="display:inline-block;background:' + b.btnBg + ';color:' + b.btnText + ';font-family:' + F + ';font-weight:900;font-size:' + cs + 'px;line-height:1;padding:' + Math.round(cs * 0.85) + 'px ' + Math.round(cs * 1.9) + 'px;border-radius:50px;text-decoration:none;">' + esc(b.text) + '</a></td></tr>';
       } else if (b.type === 'contact') {
         const dot = b.telDot ? '<span style="color:' + b.telDotColor + ';">&#9679;</span> ' : '';
         const telA = '<a href="tel:' + esc((b.tel || '').replace(/[^0-9+]/g, '')) + '" style="display:inline-block;background:' + b.telBg + ';border:2px solid ' + b.telBorder + ';color:' + b.telText + ';font-family:' + F + ';font-weight:800;font-size:14px;line-height:1;padding:12px 20px;border-radius:50px;text-decoration:none;margin:4px;">' + dot + esc(b.tel) + '</a>';
@@ -1697,6 +2173,50 @@ class Component extends DCLogic {
       rows += '<tr><td bgcolor="#ffffff" style="background:#ffffff;padding:18px 32px;text-align:center;">' + (framed ? '<div style="display:inline-block;background:#fff;padding:9px 9px 26px;box-shadow:0 12px 26px -10px rgba(0,0,0,.35);">' + imgTag + '</div>' : imgTag) + '</td></tr>';
     }
 
+    let sig = '';
+    if (this.state.sigStyle === 'newsletter') {
+      const S = this.state;
+      let inner = '';
+      if (S.sigShowLegal !== false && (S.sigLegal || '').trim()) {
+        inner += '<div style="font-family:' + F + ';font-weight:800;font-size:14px;line-height:1.5;color:#141417;padding-bottom:26px;">'
+          + String(S.sigLegal).split('\n').map((t) => esc(t)).join('<br>') + '</div>';
+      }
+      const socials = (S.sigSocial || []).filter((s) => s.on !== false && (s.url || '').trim());
+      if (socials.length) {
+        let cells = '';
+        for (const s of socials) {
+          let name = '';
+          try {
+            const bytes = await this._rasterizeSvg(this._socialSvg(s.key), 52);
+            name = imgName('reseau-' + s.key, 'png');
+            files.push({ name, bytes });
+          } catch (e) {}
+          if (!name) continue;
+          cells += '<td style="padding:0 8px;font-size:0;line-height:0;"><a href="' + href(s.url) + '"><img src="' + name + '" width="52" height="52" alt="' + esc((this._SOCIAL[s.key] || {}).label || s.key) + '" style="display:block;width:52px;height:52px;border:0;"></a></td>';
+        }
+        if (cells) inner += '<table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto;"><tr>' + cells + '</tr></table>';
+      }
+      if ((S.sigSenderNote || '').trim()) inner += '<div style="font-family:' + F + ';font-weight:800;font-size:13.5px;line-height:1.5;color:#141417;padding-top:28px;">' + esc(S.sigSenderNote) + '</div>';
+      const LC = S.sigLinkColor || '#FC1D37';
+      inner += '<div style="padding-top:22px;font-family:' + F + ';font-weight:800;font-size:14px;color:#141417;">'
+        + '<a href="' + href(S.sigPrefsUrl) + '" style="color:' + LC + ';text-decoration:none;">' + esc(S.sigPrefsLabel) + '</a>'
+        + '&nbsp;|&nbsp;'
+        + '<a href="' + href(S.unsubscribeUrl) + '" style="color:' + LC + ';text-decoration:none;">' + esc(S.sigUnsubLabel) + '</a></div>';
+      if ((S.sigBottomNote || '').trim()) inner += '<div style="padding-top:22px;font-family:' + F + ';font-weight:800;font-size:13px;line-height:1.5;color:#141417;">' + esc(S.sigBottomNote) + '</div>';
+
+      const barBg = S.sigBarBg || '#141417';
+      const addr = String(S.sigAddr || '').split('\n').map((t) => esc(t)).join('<br>');
+      let bar = '<tr><td bgcolor="' + barBg + '" class="px" style="background:' + barBg + ';padding:26px 32px;">'
+        + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>'
+        + '<td class="stack" valign="middle" style="vertical-align:middle;font-family:' + F + ';font-weight:500;font-size:14px;line-height:1.5;color:#ffffff;">'
+        + '<span style="font-weight:600;font-size:15px;">' + esc(S.sigCompany) + '</span><br>' + addr + '</td>'
+        + '<td class="stack" valign="middle" align="right" style="vertical-align:middle;text-align:right;font-size:0;line-height:0;">'
+        + (logoName ? '<img src="' + logoName + '" width="230" alt="Positif Design" style="display:inline-block;width:230px;max-width:100%;height:auto;border:0;">' : '')
+        + '</td></tr></table></td></tr>';
+
+      sig = '<tr><td bgcolor="#ffffff" class="px" style="background:#ffffff;padding:30px 34px 34px;text-align:center;">' + inner + '</td></tr>' + bar;
+    } else {
+
     // Signature: pattern and corner visual are separate assets. Text stays HTML so links remain clickable.
     let patternName = '';
     let patternSize = 40;
@@ -1715,7 +2235,7 @@ class Component extends DCLogic {
     const SC = this.state.sigTextColor || '#e9e9ee';
     const sigRow = (label, value, link) => '<tr><td width="84" valign="top" style="font-family:' + F + ';font-weight:800;font-size:10px;letter-spacing:1px;color:#7a7a82;text-transform:uppercase;padding:5px 10px 5px 0;vertical-align:top;">' + label + '</td><td valign="top" style="font-family:' + F + ';font-weight:600;font-size:13px;color:' + SC + ';padding:5px 0;vertical-align:top;">' + (link ? '<a href="' + link + '" style="color:' + SC + ';text-decoration:none;">' + value + '</a>' : value) + '</td></tr>';
     const sigBg = patternName ? 'background-color:#141417;background-image:url(' + patternName + ');background-repeat:repeat;background-position:right top;background-size:' + patternSize + 'px ' + patternSize + 'px;' : 'background:#141417;';
-    let sig = '<tr><td background="' + patternName + '" bgcolor="#141417" style="' + sigBg + 'padding:0;">' +
+    sig = '<tr><td background="' + patternName + '" bgcolor="#141417" style="' + sigBg + 'padding:0;">' +
       '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>' +
       '<td class="px" valign="top" style="padding:34px 32px 26px 32px;vertical-align:top;">';
     if (logoName) sig += '<img src="' + logoName + '" width="142" alt="Positif Design" style="display:block;width:142px;height:auto;">';
@@ -1730,6 +2250,7 @@ class Component extends DCLogic {
       sig += '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="right" style="padding:0;font-size:0;line-height:0;"><img src="' + cornerName + '" width="' + cornerW + '" alt="" style="display:block;width:' + cornerW + 'px;height:auto;margin-top:' + cornerTop + 'px;margin-right:' + cornerRight + 'px;border:0;"></td></tr></table>';
     }
     sig += '</td></tr></table></td></tr>';
+    }
 
     const head = '<!doctype html>\n<html lang="fr" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head>' +
       '<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="x-apple-disable-message-reformatting">' +
@@ -1854,9 +2375,18 @@ class Component extends DCLogic {
     const drop = b.id === this.state.dropBlockId;
     const dropBefore = drop && this.state.dropPos === 'before';
     const dropAfter = drop && this.state.dropPos === 'after';
+    const TGL = (on) => 'border:none;border-radius:50px;padding:9px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (on ? 'background:#141417;color:#fff;' : 'background:#ECECEF;color:#56565e;');
+    const SEG = (on) => 'flex:1;border:1px solid ' + (on ? '#141417' : '#DADADE') + ';background:' + (on ? '#141417' : '#fff') + ';border-radius:8px;padding:8px 4px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;cursor:pointer;color:' + (on ? '#fff' : '#56565e') + ';';
+    const reframe = (slotId) => () => {
+      const el = this._canvasEl && this._canvasEl.querySelector('#' + slotId);
+      if (!el) return;
+      if (typeof el.reframe === 'function') el.reframe();
+      else el.dispatchEvent(new MouseEvent('dblclick', { bubbles: true, composed: true }));
+    };
     const o = {
       id: b.id,
       isBanner: b.type === 'banner', isTexte: b.type === 'texte', isImage: b.type === 'image', isCards: b.type === 'cards',
+      isProduit: b.type === 'produit',
       isFlash: b.type === 'flash', isCta: b.type === 'cta', isContact: b.type === 'contact',
       isServices: b.type === 'services', isOneforone: b.type === 'oneforone',
       isSticker: b.type === 'sticker',
@@ -1875,6 +2405,13 @@ class Component extends DCLogic {
     };
     if (b.type === 'banner') {
       o.title = b.title; o.subtitle = b.subtitle; o.btnLabel = b.btnLabel; o.btnUrl = b.btnUrl; o.btnBg = b.btnBg; o.btnColor = b.btnColor;
+      o.imgH = b.imgH == null ? 284 : b.imgH;
+      o.showText = b.showText !== false;
+      o.bnSlotStyle = 'width:600px;max-width:100%;height:' + o.imgH + 'px;display:block;';
+      o.bnTextBtnStyle = TGL(o.showText);
+      o.onToggleText = () => this.setField(b.id, 'showText', !o.showText);
+      o.onImgH = (e) => this.setField(b.id, 'imgH', +e.target.value);
+      o.onReframe = reframe('slot-' + b.id + '-a');
       o.bnBtnStyle = 'display:inline-block;margin:20px 0 0;background:' + b.btnBg + ';color:' + b.btnColor + ';font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:20px;letter-spacing:.02em;padding:14px 34px;border-radius:50px;box-shadow:0 12px 22px -10px ' + b.btnBg + '88;';
       o.onTitle = (e) => this.setField(b.id, 'title', e.target.value);
       o.onSubtitle = (e) => this.setField(b.id, 'subtitle', e.target.value);
@@ -1885,20 +2422,40 @@ class Component extends DCLogic {
     }
     if (b.type === 'flash') {
       o.text = b.text; o.color = b.color;
+      o.textColor = b.textColor || '#FFFFFF'; o.textSize = b.textSize || 13;
       o.flashStyle = 'background-color:' + b.color + ';background-image:repeating-linear-gradient(-45deg, rgba(0,0,0,0) 0 20px, rgba(0,0,0,.16) 20px 40px);padding:15px 30px;text-align:center;';
+      o.flashTextStyle = 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:' + o.textSize + 'px;letter-spacing:.08em;color:' + o.textColor + ';';
       o.onText = (e) => this.setField(b.id, 'text', e.target.value);
       o.onColorPick = (e) => this.setField(b.id, 'color', e.target.value);
       o.onColorHex = (e) => { const v = this._normHex(e.target.value); if (v) this.setField(b.id, 'color', v); };
+      o.onTextColor = (e) => this.setField(b.id, 'textColor', e.target.value);
+      o.onTextSize = (e) => this.setField(b.id, 'textSize', +e.target.value);
     } else if (b.type === 'cta') {
       o.text = b.text; o.onText = (e) => this.setField(b.id, 'text', e.target.value);
-      o.url = b.url; o.btnBg = b.btnBg; o.btnText = b.btnText;
-      o.ctaStyle = 'display:inline-block;background:' + b.btnBg + ';color:' + b.btnText + ';font-family:Montserrat,Arial,sans-serif;font-weight:900;font-size:21px;letter-spacing:.01em;padding:17px 40px;border-radius:50px;box-shadow:0 14px 26px -10px ' + b.btnBg + '88;';
+      o.url = b.url; o.btnBg = b.btnBg; o.btnText = b.btnText; o.size = b.size || 21;
+      o.ctaStyle = 'display:inline-block;background:' + b.btnBg + ';color:' + b.btnText + ';font-family:Montserrat,Arial,sans-serif;font-weight:900;font-size:' + o.size + 'px;letter-spacing:.01em;padding:' + Math.round(o.size * 0.81) + 'px ' + Math.round(o.size * 1.9) + 'px;border-radius:50px;box-shadow:0 14px 26px -10px ' + b.btnBg + '88;';
       o.onUrl = (e) => this.setField(b.id, 'url', e.target.value);
+      o.onSize = (e) => this.setField(b.id, 'size', +e.target.value);
       o.onBtnBg = (e) => this.setField(b.id, 'btnBg', e.target.value);
       o.onBtnText = (e) => this.setField(b.id, 'btnText', e.target.value);
     } else if (b.type === 'texte') {
       o.title = b.title; o.subtitle = b.subtitle; o.btnText = b.btnText; o.btnUrl = b.btnUrl; o.showBtn = !!b.showBtn;
       o.btnBg = b.btnBg; o.btnTextColor = b.btnTextColor; o.btnBorder = b.btnBorder; o.titleColor = b.titleColor;
+      o.textColor = b.textColor || '#5C5C64'; o.bg = b.bg || '#FFFFFF';
+      o.titleSize = b.titleSize || 28; o.textSize = b.textSize || 15;
+      const tal = b.align === 'center' ? 'center' : b.align === 'right' ? 'right' : 'left';
+      o.align = tal;
+      o.txtWrapStyle = 'padding:30px 34px;background:' + o.bg + ';text-align:' + tal + ';';
+      o.txtTitleStyle = 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:' + o.titleSize + 'px;line-height:1.04;color:' + b.titleColor + ';letter-spacing:.01em;';
+      o.txtBodyStyle = 'font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:' + o.textSize + 'px;line-height:1.6;color:' + o.textColor + ';margin:12px 0 0;';
+      o.alignLeftStyle = SEG(tal === 'left'); o.alignCenterStyle = SEG(tal === 'center'); o.alignRightStyle = SEG(tal === 'right');
+      o.onAlignLeft = () => this.setField(b.id, 'align', 'left');
+      o.onAlignCenter = () => this.setField(b.id, 'align', 'center');
+      o.onAlignRight = () => this.setField(b.id, 'align', 'right');
+      o.onTextColor = (e) => this.setField(b.id, 'textColor', e.target.value);
+      o.onBg = (e) => this.setField(b.id, 'bg', e.target.value);
+      o.onTitleSize = (e) => this.setField(b.id, 'titleSize', +e.target.value);
+      o.onTextSize = (e) => this.setField(b.id, 'textSize', +e.target.value);
       o.txtBtnStyle = 'display:inline-block;margin:16px 0 0;background:' + b.btnBg + ';border:2px solid ' + b.btnBorder + ';color:' + b.btnTextColor + ';font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;padding:10px 22px;border-radius:50px;';
       o.onTitle = (e) => this.setField(b.id, 'title', e.target.value);
       o.onSubtitle = (e) => this.setField(b.id, 'subtitle', e.target.value);
@@ -1911,12 +2468,82 @@ class Component extends DCLogic {
       o.onBtnBorder = (e) => this.setField(b.id, 'btnBorder', e.target.value);
       o.onTitleColor = (e) => this.setField(b.id, 'titleColor', e.target.value);
     } else if (b.type === 'image') {
-      o.onReframe = () => {
-        const el = this._canvasEl && this._canvasEl.querySelector('#' + o.slotA);
-        if (!el) return;
-        if (typeof el.reframe === 'function') el.reframe();
-        else el.dispatchEvent(new MouseEvent('dblclick', { bubbles: true, composed: true }));
-      };
+      const full = !!b.full, h = b.height || 300, rad = b.radius == null ? 14 : b.radius;
+      o.full = full; o.notFull = !full; o.height = h; o.radius = rad; o.shadow = !!b.shadow;
+      o.imgWrapStyle = full ? 'padding:0;font-size:0;line-height:0;' : 'padding:26px 32px;';
+      o.imgSlotStyle = 'width:100%;height:' + h + 'px;display:block;' + (!full && b.shadow ? 'filter:drop-shadow(0 16px 26px rgba(20,20,30,.24));' : '');
+      o.imgShape = (!full && rad > 0) ? 'rounded' : 'rect';
+      o.imgRadius = full ? '0' : String(rad);
+      o.fullBtnStyle = TGL(full);
+      o.shadowBtnStyle = TGL(!!b.shadow);
+      o.onToggleFull = () => this.toggle(b.id, 'full');
+      o.onToggleShadow = () => this.toggle(b.id, 'shadow');
+      o.onHeight = (e) => this.setField(b.id, 'height', +e.target.value);
+      o.onRadius = (e) => this.setField(b.id, 'radius', +e.target.value);
+      o.onReframe = reframe(o.slotA);
+    } else if (b.type === 'produit') {
+      const side = b.imgSide === 'right' ? 'right' : 'left';
+      const al = b.align === 'left' ? 'left' : b.align === 'center' ? 'center' : 'right';
+      const imgW = Math.max(28, Math.min(70, b.imgW == null ? 46 : b.imgW));
+      const shp = b.imgShape || 'rect';
+      o.title = b.title; o.desc = b.desc; o.price = b.price; o.priceNote = b.priceNote || '';
+      o.hasPriceNote = !!(b.priceNote || '').trim();
+      o.imgSide = side; o.align = al; o.imgW = imgW; o.imgH = b.imgH || 300;
+      o.panel = b.panel !== false; o.panelBg = b.panelBg || '#DFC98F'; o.panelRadius = b.panelRadius == null ? 34 : b.panelRadius;
+      o.bg = b.bg || '#FFFFFF';
+      o.titleColor = b.titleColor || '#141417'; o.textColor = b.textColor || '#141417'; o.priceColor = b.priceColor || '#141417';
+      o.titleSize = b.titleSize || 34; o.textSize = b.textSize || 16; o.priceSize = b.priceSize || 42;
+      o.imgRadiusVal = b.imgRadius == null ? 8 : b.imgRadius;
+      o.imgRadius = shp === 'rounded' ? String(o.imgRadiusVal) : '0';
+      o.pdShape = shp === 'circle' ? 'circle' : shp === 'rounded' ? 'rounded' : 'rect';
+      o.showBtn = !!b.showBtn; o.btnText = b.btnText; o.btnUrl = b.btnUrl; o.btnBg = b.btnBg; o.btnTextColor = b.btnTextColor;
+      o.descLines = String(b.desc || '').split('\n').map((t, k) => ({ id: k, text: t }));
+      o.pdWrapStyle = 'display:flex;align-items:center;gap:22px;padding:30px 32px;background:' + o.bg + ';flex-direction:' + (side === 'right' ? 'row-reverse' : 'row') + ';';
+      o.pdImgColStyle = 'flex:0 0 ' + imgW + '%;max-width:' + imgW + '%;box-sizing:border-box;'
+        + (o.panel ? 'background:' + o.panelBg + ';border-radius:' + o.panelRadius + 'px;padding:22px;' : '');
+      o.pdSlotStyle = 'width:100%;height:' + o.imgH + 'px;display:block;' + (b.imgShadow !== false ? 'filter:drop-shadow(0 12px 22px rgba(20,20,30,.28));' : '');
+      o.pdTextColStyle = 'flex:1 1 auto;min-width:0;text-align:' + al + ';';
+      o.pdTitleStyle = 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:' + o.titleSize + 'px;line-height:1.02;letter-spacing:.01em;color:' + o.titleColor + ';margin:0;';
+      o.pdDescStyle = 'font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:' + o.textSize + 'px;line-height:1.5;color:' + o.textColor + ';margin:18px 0 0;';
+      o.pdPriceStyle = 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:' + o.priceSize + 'px;line-height:1;color:' + o.priceColor + ';margin:16px 0 0;';
+      o.pdPriceNoteStyle = 'font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#8a8a93;margin:7px 0 0;';
+      o.pdBtnStyle = 'display:inline-block;margin:18px 0 0;background:' + o.btnBg + ';color:' + o.btnTextColor + ';font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:14px;letter-spacing:.02em;padding:12px 26px;border-radius:50px;';
+      o.sideLeftStyle = SEG(side === 'left'); o.sideRightStyle = SEG(side === 'right');
+      o.alignLeftStyle = SEG(al === 'left'); o.alignCenterStyle = SEG(al === 'center'); o.alignRightStyle = SEG(al === 'right');
+      o.pdShapeRectStyle = SEG(shp === 'rect'); o.pdShapeRoundedStyle = SEG(shp === 'rounded'); o.pdShapeCircleStyle = SEG(shp === 'circle');
+      o.panelBtnStyle = TGL(o.panel); o.imgShadowBtnStyle = TGL(b.imgShadow !== false); o.btnToggleStyle = TGL(o.showBtn);
+      o.onTitle = (e) => this.setField(b.id, 'title', e.target.value);
+      o.onDesc = (e) => this.setField(b.id, 'desc', e.target.value);
+      o.onPrice = (e) => this.setField(b.id, 'price', e.target.value);
+      o.onPriceNote = (e) => this.setField(b.id, 'priceNote', e.target.value);
+      o.onSideLeft = () => this.setField(b.id, 'imgSide', 'left');
+      o.onSideRight = () => this.setField(b.id, 'imgSide', 'right');
+      o.onAlignLeft = () => this.setField(b.id, 'align', 'left');
+      o.onAlignCenter = () => this.setField(b.id, 'align', 'center');
+      o.onAlignRight = () => this.setField(b.id, 'align', 'right');
+      o.onShapeRect = () => this.setField(b.id, 'imgShape', 'rect');
+      o.onShapeRounded = () => this.setField(b.id, 'imgShape', 'rounded');
+      o.onShapeCircle = () => this.setField(b.id, 'imgShape', 'circle');
+      o.onTogglePanel = () => this.toggle(b.id, 'panel');
+      o.onToggleImgShadow = () => this.setField(b.id, 'imgShadow', b.imgShadow === false);
+      o.onToggleBtn = () => this.toggle(b.id, 'showBtn');
+      o.onPanelBg = (e) => this.setField(b.id, 'panelBg', e.target.value);
+      o.onPanelRadius = (e) => this.setField(b.id, 'panelRadius', +e.target.value);
+      o.onBg = (e) => this.setField(b.id, 'bg', e.target.value);
+      o.onTitleColor = (e) => this.setField(b.id, 'titleColor', e.target.value);
+      o.onTextColor = (e) => this.setField(b.id, 'textColor', e.target.value);
+      o.onPriceColor = (e) => this.setField(b.id, 'priceColor', e.target.value);
+      o.onTitleSize = (e) => this.setField(b.id, 'titleSize', +e.target.value);
+      o.onTextSize = (e) => this.setField(b.id, 'textSize', +e.target.value);
+      o.onPriceSize = (e) => this.setField(b.id, 'priceSize', +e.target.value);
+      o.onImgW = (e) => this.setField(b.id, 'imgW', +e.target.value);
+      o.onImgH = (e) => this.setField(b.id, 'imgH', +e.target.value);
+      o.onImgRadius = (e) => this.setField(b.id, 'imgRadius', +e.target.value);
+      o.onBtnText = (e) => this.setField(b.id, 'btnText', e.target.value);
+      o.onBtnUrl = (e) => this.setField(b.id, 'btnUrl', e.target.value);
+      o.onBtnBg = (e) => this.setField(b.id, 'btnBg', e.target.value);
+      o.onBtnTextColor = (e) => this.setField(b.id, 'btnTextColor', e.target.value);
+      o.onReframe = reframe(o.slotA);
     } else if (b.type === 'contact') {
       o.tel = b.tel; o.wa = b.wa;
       o.telBg = b.telBg; o.telText = b.telText; o.telBorder = b.telBorder; o.telDot = !!b.telDot; o.telDotColor = b.telDotColor;
@@ -2034,11 +2661,17 @@ class Component extends DCLogic {
       o.onAddClick = (e) => { const inp = e.target.parentNode.querySelector('input'); if (inp) { this.svcAdd(b.id, inp.value); inp.value = ''; } };
     } else if (b.type === 'cards') {
       o.title = b.title; o.showTitle = !!b.showTitle; o.cardCount = b.cards.length;
+      o.cardH = b.cardH || 120;
+      o.cardRadius = b.cardRadius == null ? 11 : b.cardRadius;
+      o.cardSlotStyle = 'width:100%;height:' + o.cardH + 'px;display:block;';
+      o.onCardH = (e) => this.setField(b.id, 'cardH', +e.target.value);
+      o.onCardRadius = (e) => this.setField(b.id, 'cardRadius', +e.target.value);
       o.cardItems = b.cards.map((c, idx) => ({ title: c.title, desc: c.desc, slot: 'slot-' + b.id + '-c' + idx }));
       o.cardEdits = b.cards.map((c, idx) => ({
-        title: c.title, desc: c.desc,
+        title: c.title, desc: c.desc, num: 'Carte ' + (idx + 1),
         onTitle: (e) => this.cardItem(b.id, idx, 'title', e.target.value),
         onDesc: (e) => this.cardItem(b.id, idx, 'desc', e.target.value),
+        onReframe: reframe('slot-' + b.id + '-c' + idx),
       }));
       o.onTitle = (e) => this.setField(b.id, 'title', e.target.value);
       o.onToggleTitle = () => this.toggle(b.id, 'showTitle');
@@ -2072,6 +2705,10 @@ class Component extends DCLogic {
     const sigPatternSize = this.state.sigPatternSize || 160;
     const bcell = Math.max(bdp, bds + 2), br = bds / 2, bhalf = (bcell / 2).toFixed(1);
     const stepBtn = 'width:36px;height:36px;border:1px solid #DADADE;background:#fff;border-radius:10px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:18px;line-height:1;color:#141417;cursor:pointer;flex:0 0 auto;';
+
+    const sigStyle = this.state.sigStyle === 'newsletter' ? 'newsletter' : 'carte';
+    const sigSeg = (on) => 'flex:1;border:1px solid ' + (on ? '#fff' : '#34343c') + ';background:' + (on ? '#fff' : '#1d1d22') + ';border-radius:8px;padding:8px 4px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;cursor:pointer;color:' + (on ? '#141417' : '#8e8e96') + ';';
+    const socialOn = (this.state.sigSocial || []).filter((s) => s.on !== false && (s.url || '').trim());
 
     const blocks = this.state.blocks.map((b, i) => this._mapBlock(b, i));
     const sel = this.state.selectedId != null ? blocks.find(x => x.id === this.state.selectedId) : null;
@@ -2118,6 +2755,52 @@ class Component extends DCLogic {
       sigDotsDisplay: tglOn ? 'block' : 'none',
       sigArrowRight: this.state.arrowX + 'px', sigArrowBottom: this.state.arrowY + 'px', sigArrowW: this.state.arrowSize + 'px',
       sigArrowTransform: 'rotate(' + this.state.arrowRot + 'deg)',
+
+      // alt signature ("newsletter")
+      sigIsCarte: sigStyle === 'carte',
+      sigIsNewsletter: sigStyle === 'newsletter',
+      sigCarteDisplay: sigStyle === 'carte' ? 'block' : 'none',
+      sigCarteBtnStyle: sigSeg(sigStyle === 'carte'),
+      sigNewsBtnStyle: sigSeg(sigStyle === 'newsletter'),
+      onSigStyleCarte: () => this.setS('sigStyle', 'carte'),
+      onSigStyleNews: () => this.setS('sigStyle', 'newsletter'),
+      sigShowLegal: this.state.sigShowLegal !== false,
+      sigLegalBtnStyle: 'border:none;border-radius:50px;padding:7px 16px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (this.state.sigShowLegal !== false ? 'background:#fff;color:#141417;' : 'background:#2a2a30;color:#8e8e96;'),
+      onToggleSigLegal: () => this.setS('sigShowLegal', !(this.state.sigShowLegal !== false)),
+      sigLegal: this.state.sigLegal,
+      sigLegalLines: String(this.state.sigLegal || '').split('\n').map((t, k) => ({ id: k, text: t })),
+      sigSenderNote: this.state.sigSenderNote,
+      sigPrefsLabel: this.state.sigPrefsLabel,
+      sigPrefsUrl: this.state.sigPrefsUrl,
+      sigUnsubLabel: this.state.sigUnsubLabel,
+      sigBottomNote: this.state.sigBottomNote,
+      sigCompany: this.state.sigCompany,
+      sigAddr: this.state.sigAddr,
+      sigAddrLines: String(this.state.sigAddr || '').split('\n').map((t, k) => ({ id: k, text: t })),
+      sigBarBg: this.state.sigBarBg,
+      sigBarStyle: 'background:' + (this.state.sigBarBg || '#141417') + ';padding:26px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;',
+      sigLinkColor: this.state.sigLinkColor,
+      sigLinkStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:14px;color:' + (this.state.sigLinkColor || '#FC1D37') + ';',
+      sigSocialIcons: socialOn.map((s) => ({ key: s.key, url: s.url, src: this._socialDataUrl(s.key) })),
+      sigSocialRows: (this.state.sigSocial || []).map((s, idx) => ({
+        key: s.key,
+        label: (this._SOCIAL[s.key] || {}).label || s.key,
+        url: s.url,
+        src: this._socialDataUrl(s.key),
+        onUrl: (e) => this.setSocial(idx, 'url', e.target.value),
+        onToggle: () => this.setSocial(idx, 'on', !s.on),
+        btnStyle: 'border:none;border-radius:50px;padding:7px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10.5px;cursor:pointer;flex:0 0 auto;' + (s.on !== false ? 'background:#141417;color:#fff;' : 'background:#ECECEF;color:#9a9aa2;'),
+      })),
+      onSigLegal: (e) => this.setS('sigLegal', e.target.value),
+      onSigSenderNote: (e) => this.setS('sigSenderNote', e.target.value),
+      onSigPrefsLabel: (e) => this.setS('sigPrefsLabel', e.target.value),
+      onSigPrefsUrl: (e) => this.setS('sigPrefsUrl', e.target.value),
+      onSigUnsubLabel: (e) => this.setS('sigUnsubLabel', e.target.value),
+      onSigBottomNote: (e) => this.setS('sigBottomNote', e.target.value),
+      onSigCompany: (e) => this.setS('sigCompany', e.target.value),
+      onSigAddr: (e) => this.setS('sigAddr', e.target.value),
+      onSigBarBg: (e) => this.setS('sigBarBg', e.target.value),
+      onSigLinkColor: (e) => this.setS('sigLinkColor', e.target.value),
 
       // builder
       yes: true,
@@ -2176,16 +2859,19 @@ class Component extends DCLogic {
       selIsSticker: !!(sel && sel.isSticker),
       selIsBanner: !!(sel && sel.isBanner),
       selIsImage: !!(sel && sel.isImage),
+      selIsProduit: !!(sel && sel.isProduit),
       stepBtn,
 
       dragBanner: mkDrag('banner'), dragTexte: mkDrag('texte'), dragImage: mkDrag('image'), dragCards: mkDrag('cards'),
+      dragProduit: mkDrag('produit'),
       dragFlash: mkDrag('flash'), dragCta: mkDrag('cta'), dragContact: mkDrag('contact'),
       dragServices: mkDrag('services'), dragOneforone: mkDrag('oneforone'), dragSticker: mkDrag('sticker'),
       addBanner: () => this.add('banner'), addTexte: () => this.add('texte'), addImage: () => this.add('image'), addCards: () => this.add('cards'),
+      addProduit: () => this.add('produit'),
       addFlash: () => this.add('flash'), addCta: () => this.add('cta'), addContact: () => this.add('contact'),
       addServices: () => this.add('services'), addOneforone: () => this.add('oneforone'), addSticker: () => this.add('sticker'),
       onDragOver: (e) => { e.preventDefault(); if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy'; },
-      onDrop: (e) => { e.preventDefault(); if (this._dragBlockId != null || this.state.dragBlockId != null) { this.blockDragEnd(); return; } const t = this._dragType || (e.dataTransfer && e.dataTransfer.getData('text/plain')); if (['banner','texte','image','cards','flash','cta','contact','services','oneforone','sticker'].indexOf(t) >= 0) this.add(t); this._dragType = null; },
+      onDrop: (e) => { e.preventDefault(); if (this._dragBlockId != null || this.state.dragBlockId != null) { this.blockDragEnd(); return; } const t = this._dragType || (e.dataTransfer && e.dataTransfer.getData('text/plain')); if (['banner','texte','image','produit','cards','flash','cta','contact','services','oneforone','sticker'].indexOf(t) >= 0) this.add(t); this._dragType = null; },
       clearAll: () => this.setState({ blocks: [], stickers: [], selectedId: null, selStickerId: null, headerSelected: false }),
       onSaveTemplate: () => this.saveTemplate(),
       onExport: () => this.exportHtml(),
