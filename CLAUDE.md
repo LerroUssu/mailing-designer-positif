@@ -77,13 +77,15 @@ Every block with an `image-slot` exposes `onReframe` (built by the shared `refra
 - **`'newsletter'`** — the alternate style: bold centered mentions légales, a row of round social icons,
   sender note, « Mettre à jour vos préférences | Se désinscrire » links, closing note, then a black bar
   with the raison sociale + coordonnées on the left and the logo on the right. All strings editable.
-- **`'flyer'`** — from the carte-de-visite verso: dark panel with red halo + dot trame,
-  « PUBLICITÉ DEPUIS 1983 » kicker, logo, coordonnées, a 3-column grid of service tiles, and the red
-  NFC offer band. State lives in one nested `state.sigFlyer` object (clone it whole in
-  `_templatePayload`/`loadTemplate`). **The tiles are real `image-slot`s** — ids come from
-  `_slot('sigtile-N')` and `_slot('signfc')` — so the user drops the photos in like any block.
-  The social cell is a grid cell (row 1, centre) built in `flyerCells`, not an overlay.
-  Exported as a table of per-tile images + HTML labels over a baked 13px dot tile, so links stay live.
+- **`'flyer'`** — the carte-de-visite verso, built from **supplied SVG artwork** in `assets/`:
+  `sig-flyer-bg.svg`, `tile-*.svg` (9 cells — 8 services + « Suivez-nous », each already carrying its
+  own rounded panel *and its label*), `sig-nfc-band.svg`, `logo.svg` / `logo-long.svg`, `header.svg`.
+  Because the labels are baked into the artwork the grid renders plain `<img>`, not image-slots, and
+  there are no text labels to edit — each cell just toggles on/off and takes an optional link.
+  Kicker, coordonnées and colours stay editable HTML above the grid, so phone/e-mail remain live links.
+  **Email strips SVG**, so `_rasterizeAsset(path, outW)` bakes each asset to a 2× PNG at export time;
+  never reference a `.svg` from `exportHtml()`. State is the nested `state.sigFlyer` object — clone it
+  whole in `_templatePayload`/`loadTemplate`, which also drops pre-artwork tiles lacking a `file`.
 - Social icons are **generated, not asset files**: `_SOCIAL` holds 24×24 monochrome paths (web, tiktok,
   whatsapp, instagram, facebook, linkedin), `_socialSvg()` wraps one in a light circle, `_socialDataUrl()` feeds the
   canvas preview, and `_rasterizeSvg()` bakes each to a 2× PNG at export time (`images/reseau-*.png`).
