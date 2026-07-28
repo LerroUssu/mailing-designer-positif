@@ -669,6 +669,11 @@
                     <div class="pd-section-title">Photo</div>
                     <button onClick="{{ sel.onReframe }}" style="width:100%;background:#141417;color:#fff;border:none;border-radius:50px;padding:11px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.03em;cursor:pointer;">Repositionner l'image</button>
                     <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11.5px;line-height:1.45;color:#9a9aa2;margin:10px 0 0;">Déposez votre photo dans la zone grise. Double-cliquez pour recadrer : glissez pour déplacer, tirez les coins pour zoomer.</p>
+                  <div class="pd-field" style="margin-top:12px;">
+                    <div class="pd-label">Lien de l&#39;image</div>
+                    <input class="pd-input" onChange="{{ sel.onLinkUrl }}" value="{{ sel.linkUrl }}" placeholder="https://positifdesign.fr">
+                    <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.4;color:#b1b1b8;margin:6px 0 0;">Laissez vide pour une image non cliquable.</p>
+                  </div>
                   </div>
                 </div>
               </sc-if>
@@ -764,6 +769,11 @@
                       </div>
                     </div>
                     <button onClick="{{ sel.onReframe }}" style="width:100%;margin-top:12px;background:#141417;color:#fff;border:none;border-radius:50px;padding:11px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.03em;cursor:pointer;">Repositionner l'image</button>
+                  <div class="pd-field" style="margin-top:12px;">
+                    <div class="pd-label">Lien de l&#39;image</div>
+                    <input class="pd-input" onChange="{{ sel.onLinkUrl }}" value="{{ sel.linkUrl }}" placeholder="https://positifdesign.fr">
+                    <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.4;color:#b1b1b8;margin:6px 0 0;">Rend le visuel cliquable. Laissez vide sinon.</p>
+                  </div>
                   </div>
 
                   <div class="pd-section">
@@ -802,6 +812,11 @@
                 <div>
                   <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12.5px;line-height:1.55;color:#9a9aa2;margin:0 0 14px;">Bloc image dans le flux de l'e-mail, compatible export Brevo.</p>
                   <button onClick="{{ sel.onReframe }}" style="width:100%;background:#141417;color:#fff;border:none;border-radius:50px;padding:11px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.03em;cursor:pointer;">Repositionner l'image</button>
+                  <div class="pd-field" style="margin-top:12px;">
+                    <div class="pd-label">Lien de l&#39;image</div>
+                    <input class="pd-input" onChange="{{ sel.onLinkUrl }}" value="{{ sel.linkUrl }}" placeholder="https://positifdesign.fr">
+                    <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.4;color:#b1b1b8;margin:6px 0 0;">Rend l&#39;image cliquable. Laissez vide sinon.</p>
+                  </div>
                   <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:16px 0 8px;">Cadre</div>
                   <div style="display:flex;gap:7px;">
                     <button onClick="{{ sel.onFrameNone }}" style="{{ sel.frameNoneStyle }}">Aucun</button>
@@ -904,6 +919,11 @@
                       <button onClick="{{ sel.onToggleHalftone }}" style="{{ sel.halftoneBtnStyle }}">Pois Ben-Day</button>
                       <button onClick="{{ sel.onToggleFloat }}" style="{{ sel.floatBtnStyle }}">Image déco</button>
                       <button onClick="{{ sel.onToggleBand }}" style="{{ sel.bandBtnStyle }}">Bande bas</button>
+                    </div>
+                    <div class="pd-field" style="margin-top:12px;">
+                      <div class="pd-label">Lien du bloc</div>
+                      <input class="pd-input" onChange="{{ sel.onLinkUrl }}" value="{{ sel.linkUrl }}" placeholder="https://positifdesign.fr">
+                      <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.4;color:#b1b1b8;margin:6px 0 0;">Ce bloc est exporté en une seule image : le lien la rend cliquable entièrement.</p>
                     </div>
                   </div>
 
@@ -1132,6 +1152,7 @@
                         <input onChange="{{ c.onTitle }}" value="{{ c.title }}" placeholder="Titre" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:9px;padding:8px 10px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;color:#34343c;outline:none;">
                         <textarea onChange="{{ c.onDesc }}" value="{{ c.desc }}" rows="2" placeholder="Descriptif" style="width:100%;box-sizing:border-box;resize:vertical;border:1px solid #E2E2E8;border-radius:9px;padding:8px 10px;font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12px;color:#34343c;outline:none;"></textarea>
                         <button onClick="{{ c.onReframe }}" style="width:100%;background:#fff;border:1px solid #DADADE;color:#141417;border-radius:50px;padding:8px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;cursor:pointer;">Repositionner la photo</button>
+                        <input onChange="{{ c.onLinkUrl }}" value="{{ c.linkUrl }}" placeholder="Lien de l'image (optionnel)" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:9px;padding:8px 10px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#34343c;outline:none;">
                       </div>
                     </sc-for>
                   </div>
@@ -1172,6 +1193,11 @@
                     <input type="range" min="120" max="620" step="2" value="{{ sel.imgH }}" onInput="{{ sel.onImgH }}">
                   </div>
                   <button onClick="{{ sel.onReframe }}" style="width:100%;margin-top:12px;background:#141417;color:#fff;border:none;border-radius:50px;padding:11px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.03em;cursor:pointer;">Repositionner l'image</button>
+                  <div class="pd-field" style="margin-top:12px;">
+                    <div class="pd-label">Lien de l&#39;image</div>
+                    <input class="pd-input" onChange="{{ sel.onLinkUrl }}" value="{{ sel.linkUrl }}" placeholder="https://positifdesign.fr">
+                    <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.4;color:#b1b1b8;margin:6px 0 0;">Rend la bannière cliquable. Laissez vide sinon.</p>
+                  </div>
                   <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12px;line-height:1.5;color:#9a9aa2;margin:12px 0 0;">Déposez votre visuel dans la zone grise du bloc.</p>
                 </div>
               </sc-if>
@@ -1338,6 +1364,12 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;Points · taille&quot;:{&quot;editor&quot;:&quot;float&quot;,&quot;default&quot;:29,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:4,&quot;max&quot;:40,&quot;step&quot;:1},&quot;Points · espacement&quot;:{&quot;editor&quot;:&quot;float&quot;,&quot;default&quot;:40,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:16,&quot;max&quot;:90,&quot;step&quot;:1},&quot;Points · couleur&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#474747&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;Flèches · taille&quot;:{&quot;editor&quot;:&quot;float&quot;,&quot;default&quot;:316,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:160,&quot;max&quot;:440,&quot;step&quot;:4},&quot;Flèches · décalage droite&quot;:{&quot;editor&quot;:&quot;float&quot;,&quot;default&quot;:-94,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:-180,&quot;max&quot;:40,&quot;step&quot;:2},&quot;Flèches · décalage bas&quot;:{&quot;editor&quot;:&quot;float&quot;,&quot;default&quot;:40,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:-180,&quot;max&quot;:40,&quot;step&quot;:2}}">
 class Component extends DCLogic {
   _nextId = 1;
+  // Slot ids are namespaced per page load. The .image-slots sidecar restores a
+  // dropped image by slot id and `_nextId` restarts at 1 on every load, so
+  // without this prefix a freshly added block inherits whatever photo an
+  // earlier session left on the same id. Blocks must always start empty.
+  _ns = 'n' + Date.now().toString(36) + '-';
+  _slot(id) { return this._ns + id; }
   _dragType = null;
   _dragBlockId = null;
   _PAL = ['#FC1D37', '#141417', '#1F8A5B', '#2A6FDB', '#C8881B'];
@@ -1407,16 +1439,16 @@ class Component extends DCLogic {
       'Enseignes & façades','Signalétique','Marquage véhicule','Covering','Panneaux & bâches','Stickers & adhésifs','Impression grand format','Marquage textile','Objets publicitaires','Flyers & dépliants','Cartes de visite','PLV & stands','Décoration vitrine'
     ].map(t => ({ text: t, dot: '#FC1D37', bg: '#FFFFFF', fg: '#34343C', border: '#E6E6EA' })) };
     if (type === 'cards') return { id, type, title: 'NOS NOUVEAUTÉS', showTitle: true, cards: [
-      { title: 'Titre carte', desc: 'Un court descriptif de ce produit ou service.' },
-      { title: 'Titre carte', desc: 'Un court descriptif de ce produit ou service.' },
-      { title: 'Titre carte', desc: 'Un court descriptif de ce produit ou service.' },
+      { title: 'Titre carte', desc: 'Un court descriptif de ce produit ou service.', linkUrl: '' },
+      { title: 'Titre carte', desc: 'Un court descriptif de ce produit ou service.', linkUrl: '' },
+      { title: 'Titre carte', desc: 'Un court descriptif de ce produit ou service.', linkUrl: '' },
     ] };
     if (type === 'flash') return { id, type, color: '#FC1D37', textColor: '#FFFFFF', textSize: 13, text: "OFFRE FLASH · STOCK LIMITÉ · JUSQU'AU 30 JUIN 2026" };
-    if (type === 'oneforone') return { id, type, split: true, kicker: 'SPÉCIAL AUTO-ÉCOLES · VENTE FLASH', line1: '1 ACHETÉ', line2: '1 OFFERT', sub: "Vos disques A « jeune conducteur » floqués à votre nom. Commandez-en 50, on vous en imprime 100.", halftone: false, band: false, bandText: '100 disques A pour le prix de 50', bandTextSize: 16, bandTextBottom: 24, bandHeight: 94, bandTilt: 34, textX: 0, textY: 0, line2Tilt: -7, floatImg: false, floatFrame: 'none', floatShape: 'circle', floatShadow: true, floatX: 0, floatY: 0, floatSize: 130, floatRot: -7 };
+    if (type === 'oneforone') return { id, type, split: true, kicker: 'SPÉCIAL AUTO-ÉCOLES · VENTE FLASH', line1: '1 ACHETÉ', line2: '1 OFFERT', sub: "Vos disques A « jeune conducteur » floqués à votre nom. Commandez-en 50, on vous en imprime 100.", halftone: false, band: false, bandText: '100 disques A pour le prix de 50', bandTextSize: 16, bandTextBottom: 24, bandHeight: 94, bandTilt: 34, textX: 0, textY: 0, line2Tilt: -7, floatImg: false, floatFrame: 'none', floatShape: 'circle', floatShadow: true, floatX: 0, floatY: 0, floatSize: 130, floatRot: -7, linkUrl: '' };
     if (type === 'cta') return { id, type, text: "J'EN PROFITE MAINTENANT →", url: 'mailto:contact@positif.biz?subject=Demande%20Positif%20Design', btnBg: '#FC1D37', btnText: '#FFFFFF', size: 21 };
     if (type === 'contact') return { id, type, tel: '01.48.29.15.51', wa: '06 18 70 11 18', telBg: '#FFFFFF', telText: '#141417', telBorder: '#141417', telDot: true, telDotColor: '#FC1D37', waBg: '#25D366', waText: '#FFFFFF' };
     if (type === 'texte') return { id, type, title: 'UN TITRE QUI ACCROCHE', subtitle: "Présentez ici un service, une actualité ou un produit. Deux à trois lignes suffisent pour donner envie d'en savoir plus.", showBtn: true, btnText: 'DÉCOUVRIR →', btnUrl: 'https://positifdesign.fr', btnBg: '#FFFFFF', btnTextColor: '#141417', btnBorder: '#141417', titleColor: '#141417', textColor: '#5C5C64', bg: '#FFFFFF', align: 'left', titleSize: 28, textSize: 15 };
-    if (type === 'image') return { id, type, full: false, height: 300, radius: 14, shadow: false };
+    if (type === 'image') return { id, type, linkUrl: '', full: false, height: 300, radius: 14, shadow: false };
     if (type === 'produit') return { id, type,
       title: 'VISIBILITÉ CHANTIER',
       desc: "Panneau Posimax 5 mm épaisseur\nDimensions 2000 x 1500 mm\nFichier fourni par vos soins\nPrix départ atelier Épinay/Seine",
@@ -1425,10 +1457,10 @@ class Component extends DCLogic {
       panel: true, panelBg: '#DFC98F', panelRadius: 34, bg: '#FFFFFF',
       titleColor: '#141417', textColor: '#141417', priceColor: '#141417',
       titleSize: 34, textSize: 16, priceSize: 42,
-      imgW: 46, imgH: 300, imgShape: 'rect', imgRadius: 8, imgShadow: true,
+      linkUrl: '', imgW: 46, imgH: 300, imgShape: 'rect', imgRadius: 8, imgShadow: true,
       showBtn: false, btnText: 'JE COMMANDE →', btnUrl: 'mailto:contact@positif.biz', btnBg: '#FC1D37', btnTextColor: '#FFFFFF' };
-    if (type === 'banner') return { id, type, title: 'VOTRE GRAND TITRE', subtitle: 'Un sous-titre accrocheur pour annoncer votre offre, votre nouveauté ou votre événement.', btnLabel: 'EN SAVOIR PLUS →', btnUrl: 'https://positifdesign.fr', btnBg: '#FC1D37', btnColor: '#FFFFFF', imgH: 284, showText: true };
-    if (type === 'sticker') return { id, type, size: 210, shape: 'rounded', radius: 18, align: 'center', frame: 'polaroid', shadow: true };
+    if (type === 'banner') return { id, type, title: 'VOTRE GRAND TITRE', subtitle: 'Un sous-titre accrocheur pour annoncer votre offre, votre nouveauté ou votre événement.', btnLabel: 'EN SAVOIR PLUS →', btnUrl: 'https://positifdesign.fr', btnBg: '#FC1D37', btnColor: '#FFFFFF', imgH: 284, showText: true, linkUrl: '' };
+    if (type === 'sticker') return { id, type, linkUrl: '', size: 210, shape: 'rounded', radius: 18, align: 'center', frame: 'polaroid', shadow: true };
     return { id, type };
   }
 
@@ -1622,7 +1654,7 @@ class Component extends DCLogic {
   svcCycle(id, idx) { const P = this._PAL; this.setState(s => ({ blocks: s.blocks.map(b => b.id !== id ? b : { ...b, services: b.services.map((x, k) => k !== idx ? x : { ...x, color: P[(P.indexOf(x.color) + 1) % P.length] }) }) })); }
   svcProp(id, idx, key, val) { this.setState(s => ({ blocks: s.blocks.map(b => b.id !== id ? b : { ...b, services: b.services.map((x, k) => k !== idx ? x : { ...x, [key]: val }) }) })); }
   cardItem(id, idx, k, v) { this.setState(s => ({ blocks: s.blocks.map(b => b.id !== id ? b : { ...b, cards: b.cards.map((c, k2) => k2 !== idx ? c : { ...c, [k]: v }) }) })); }
-  cardCount(id, delta) { this.setState(s => ({ blocks: s.blocks.map(b => { if (b.id !== id) return b; let n = Math.max(1, Math.min(6, b.cards.length + delta)); let cards = b.cards.slice(); while (cards.length < n) cards.push({ title: 'Titre carte', desc: 'Un court descriptif de ce produit ou service.' }); if (cards.length > n) cards = cards.slice(0, n); return { ...b, cards }; }) })); }
+  cardCount(id, delta) { this.setState(s => ({ blocks: s.blocks.map(b => { if (b.id !== id) return b; let n = Math.max(1, Math.min(6, b.cards.length + delta)); let cards = b.cards.slice(); while (cards.length < n) cards.push({ title: 'Titre carte', desc: 'Un court descriptif de ce produit ou service.', linkUrl: '' }); if (cards.length > n) cards = cards.slice(0, n); return { ...b, cards }; }) })); }
   onSigPatternFile(e) {
     const file = e && e.target && e.target.files && e.target.files[0];
     if (!file) return;
@@ -1879,7 +1911,7 @@ class Component extends DCLogic {
     subLines.forEach((line, i) => ctx.fillText(line, x, 230 + ty + i * 23));
 
     if (b.floatImg) {
-      const baked = this._bakeSlot('slot-' + b.id + '-float', 160, { transparent: true, format: 'png' });
+      const baked = this._bakeSlot(this._slot('slot-' + b.id + '-float'), 160, { transparent: true, format: 'png' });
       const bmp = baked ? await this._bitmapFromBytes(baked.bytes, 'image/png') : null;
       if (bmp) {
         const frame = b.floatFrame || 'none';
@@ -2056,6 +2088,9 @@ class Component extends DCLogic {
       return 'images/' + base + (imgNameCounts[base] > 1 ? '-' + imgNameCounts[base] : '') + '.' + ext;
     };
     const pushImg = (slotId, outW, label) => { const b = this._bakeSlot(slotId, outW); if (!b) return null; const name = imgName(label || ('image-email-' + (++n)), b.ext); files.push({ name, bytes: b.bytes }); return name; };
+    // Only wrap when a link is actually set — an empty href would make the image
+    // look clickable and go nowhere.
+    const linked = (url, html) => { const u = (url || '').trim(); return u ? '<a href="' + esc(u) + '" style="text-decoration:none;">' + html + '</a>' : html; };
     const btn = (url, label, bg, color, border) => '<a href="' + href(url) + '" style="display:inline-block;background:' + bg + ';color:' + color + ';font-family:' + F + ';font-weight:800;font-size:16px;line-height:1;padding:14px 30px;border-radius:50px;text-decoration:none;' + (border ? 'border:2px solid ' + border + ';' : '') + '">' + esc(label) + '</a>';
 
     let logoName = null;
@@ -2068,8 +2103,8 @@ class Component extends DCLogic {
       '</tr></table></td></tr>';
     for (const b of this.state.blocks) {
       if (b.type === 'banner') {
-        const im = pushImg('slot-' + b.id + '-a', 600, 'banniere-hero');
-        if (im) rows += '<tr><td style="padding:0;font-size:0;line-height:0;"><img src="' + im + '" width="600" alt="" style="display:block;width:100%;max-width:600px;height:auto;"></td></tr>';
+        const im = pushImg(this._slot('slot-' + b.id + '-a'), 600, 'banniere-hero');
+        if (im) rows += '<tr><td style="padding:0;font-size:0;line-height:0;">' + linked(b.linkUrl, '<img src="' + im + '" width="600" alt="" style="display:block;width:100%;max-width:600px;height:auto;">') + '</td></tr>';
         if (b.showText !== false) rows += '<tr><td class="px" bgcolor="#ffffff" style="background:#ffffff;padding:30px 36px 34px;text-align:center;">' +
           '<div style="font-family:' + F + ';font-weight:800;font-size:36px;line-height:1.02;color:#141417;">' + esc(b.title) + '</div>' +
           '<div style="font-family:' + F + ';font-weight:500;font-size:16px;line-height:1.5;color:#5c5c64;padding-top:12px;">' + esc(b.subtitle) + '</div>' +
@@ -2083,14 +2118,14 @@ class Component extends DCLogic {
           (b.showBtn ? '<div style="padding-top:18px;">' + btn(b.btnUrl, b.btnText, b.btnBg, b.btnTextColor, b.btnBorder) + '</div>' : '') + '</td></tr>';
       } else if (b.type === 'image') {
         if (b.full) {
-          const im = pushImg('slot-' + b.id + '-a', 600, 'image-pleine-largeur');
+          const im = pushImg(this._slot('slot-' + b.id + '-a'), 600, 'image-pleine-largeur');
           rows += '<tr><td bgcolor="#ffffff" style="background:#ffffff;padding:0;font-size:0;line-height:0;">' +
-            (im ? '<img src="' + im + '" width="600" alt="" style="display:block;width:100%;max-width:600px;height:auto;">' : '<div style="height:' + (b.height || 300) + 'px;background:#ECECEF;"></div>') + '</td></tr>';
+            (im ? linked(b.linkUrl, '<img src="' + im + '" width="600" alt="" style="display:block;width:100%;max-width:600px;height:auto;">') : '<div style="height:' + (b.height || 300) + 'px;background:#ECECEF;"></div>') + '</td></tr>';
         } else {
-          const im = pushImg('slot-' + b.id + '-a', 540, 'image');
+          const im = pushImg(this._slot('slot-' + b.id + '-a'), 540, 'image');
           const rad = (b.radius == null ? 14 : b.radius) + 'px';
           rows += '<tr><td class="px" bgcolor="#ffffff" style="background:#ffffff;padding:24px 32px;font-size:0;">' +
-            (im ? '<img src="' + im + '" width="536" alt="" style="display:block;width:100%;height:auto;border-radius:' + rad + ';">' : '<div style="height:' + (b.height || 300) + 'px;background:#ECECEF;border-radius:' + rad + ';"></div>') + '</td></tr>';
+            (im ? linked(b.linkUrl, '<img src="' + im + '" width="536" alt="" style="display:block;width:100%;height:auto;border-radius:' + rad + ';">') : '<div style="height:' + (b.height || 300) + 'px;background:#ECECEF;border-radius:' + rad + ';"></div>') + '</td></tr>';
         }
       } else if (b.type === 'produit') {
         const side = b.imgSide === 'right' ? 'right' : 'left';
@@ -2100,10 +2135,10 @@ class Component extends DCLogic {
         const bg = b.bg || '#FFFFFF';
         const colW = Math.round(536 * imgW / 100);
         const innerW = Math.max(80, panel ? colW - 44 : colW);
-        const im = pushImg('slot-' + b.id + '-a', innerW, 'produit-' + (b.title || 'visuel'));
+        const im = pushImg(this._slot('slot-' + b.id + '-a'), innerW, 'produit-' + (b.title || 'visuel'));
         const rad = b.imgShape === 'circle' ? '50%' : b.imgShape === 'rounded' ? ((b.imgRadius == null ? 8 : b.imgRadius) + 'px') : '0';
         const imgTag = im
-          ? '<img src="' + im + '" width="' + innerW + '" alt="' + esc(b.title) + '" style="display:block;width:100%;height:auto;border-radius:' + rad + ';">'
+          ? linked(b.linkUrl, '<img src="' + im + '" width="' + innerW + '" alt="' + esc(b.title) + '" style="display:block;width:100%;height:auto;border-radius:' + rad + ';">')
           : '<div style="height:' + (b.imgH || 300) + 'px;background:#ECECEF;border-radius:' + rad + ';"></div>';
         const imgCell = '<td class="stack" width="' + imgW + '%" valign="middle" style="vertical-align:middle;padding:0 9px;">'
           + (panel
@@ -2121,11 +2156,11 @@ class Component extends DCLogic {
           + (side === 'right' ? txtCell + imgCell : imgCell + txtCell)
           + '</tr></table></td></tr>';
       } else if (b.type === 'sticker') {
-        const im = pushImg('slot-' + b.id + '-sticker', b.size || 210, 'image-encadree');
+        const im = pushImg(this._slot('slot-' + b.id + '-sticker'), b.size || 210, 'image-encadree');
         const rad = b.shape === 'circle' ? '50%' : b.shape === 'rounded' ? ((b.radius || 18) + 'px') : '0';
         const ta = b.align === 'left' ? 'left' : b.align === 'right' ? 'right' : 'center';
         const framed = b.frame === 'polaroid' || b.frame === 'tape';
-        const imgTag = im ? '<img src="' + im + '" width="' + (b.size || 210) + '" alt="" style="display:block;width:' + (b.size || 210) + 'px;height:auto;border-radius:' + rad + ';">' : '<div style="width:' + (b.size || 210) + 'px;height:' + (b.size || 210) + 'px;background:#ECECEF;border-radius:' + rad + ';"></div>';
+        const imgTag = im ? linked(b.linkUrl, '<img src="' + im + '" width="' + (b.size || 210) + '" alt="" style="display:block;width:' + (b.size || 210) + 'px;height:auto;border-radius:' + rad + ';">') : '<div style="width:' + (b.size || 210) + 'px;height:' + (b.size || 210) + 'px;background:#ECECEF;border-radius:' + rad + ';"></div>';
         rows += '<tr><td bgcolor="#ffffff" align="' + ta + '" style="background:#ffffff;padding:24px 32px;text-align:' + ta + ';">' + (framed ? '<div style="display:inline-block;background:#fff;padding:9px 9px 28px;border:1px solid #ECECEF;' + (b.shadow ? 'box-shadow:0 14px 28px -14px rgba(0,0,0,.36);' : '') + '">' + imgTag + '</div>' : imgTag) + '</td></tr>';
       } else if (b.type === 'cards') {
         let inner = '';
@@ -2133,9 +2168,9 @@ class Component extends DCLogic {
         let cells = '';
         const cRad = (b.cardRadius == null ? 11 : b.cardRadius) + 'px';
         b.cards.forEach((c, idx) => {
-          const im = pushImg('slot-' + b.id + '-c' + idx, 180, 'cartes-image-' + (idx + 1));
+          const im = pushImg(this._slot('slot-' + b.id + '-c' + idx), 180, 'cartes-image-' + (idx + 1));
           cells += '<td class="stack" width="' + Math.floor(100 / b.cards.length) + '%" valign="top" style="padding:0 7px;vertical-align:top;">' +
-            (im ? '<img src="' + im + '" width="170" alt="" style="display:block;width:100%;height:auto;border-radius:' + cRad + ';">' : '<div style="height:' + (b.cardH || 120) + 'px;background:#ECECEF;border-radius:' + cRad + ';"></div>') +
+            (im ? linked(c.linkUrl, '<img src="' + im + '" width="170" alt="" style="display:block;width:100%;height:auto;border-radius:' + cRad + ';">') : '<div style="height:' + (b.cardH || 120) + 'px;background:#ECECEF;border-radius:' + cRad + ';"></div>') +
             '<div style="font-family:' + F + ';font-weight:800;font-size:13px;color:#141417;padding-top:10px;">' + esc(c.title) + '</div>' +
             '<div style="font-family:' + F + ';font-weight:500;font-size:12px;line-height:1.5;color:#8a8a93;padding-top:4px;">' + esc(c.desc) + '</div></td>';
         });
@@ -2159,13 +2194,13 @@ class Component extends DCLogic {
         const bakedOffer = await this._bakeOneforoneImage(b);
         const offerName = imgName('offre-1-achete-1-offert', bakedOffer.ext);
         files.push({ name: offerName, bytes: bakedOffer.bytes });
-        rows += '<tr><td bgcolor="#141417" style="background:#141417;padding:0;font-size:0;line-height:0;"><img src="' + offerName + '" width="600" alt="' + esc((b.line1 || '') + ' ' + (b.line2 || '')) + '" style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;text-decoration:none;"></td></tr>';
+        rows += '<tr><td bgcolor="#141417" style="background:#141417;padding:0;font-size:0;line-height:0;">' + linked(b.linkUrl, '<img src="' + offerName + '" width="600" alt="' + esc((b.line1 || '') + ' ' + (b.line2 || '')) + '" style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;text-decoration:none;">') + '</td></tr>';
       }
     }
 
     // floating stickers → centered (absolute positioning isn't email-safe)
     for (const st of this.state.stickers) {
-      const im = pushImg('sticker-' + st.id, st.size || 150, 'sticker-flottant');
+      const im = pushImg(this._slot('sticker-' + st.id), st.size || 150, 'sticker-flottant');
       if (!im) continue;
       const rad = st.shape === 'circle' ? '50%' : st.shape === 'rounded' ? ((st.radius || 18) + 'px') : '0';
       const framed = st.frame === 'polaroid' || st.frame === 'tape';
@@ -2391,8 +2426,8 @@ class Component extends DCLogic {
       isServices: b.type === 'services', isOneforone: b.type === 'oneforone',
       isSticker: b.type === 'sticker',
       typeLabel: this._LABELS[b.type] || 'Bloc',
-      slotA: 'slot-' + b.id + '-a', slotB: 'slot-' + b.id + '-b', slotC: 'slot-' + b.id + '-c',
-      slotFloat: 'slot-' + b.id + '-float',
+      slotA: this._slot('slot-' + b.id + '-a'), slotB: this._slot('slot-' + b.id + '-b'), slotC: this._slot('slot-' + b.id + '-c'),
+      slotFloat: this._slot('slot-' + b.id + '-float'),
       selected: sel, selFlag: sel ? '1' : '0',
       wrapStyle: 'position:relative;border-bottom:1px solid #F0F0F2;cursor:pointer;transition:box-shadow .12s ease,outline .12s ease;' + (sel ? 'outline:2px solid #FC1D37;outline-offset:-2px;' : '') + (dropBefore ? 'box-shadow:inset 0 5px 0 #FC1D37;' : '') + (dropAfter ? 'box-shadow:inset 0 -5px 0 #FC1D37;' : ''),
       onSelect: () => this.select(b.id),
@@ -2411,7 +2446,9 @@ class Component extends DCLogic {
       o.bnTextBtnStyle = TGL(o.showText);
       o.onToggleText = () => this.setField(b.id, 'showText', !o.showText);
       o.onImgH = (e) => this.setField(b.id, 'imgH', +e.target.value);
-      o.onReframe = reframe('slot-' + b.id + '-a');
+      o.onReframe = reframe(this._slot('slot-' + b.id + '-a'));
+      o.linkUrl = b.linkUrl || '';
+      o.onLinkUrl = (e) => this.setField(b.id, 'linkUrl', e.target.value);
       o.bnBtnStyle = 'display:inline-block;margin:20px 0 0;background:' + b.btnBg + ';color:' + b.btnColor + ';font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:20px;letter-spacing:.02em;padding:14px 34px;border-radius:50px;box-shadow:0 12px 22px -10px ' + b.btnBg + '88;';
       o.onTitle = (e) => this.setField(b.id, 'title', e.target.value);
       o.onSubtitle = (e) => this.setField(b.id, 'subtitle', e.target.value);
@@ -2480,6 +2517,8 @@ class Component extends DCLogic {
       o.onToggleShadow = () => this.toggle(b.id, 'shadow');
       o.onHeight = (e) => this.setField(b.id, 'height', +e.target.value);
       o.onRadius = (e) => this.setField(b.id, 'radius', +e.target.value);
+      o.linkUrl = b.linkUrl || '';
+      o.onLinkUrl = (e) => this.setField(b.id, 'linkUrl', e.target.value);
       o.onReframe = reframe(o.slotA);
     } else if (b.type === 'produit') {
       const side = b.imgSide === 'right' ? 'right' : 'left';
@@ -2543,6 +2582,8 @@ class Component extends DCLogic {
       o.onBtnUrl = (e) => this.setField(b.id, 'btnUrl', e.target.value);
       o.onBtnBg = (e) => this.setField(b.id, 'btnBg', e.target.value);
       o.onBtnTextColor = (e) => this.setField(b.id, 'btnTextColor', e.target.value);
+      o.linkUrl = b.linkUrl || '';
+      o.onLinkUrl = (e) => this.setField(b.id, 'linkUrl', e.target.value);
       o.onReframe = reframe(o.slotA);
     } else if (b.type === 'contact') {
       o.tel = b.tel; o.wa = b.wa;
@@ -2621,11 +2662,13 @@ class Component extends DCLogic {
       o.floatShapeRectStyle = tgl(floatShape === 'rect');
       o.floatShapeRoundedStyle = tgl(floatShape === 'rounded');
       o.floatShapeCircleStyle = tgl(floatShape === 'circle');
+      o.linkUrl = b.linkUrl || '';
+      o.onLinkUrl = (e) => this.setField(b.id, 'linkUrl', e.target.value);
     } else if (b.type === 'sticker') {
       const sh = b.shape || 'rounded', al = b.align || 'center', fr = b.frame || 'polaroid';
       const seg = (on) => 'flex:1;border:1px solid ' + (on ? '#141417' : '#DADADE') + ';background:' + (on ? '#141417' : '#fff') + ';border-radius:8px;padding:8px 4px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;cursor:pointer;color:' + (on ? '#fff' : '#56565e') + ';';
       o.size = b.size || 210; o.align = al; o.frame = fr; o.stkShape = sh; o.stkRadius = sh === 'rounded' ? String(b.radius || 18) : '0';
-      o.slotSticker = 'slot-' + b.id + '-sticker';
+      o.slotSticker = this._slot('slot-' + b.id + '-sticker');
       const ta = al === 'left' ? 'left' : al === 'right' ? 'right' : 'center';
       o.stkWrapStyle = 'padding:24px 32px;text-align:' + ta + ';background:#ffffff;';
       o.stkFrameStyle = 'position:relative;display:inline-block;line-height:0;' + ((fr === 'polaroid' || fr === 'tape') ? 'background:#fff;padding:9px 9px 28px;border:1px solid #ECECEF;' + (b.shadow ? 'box-shadow:0 14px 28px -14px rgba(0,0,0,.36);' : '') : '');
@@ -2633,6 +2676,8 @@ class Component extends DCLogic {
       o.stkTape = fr === 'tape';
       o.stkTapeStyle = 'position:absolute;top:-12px;left:50%;width:82px;height:24px;transform:translateX(-50%) rotate(-4deg);background:rgba(255,221,128,.78);box-shadow:0 1px 3px rgba(0,0,0,.14);z-index:3;';
       o.onReframe = () => { const el = this._canvasEl && this._canvasEl.querySelector('#' + o.slotSticker); if (el && typeof el.reframe === 'function') el.reframe(); };
+      o.linkUrl = b.linkUrl || '';
+      o.onLinkUrl = (e) => this.setField(b.id, 'linkUrl', e.target.value);
       o.onFrameNone = () => this.setField(b.id, 'frame', 'none'); o.onFramePolaroid = () => this.setField(b.id, 'frame', 'polaroid'); o.onFrameTape = () => this.setField(b.id, 'frame', 'tape');
       o.frameNoneStyle = seg(fr === 'none'); o.framePolaroidStyle = seg(fr === 'polaroid'); o.frameTapeStyle = seg(fr === 'tape');
       o.onShapeRect = () => this.setField(b.id, 'shape', 'rect'); o.onShapeRounded = () => this.setField(b.id, 'shape', 'rounded'); o.onShapeCircle = () => this.setField(b.id, 'shape', 'circle');
@@ -2666,12 +2711,14 @@ class Component extends DCLogic {
       o.cardSlotStyle = 'width:100%;height:' + o.cardH + 'px;display:block;';
       o.onCardH = (e) => this.setField(b.id, 'cardH', +e.target.value);
       o.onCardRadius = (e) => this.setField(b.id, 'cardRadius', +e.target.value);
-      o.cardItems = b.cards.map((c, idx) => ({ title: c.title, desc: c.desc, slot: 'slot-' + b.id + '-c' + idx }));
+      o.cardItems = b.cards.map((c, idx) => ({ title: c.title, desc: c.desc, slot: this._slot('slot-' + b.id + '-c' + idx) }));
       o.cardEdits = b.cards.map((c, idx) => ({
         title: c.title, desc: c.desc, num: 'Carte ' + (idx + 1),
         onTitle: (e) => this.cardItem(b.id, idx, 'title', e.target.value),
         onDesc: (e) => this.cardItem(b.id, idx, 'desc', e.target.value),
-        onReframe: reframe('slot-' + b.id + '-c' + idx),
+        onReframe: reframe(this._slot('slot-' + b.id + '-c' + idx)),
+        linkUrl: c.linkUrl || '',
+        onLinkUrl: (e) => this.cardItem(b.id, idx, 'linkUrl', e.target.value),
       }));
       o.onTitle = (e) => this.setField(b.id, 'title', e.target.value);
       o.onToggleTitle = () => this.toggle(b.id, 'showTitle');
@@ -2815,7 +2862,7 @@ class Component extends DCLogic {
       stickers: this.state.stickers.map((st) => {
         const ssel = st.id === this.state.selStickerId;
         return {
-          slot: 'sticker-' + st.id, shape: st.shape, radius: st.shape === 'rounded' ? String(st.radius) : '0',
+          slot: this._slot('sticker-' + st.id), shape: st.shape, radius: st.shape === 'rounded' ? String(st.radius) : '0',
           framed: st.frame === 'polaroid' || st.frame === 'tape',
           isTape: st.frame === 'tape',
           wrapStyle: 'position:absolute;left:' + st.x + 'px;top:' + st.y + 'px;z-index:30;cursor:pointer;' + (ssel ? 'outline:2px dashed #FC1D37;outline-offset:4px;' : ''),
