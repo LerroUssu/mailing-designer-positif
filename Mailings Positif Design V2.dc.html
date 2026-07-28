@@ -982,15 +982,25 @@
                         <div class="pd-label">Texte de la bande</div>
                         <input class="pd-input" onChange="{{ sel.onBandText }}" value="{{ sel.bandText }}">
                       </div>
-                      <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.4;color:#b1b1b8;margin:8px 0 0;">La bande s'adapte toute seule à son texte : plus de réglage de hauteur ni de position à ajuster.</p>
+                      <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.4;color:#b1b1b8;margin:8px 0 0;">La bande s'adapte toute seule à son texte. Réglez chaque coin du haut séparément pour l'incliner dans le sens que vous voulez.</p>
+                      <div class="pd-grid-2" style="margin-top:10px;">
+                        <div class="pd-slider">
+                          <div class="pd-slider-head"><span class="pd-slider-name">Coin haut gauche</span><span class="pd-slider-val">{{ sel.bandLeft }}px</span></div>
+                          <input type="range" min="0" max="90" step="1" value="{{ sel.bandLeft }}" onInput="{{ sel.onBandLeft }}">
+                        </div>
+                        <div class="pd-slider">
+                          <div class="pd-slider-head"><span class="pd-slider-name">Coin haut droit</span><span class="pd-slider-val">{{ sel.bandRight }}px</span></div>
+                          <input type="range" min="0" max="90" step="1" value="{{ sel.bandRight }}" onInput="{{ sel.onBandRight }}">
+                        </div>
+                      </div>
+                      <div class="pd-grid-2" style="margin-top:10px;">
+                        <button onClick="{{ sel.onBandFlat }}" style="border:1px solid #DADADE;background:#fff;border-radius:8px;padding:8px 4px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;cursor:pointer;color:#56565e;">Bande droite</button>
+                        <button onClick="{{ sel.onBandSwap }}" style="border:1px solid #DADADE;background:#fff;border-radius:8px;padding:8px 4px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;cursor:pointer;color:#56565e;">Inverser la pente</button>
+                      </div>
                       <div class="pd-grid-2" style="margin-top:10px;">
                         <div class="pd-slider">
                           <div class="pd-slider-head"><span class="pd-slider-name">Taille du texte</span><span class="pd-slider-val">{{ sel.bandTextSize }}px</span></div>
                           <input type="range" min="12" max="26" step="1" value="{{ sel.bandTextSize }}" onInput="{{ sel.onBandTextSize }}">
-                        </div>
-                        <div class="pd-slider">
-                          <div class="pd-slider-head"><span class="pd-slider-name">Inclinaison</span><span class="pd-slider-val">{{ sel.bandTilt }}px</span></div>
-                          <input type="range" min="0" max="60" step="1" value="{{ sel.bandTilt }}" onInput="{{ sel.onBandTilt }}">
                         </div>
                         <div class="pd-field"><div class="pd-label">Fond de la bande</div><input type="color" value="{{ sel.bandBg }}" onInput="{{ sel.onBandBg }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
                         <div class="pd-field"><div class="pd-label">Texte de la bande</div><input type="color" value="{{ sel.bandColor }}" onInput="{{ sel.onBandColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
@@ -1391,7 +1401,7 @@ class Component extends DCLogic {
       sub: "Vos disques A « jeune conducteur » floqués à votre nom. Commandez-en 50, on vous en imprime 100.",
       subSize: 15, subColor: '#FFFFFF', subWidth: 330,
       halftone: false, halftoneColor: '#FFFFFF',
-      band: false, bandText: '100 disques A pour le prix de 50', bandTextSize: 16, bandTilt: 26, bandBg: '#141417', bandColor: '#FFFFFF',
+      band: false, bandText: '100 disques A pour le prix de 50', bandTextSize: 16, bandLeft: 26, bandRight: 0, bandBg: '#141417', bandColor: '#FFFFFF',
       floatImg: false, floatFrame: 'none', floatShape: 'circle', floatShadow: true, floatX: 0, floatY: 0, floatSize: 130, floatRot: -7,
       linkUrl: '' };
     if (type === 'cta') return { id, type, text: "J'EN PROFITE MAINTENANT →", url: 'mailto:contact@positif.biz?subject=Demande%20Positif%20Design', btnBg: '#FC1D37', btnText: '#FFFFFF', size: 21 };
@@ -1479,7 +1489,10 @@ class Component extends DCLogic {
         // clamp the old tilt (a 0-110 clip value) into the new 0-60px range.
         delete next.bandHeight;
         delete next.bandTextBottom;
-        next.bandTilt = Math.max(0, Math.min(60, next.bandTilt == null ? 26 : next.bandTilt));
+        // The single tilt became two independent top corners.
+        if (next.bandLeft == null) next.bandLeft = Math.max(0, Math.min(90, next.bandTilt == null ? 26 : next.bandTilt));
+        if (next.bandRight == null) next.bandRight = 0;
+        delete next.bandTilt;
       }
       return next;
     });
@@ -1914,14 +1927,16 @@ class Component extends DCLogic {
       // Mirrors the DOM band: height derives from the text, the tilt only slopes
       // the top edge, so the text always lands inside the solid part.
       ctx.save();
-      const bandTilt = Math.max(0, Math.min(60, b.bandTilt == null ? 26 : b.bandTilt));
+      const bandLeft = Math.max(0, Math.min(90, b.bandLeft == null ? (b.bandTilt == null ? 26 : b.bandTilt) : b.bandLeft));
+      const bandRight = Math.max(0, Math.min(90, b.bandRight == null ? 0 : b.bandRight));
+      const bandDeep = Math.max(bandLeft, bandRight);
       const bandSize = b.bandTextSize || 16;
-      const bandHeight = bandTilt + 20 + bandSize * 1.35 + 22;
+      const bandHeight = bandDeep + 20 + bandSize * 1.35 + 22;
       const bandTop = Math.max(0, h - bandHeight);
       ctx.fillStyle = b.bandBg || '#141417';
       ctx.beginPath();
-      ctx.moveTo(0, bandTop + bandTilt);
-      ctx.lineTo(w, bandTop);
+      ctx.moveTo(0, bandTop + bandLeft);
+      ctx.lineTo(w, bandTop + bandRight);
       ctx.lineTo(w, h);
       ctx.lineTo(0, h);
       ctx.closePath();
@@ -1930,7 +1945,7 @@ class Component extends DCLogic {
       ctx.font = '800 ' + bandSize + 'px ' + font;
       ctx.textBaseline = 'middle';
       ctx.textAlign = 'center';
-      ctx.fillText(String(b.bandText || ''), w / 2, bandTop + bandTilt + 20 + bandSize * 0.68);
+      ctx.fillText(String(b.bandText || ''), w / 2, bandTop + bandDeep + 20 + bandSize * 0.68);
       ctx.restore();
     }
 
@@ -2585,7 +2600,10 @@ class Component extends DCLogic {
       o.splitBtnStyle = 'flex:1;border:none;border-radius:50px;padding:9px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (b.split ? 'background:#141417;color:#fff;' : 'background:#ECECEF;color:#56565e;');
       o.halftone = !!b.halftone; o.band = !!b.band; o.bandText = b.bandText;
       o.bandTextSize = b.bandTextSize || 16;
-      o.bandTilt = b.bandTilt == null ? 26 : b.bandTilt;
+      // Top-left and top-right corners are independent, so the band can slope either
+      // way (or stay flat) instead of being locked to one direction.
+      o.bandLeft = b.bandLeft == null ? (b.bandTilt == null ? 26 : b.bandTilt) : b.bandLeft;
+      o.bandRight = b.bandRight == null ? 0 : b.bandRight;
       o.bandBg = b.bandBg || '#141417'; o.bandColor = b.bandColor || '#FFFFFF';
       o.floatImg = !!b.floatImg;
       // The deco image is absolutely positioned, so the block must reserve room for it.
@@ -2595,8 +2613,11 @@ class Component extends DCLogic {
       // The band is a normal flow element that sizes to its own text, so the tilt is
       // purely cosmetic and can never push the text out of the black. The top padding
       // clears the sloped edge; no height or text-offset slider is needed.
-      o.bandWrapStyle = 'position:relative;z-index:3;margin:' + Math.max(24, o.padY) + 'px -34px 0;background:' + o.bandBg + ';clip-path:polygon(0 ' + o.bandTilt + 'px, 100% 0, 100% 100%, 0 100%);';
-      o.bandTextStyle = 'padding:' + (o.bandTilt + 20) + 'px 26px 22px;text-align:center;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:' + o.bandTextSize + 'px;letter-spacing:.03em;line-height:1.35;color:' + o.bandColor + ';';
+      // Text clears whichever corner cuts deepest, so it stays inside the black
+      // whatever slope direction is chosen.
+      const bandDeep = Math.max(o.bandLeft, o.bandRight);
+      o.bandWrapStyle = 'position:relative;z-index:3;margin:' + Math.max(24, o.padY) + 'px -34px 0;background:' + o.bandBg + ';clip-path:polygon(0 ' + o.bandLeft + 'px, 100% ' + o.bandRight + 'px, 100% 100%, 0 100%);';
+      o.bandTextStyle = 'padding:' + (bandDeep + 20) + 'px 26px 22px;text-align:center;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:' + o.bandTextSize + 'px;letter-spacing:.03em;line-height:1.35;color:' + o.bandColor + ';';
       const tgl = (on) => 'border:none;border-radius:50px;padding:9px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (on ? 'background:#141417;color:#fff;' : 'background:#ECECEF;color:#56565e;');
       o.halftoneBtnStyle = tgl(b.halftone); o.bandBtnStyle = tgl(b.band); o.floatBtnStyle = tgl(b.floatImg);
       o.alignLeftStyle = SEG(o.align === 'left'); o.alignCenterStyle = SEG(o.align === 'center'); o.alignRightStyle = SEG(o.align === 'right');
@@ -2608,7 +2629,10 @@ class Component extends DCLogic {
       o.onToggleFloat = () => this.toggle(b.id, 'floatImg');
       o.onBandText = (e) => this.setField(b.id, 'bandText', e.target.value);
       o.onBandTextSize = (e) => this.setField(b.id, 'bandTextSize', +e.target.value);
-      o.onBandTilt = (e) => this.setField(b.id, 'bandTilt', +e.target.value);
+      o.onBandLeft = (e) => this.setField(b.id, 'bandLeft', +e.target.value);
+      o.onBandRight = (e) => this.setField(b.id, 'bandRight', +e.target.value);
+      o.onBandFlat = () => this.setState(s => ({ blocks: s.blocks.map(x => x.id === b.id ? { ...x, bandLeft: 0, bandRight: 0 } : x) }));
+      o.onBandSwap = () => this.setState(s => ({ blocks: s.blocks.map(x => x.id === b.id ? { ...x, bandLeft: o.bandRight, bandRight: o.bandLeft } : x) }));
       o.onBg = (e) => this.setField(b.id, 'bg', e.target.value);
       o.onPadY = (e) => this.setField(b.id, 'padY', +e.target.value);
       o.onKickerBg = (e) => this.setField(b.id, 'kickerBg', e.target.value);
