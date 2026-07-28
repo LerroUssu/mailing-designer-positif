@@ -2323,10 +2323,15 @@ class Component extends DCLogic {
       // images fall back to bgcolor, which is why the solid colour stays on the cell.
       let bgName = '';
       if (S.bgArt !== false) {
-        bgName = await asset(S.bgFile || 'sig-flyer-bg-clean.svg', 600, 'signature-flyer-fond') || '';
+        // The artwork is inset inside its own viewBox; trim that margin so the
+        // background reaches both edges the way `cover` does in the builder.
+        try {
+          const baked = await this._rasterizeAsset('assets/' + (S.bgFile || 'sig-flyer-bg-clean.svg'), 600, [0.03, 0.97]);
+          if (baked) { bgName = imgName('signature-flyer-fond', 'png'); files.push({ name: bgName, bytes: baked.bytes }); }
+        } catch (e) {}
       }
       const panelBg = bgName
-        ? 'background-color:' + S.bg + ';background-image:url(' + bgName + ');background-repeat:no-repeat;background-position:top center;background-size:100% 100%;'
+        ? 'background-color:' + S.bg + ';background-image:url(' + bgName + ');background-repeat:no-repeat;background-position:bottom center;background-size:cover;'
         : 'background:' + S.bg + ';';
 
       const flLogo = logoName;
@@ -2354,15 +2359,15 @@ class Component extends DCLogic {
               if (baked) { name = imgName(base + '-' + label.toLowerCase(), 'png'); files.push({ name, bytes: baked.bytes }); }
             } catch (e) {}
             const tag = name ? '<img src="' + name + '" width="' + Math.round(cellW / 2) + '" alt="' + esc(label) + '" style="display:block;width:100%;height:auto;border:0;">' : '&nbsp;';
-            halves.push('<td width="50%" valign="top" style="vertical-align:top;padding:0;font-size:0;line-height:0;">' + linked(url, tag) + '</td>');
+            halves.push('<td width="50%" valign="bottom" style="vertical-align:bottom;padding:0;font-size:0;line-height:0;">' + linked(url, tag) + '</td>');
           }
-          cellsHtml.push('<td width="33%" valign="top" style="vertical-align:top;padding:4px;">'
+          cellsHtml.push('<td width="33%" valign="bottom" style="vertical-align:bottom;padding:4px;">'
             + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>' + halves.join('') + '</tr></table></td>');
           continue;
         }
         const im = await asset(t.file, cellW, base);
         const tag = im ? '<img src="' + im + '" width="' + cellW + '" alt="' + esc(t.alt) + '" style="display:block;width:100%;height:auto;border:0;">' : '&nbsp;';
-        cellsHtml.push('<td width="33%" valign="top" style="vertical-align:top;padding:4px;">' + linked(t.url, tag) + '</td>');
+        cellsHtml.push('<td width="33%" valign="bottom" style="vertical-align:bottom;padding:4px;">' + linked(t.url, tag) + '</td>');
       }
       let grid = '';
       for (let i = 0; i < cellsHtml.length; i += 3) {
@@ -3067,14 +3072,14 @@ class Component extends DCLogic {
       flLogoSrc: 'assets/' + (FL.logoFile || 'logo.svg'),
       flNfcSrc: 'assets/' + (FL.nfcFile || 'sig-nfc-band.svg'),
       flWrapStyle: 'position:relative;overflow:hidden;background-color:' + FL.bg + ';padding:46px 40px 0;'
-        + (FL.bgArt !== false ? "background-image:url('assets/" + (FL.bgFile || 'sig-flyer-bg-clean.svg') + "');background-size:100% 100%;background-repeat:no-repeat;background-position:center;" : ''),
+        + (FL.bgArt !== false ? "background-image:url('assets/" + (FL.bgFile || 'sig-flyer-bg-clean.svg') + "');background-size:cover;background-repeat:no-repeat;background-position:center bottom;" : ''),
       flKickerStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.34em;color:' + FL.textColor + ';text-transform:uppercase;',
       flYearStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10.5px;letter-spacing:.34em;color:' + FL.accent + ';',
       flPhoneStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:18px;letter-spacing:.13em;color:' + FL.textColor + ';margin:16px 0 0;',
       flEmailStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12.5px;letter-spacing:.06em;color:' + FL.accent + ';',
       flAddressStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:10.5px;letter-spacing:.03em;color:' + FL.textColor + ';margin:9px 0 0;',
       flWebStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12.5px;letter-spacing:.13em;color:' + FL.textColor + ';margin:7px 0 0;',
-      flGridStyle: 'position:relative;z-index:2;display:flex;flex-wrap:wrap;gap:7px;margin:26px 0 0;',
+      flGridStyle: 'position:relative;z-index:2;display:flex;flex-wrap:wrap;align-items:flex-end;gap:7px;margin:26px 0 0;',
       flTileStyle: 'flex:0 0 calc((100% - 14px) / 3);max-width:calc((100% - 14px) / 3);line-height:0;',
       flTileImgStyle: 'width:100%;height:auto;display:block;',
       flNfcWrapStyle: 'position:relative;z-index:2;margin:26px -40px 0;line-height:0;',
