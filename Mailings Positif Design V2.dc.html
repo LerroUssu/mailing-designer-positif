@@ -382,27 +382,32 @@
                 <sc-if value="{{ b.isOneforone }}" hint-placeholder-val="{{ false }}">
                   <div style="{{ b.ofWrapStyle }}">
                     <sc-if value="{{ b.halftone }}" hint-placeholder-val="{{ false }}">
-                      <div style="position:absolute;top:-40px;right:-40px;width:380px;height:380px;background-image:radial-gradient(circle, rgba(255,255,255,.9) 30%, transparent 33%);background-size:27px 27px;-webkit-mask-image:radial-gradient(circle at 72% 28%, #000 0%, transparent 56%);mask-image:radial-gradient(circle at 72% 28%, #000 0%, transparent 56%);z-index:1;pointer-events:none;"></div>
-                    </sc-if>
-                    <sc-if value="{{ b.band }}" hint-placeholder-val="{{ false }}">
-                      <div style="{{ b.bandShapeStyle }}"></div>
-                      <div style="{{ b.bandTextStyle }}">{{ b.bandText }}</div>
+                      <div style="{{ b.halftoneStyle }}"></div>
                     </sc-if>
                     <div style="{{ b.textGroupStyle }}">
-                      <span style="{{ b.kickerStyle }}">{{ b.kicker }}</span>
-                      <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:62px;line-height:.94;color:#fff;letter-spacing:.01em;margin:16px 0 0;white-space:nowrap;text-shadow:3px 4px 0 rgba(20,20,30,.20);">{{ b.line1 }}</div>
+                      <sc-if value="{{ b.hasKicker }}" hint-placeholder-val="{{ true }}">
+                        <span style="{{ b.kickerStyle }}">{{ b.kicker }}</span>
+                      </sc-if>
+                      <div style="{{ b.line1Style }}">{{ b.line1 }}</div>
                       <sc-if value="{{ b.split }}" hint-placeholder-val="{{ true }}">
                         <div style="margin:6px 0 0;"><span style="{{ b.line2Style }}">{{ b.line2 }}</span></div>
                       </sc-if>
                       <sc-if value="{{ b.notSplit }}" hint-placeholder-val="{{ false }}">
                         <div style="margin:6px 0 0;"><span style="{{ b.line2PlainStyle }}">{{ b.line2 }}</span></div>
                       </sc-if>
-                      <p style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:15px;line-height:1.45;color:#fff;margin:20px 0 0;max-width:330px;">{{ b.sub }}</p>
+                      <sc-if value="{{ b.hasSub }}" hint-placeholder-val="{{ true }}">
+                        <p style="{{ b.subStyle }}">{{ b.sub }}</p>
+                      </sc-if>
                     </div>
                     <sc-if value="{{ b.floatImg }}" hint-placeholder-val="{{ false }}">
                       <div style="{{ b.floatFrameStyle }}">
                         <sc-if value="{{ b.floatTape }}" hint-placeholder-val="{{ false }}"><div style="{{ b.floatTapeStyle }}"></div></sc-if>
                         <image-slot id="{{ b.slotFloat }}" style="{{ b.floatImgStyle }}" shape="{{ b.floatShape }}" radius="{{ b.floatRadius }}" placeholder="Image déco"></image-slot>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ b.band }}" hint-placeholder-val="{{ false }}">
+                      <div style="{{ b.bandWrapStyle }}">
+                        <div style="{{ b.bandTextStyle }}">{{ b.bandText }}</div>
                       </div>
                     </sc-if>
                   </div>
@@ -892,24 +897,67 @@
                   </div>
 
                   <div class="pd-section">
-                    <div class="pd-section-title">Texte principal</div>
-                    <div class="pd-grid-2">
+                    <div class="pd-section-title">Mise en page</div>
+                    <div class="pd-label" style="margin-bottom:6px;">Alignement du texte</div>
+                    <div style="display:flex;gap:7px;">
+                      <button onClick="{{ sel.onAlignLeft }}" style="{{ sel.alignLeftStyle }}">Gauche</button>
+                      <button onClick="{{ sel.onAlignCenter }}" style="{{ sel.alignCenterStyle }}">Centre</button>
+                      <button onClick="{{ sel.onAlignRight }}" style="{{ sel.alignRightStyle }}">Droite</button>
+                    </div>
+                    <div class="pd-grid-3" style="margin-top:12px;">
                       <div class="pd-slider">
-                        <div class="pd-slider-head"><span class="pd-slider-name">Position X</span><span class="pd-slider-val">{{ sel.textX }}px</span></div>
-                        <input type="range" min="-120" max="120" step="1" value="{{ sel.textX }}" onInput="{{ sel.onTextX }}">
+                        <div class="pd-slider-head"><span class="pd-slider-name">Ligne 1</span><span class="pd-slider-val">{{ sel.line1Size }}px</span></div>
+                        <input type="range" min="24" max="86" step="1" value="{{ sel.line1Size }}" onInput="{{ sel.onLine1Size }}">
                       </div>
                       <div class="pd-slider">
-                        <div class="pd-slider-head"><span class="pd-slider-name">Position Y</span><span class="pd-slider-val">{{ sel.textY }}px</span></div>
-                        <input type="range" min="-90" max="110" step="1" value="{{ sel.textY }}" onInput="{{ sel.onTextY }}">
+                        <div class="pd-slider-head"><span class="pd-slider-name">Ligne 2</span><span class="pd-slider-val">{{ sel.line2Size }}px</span></div>
+                        <input type="range" min="20" max="76" step="1" value="{{ sel.line2Size }}" onInput="{{ sel.onLine2Size }}">
+                      </div>
+                      <div class="pd-slider">
+                        <div class="pd-slider-head"><span class="pd-slider-name">Sous-texte</span><span class="pd-slider-val">{{ sel.subSize }}px</span></div>
+                        <input type="range" min="11" max="24" step="1" value="{{ sel.subSize }}" onInput="{{ sel.onSubSize }}">
+                      </div>
+                      <div class="pd-slider">
+                        <div class="pd-slider-head"><span class="pd-slider-name">Largeur sous-texte</span><span class="pd-slider-val">{{ sel.subWidth }}px</span></div>
+                        <input type="range" min="180" max="530" step="5" value="{{ sel.subWidth }}" onInput="{{ sel.onSubWidth }}">
+                      </div>
+                      <div class="pd-slider">
+                        <div class="pd-slider-head"><span class="pd-slider-name">Marge haut/bas</span><span class="pd-slider-val">{{ sel.padY }}px</span></div>
+                        <input type="range" min="12" max="80" step="1" value="{{ sel.padY }}" onInput="{{ sel.onPadY }}">
                       </div>
                     </div>
                     <div style="height:1px;background:#ECECF1;margin:12px 0;"></div>
                     <div class="pd-grid-2">
                       <button onClick="{{ sel.onToggleSplit }}" style="{{ sel.splitBtnStyle }}">Bande noire ligne 2</button>
                       <div class="pd-slider">
-                        <div class="pd-slider-head"><span class="pd-slider-name">Inclinaison</span><span class="pd-slider-val">{{ sel.line2Tilt }}°</span></div>
+                        <div class="pd-slider-head"><span class="pd-slider-name">Inclinaison ligne 2</span><span class="pd-slider-val">{{ sel.line2Tilt }}°</span></div>
                         <input type="range" min="-18" max="18" step="1" value="{{ sel.line2Tilt }}" onInput="{{ sel.onLine2Tilt }}">
                       </div>
+                    </div>
+                    <div style="height:1px;background:#ECECF1;margin:12px 0;"></div>
+                    <div class="pd-grid-2">
+                      <div class="pd-slider">
+                        <div class="pd-slider-head"><span class="pd-slider-name">Décalage X</span><span class="pd-slider-val">{{ sel.textX }}px</span></div>
+                        <input type="range" min="-120" max="120" step="1" value="{{ sel.textX }}" onInput="{{ sel.onTextX }}">
+                      </div>
+                      <div class="pd-slider">
+                        <div class="pd-slider-head"><span class="pd-slider-name">Décalage Y</span><span class="pd-slider-val">{{ sel.textY }}px</span></div>
+                        <input type="range" min="-90" max="110" step="1" value="{{ sel.textY }}" onInput="{{ sel.onTextY }}">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="pd-section">
+                    <div class="pd-section-title">Couleurs</div>
+                    <div class="pd-grid-3">
+                      <div class="pd-field"><div class="pd-label">Fond</div><input type="color" value="{{ sel.bg }}" onInput="{{ sel.onBg }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
+                      <div class="pd-field"><div class="pd-label">Accroche fond</div><input type="color" value="{{ sel.kickerBg }}" onInput="{{ sel.onKickerBg }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
+                      <div class="pd-field"><div class="pd-label">Accroche texte</div><input type="color" value="{{ sel.kickerColor }}" onInput="{{ sel.onKickerColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
+                      <div class="pd-field"><div class="pd-label">Ligne 1</div><input type="color" value="{{ sel.line1Color }}" onInput="{{ sel.onLine1Color }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
+                      <div class="pd-field"><div class="pd-label">Ligne 2 fond</div><input type="color" value="{{ sel.line2Bg }}" onInput="{{ sel.onLine2Bg }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
+                      <div class="pd-field"><div class="pd-label">Ligne 2 texte</div><input type="color" value="{{ sel.line2Color }}" onInput="{{ sel.onLine2Color }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
+                      <div class="pd-field"><div class="pd-label">Sous-texte</div><input type="color" value="{{ sel.subColor }}" onInput="{{ sel.onSubColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
+                      <div class="pd-field"><div class="pd-label">Pois Ben-Day</div><input type="color" value="{{ sel.halftoneColor }}" onInput="{{ sel.onHalftoneColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
                     </div>
                   </div>
 
@@ -934,23 +982,18 @@
                         <div class="pd-label">Texte de la bande</div>
                         <input class="pd-input" onChange="{{ sel.onBandText }}" value="{{ sel.bandText }}">
                       </div>
-                      <div class="pd-grid-3" style="margin-top:10px;">
+                      <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.4;color:#b1b1b8;margin:8px 0 0;">La bande s'adapte toute seule à son texte : plus de réglage de hauteur ni de position à ajuster.</p>
+                      <div class="pd-grid-2" style="margin-top:10px;">
                         <div class="pd-slider">
-                          <div class="pd-slider-head"><span class="pd-slider-name">Taille</span><span class="pd-slider-val">{{ sel.bandTextSize }}px</span></div>
+                          <div class="pd-slider-head"><span class="pd-slider-name">Taille du texte</span><span class="pd-slider-val">{{ sel.bandTextSize }}px</span></div>
                           <input type="range" min="12" max="26" step="1" value="{{ sel.bandTextSize }}" onInput="{{ sel.onBandTextSize }}">
                         </div>
                         <div class="pd-slider">
-                          <div class="pd-slider-head"><span class="pd-slider-name">Texte Y</span><span class="pd-slider-val">{{ sel.bandTextBottom }}px</span></div>
-                          <input type="range" min="10" max="70" step="1" value="{{ sel.bandTextBottom }}" onInput="{{ sel.onBandTextBottom }}">
-                        </div>
-                        <div class="pd-slider">
-                          <div class="pd-slider-head"><span class="pd-slider-name">Hauteur</span><span class="pd-slider-val">{{ sel.bandHeight }}px</span></div>
-                          <input type="range" min="58" max="180" step="2" value="{{ sel.bandHeight }}" onInput="{{ sel.onBandHeight }}">
-                        </div>
-                        <div class="pd-slider">
                           <div class="pd-slider-head"><span class="pd-slider-name">Inclinaison</span><span class="pd-slider-val">{{ sel.bandTilt }}px</span></div>
-                          <input type="range" min="0" max="110" step="1" value="{{ sel.bandTilt }}" onInput="{{ sel.onBandTilt }}">
+                          <input type="range" min="0" max="60" step="1" value="{{ sel.bandTilt }}" onInput="{{ sel.onBandTilt }}">
                         </div>
+                        <div class="pd-field"><div class="pd-label">Fond de la bande</div><input type="color" value="{{ sel.bandBg }}" onInput="{{ sel.onBandBg }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
+                        <div class="pd-field"><div class="pd-label">Texte de la bande</div><input type="color" value="{{ sel.bandColor }}" onInput="{{ sel.onBandColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
                       </div>
                     </div>
                   </sc-if>
@@ -997,110 +1040,6 @@
                       </div>
                       <button onClick="{{ sel.onFloatReframe }}" style="width:100%;border:none;border-radius:50px;padding:9px;margin-top:12px;background:#141417;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;">Recadrer l'image uploadée</button>
                     </div>
-                  </sc-if>
-                </div>
-                <div style="display:none;">
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin-bottom:6px;">Accroche</div>
-                  <input onChange="{{ sel.onKicker }}" value="{{ sel.kicker }}" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;">
-                  <div style="display:flex;gap:10px;margin-top:12px;">
-                    <div style="flex:1;">
-                      <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin-bottom:6px;">Ligne 1</div>
-                      <input onChange="{{ sel.onLine1 }}" value="{{ sel.line1 }}" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12.5px;color:#34343c;outline:none;">
-                    </div>
-                    <div style="flex:1;">
-                      <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin-bottom:6px;">Ligne 2</div>
-                      <input onChange="{{ sel.onLine2 }}" value="{{ sel.line2 }}" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12.5px;color:#34343c;outline:none;">
-                    </div>
-                  </div>
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Sous-texte</div>
-                  <textarea onChange="{{ sel.onSub }}" value="{{ sel.sub }}" rows="3" style="width:100%;box-sizing:border-box;resize:vertical;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;"></textarea>
-                  <button onClick="{{ sel.onToggleSplit }}" style="{{ sel.splitBtnStyle }};width:100%;margin-top:14px;">Bandeau noir incliné · ligne 2</button>
-
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.06em;color:#141417;text-transform:uppercase;margin:18px 0 8px;">Position du texte</div>
-                  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 6px;">
-                    <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">X</span>
-                    <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.textX }}px</span>
-                  </div>
-                  <input type="range" min="-120" max="120" step="1" value="{{ sel.textX }}" onInput="{{ sel.onTextX }}" style="width:100%;">
-                  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 6px;">
-                    <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">Y</span>
-                    <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.textY }}px</span>
-                  </div>
-                  <input type="range" min="-90" max="110" step="1" value="{{ sel.textY }}" onInput="{{ sel.onTextY }}" style="width:100%;">
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.06em;color:#141417;text-transform:uppercase;margin:18px 0 8px;">Bande noire ligne 2</div>
-                  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 6px;">
-                    <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">Inclinaison</span>
-                    <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.line2Tilt }}°</span>
-                  </div>
-                  <input type="range" min="-18" max="18" step="1" value="{{ sel.line2Tilt }}" onInput="{{ sel.onLine2Tilt }}" style="width:100%;">
-
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.06em;color:#141417;text-transform:uppercase;margin:18px 0 8px;">Décoration</div>
-                  <div style="display:flex;flex-direction:column;gap:8px;">
-                    <button onClick="{{ sel.onToggleHalftone }}" style="{{ sel.halftoneBtnStyle }};width:100%;">Effet pois Ben-Day</button>
-                    <button onClick="{{ sel.onToggleFloat }}" style="{{ sel.floatBtnStyle }};width:100%;">Image déco</button>
-                    <button onClick="{{ sel.onToggleBand }}" style="{{ sel.bandBtnStyle }};width:100%;">Bande noire en bas</button>
-                  </div>
-                  <sc-if value="{{ sel.band }}" hint-placeholder-val="{{ false }}">
-                    <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Texte de la bande</div>
-                    <input onChange="{{ sel.onBandText }}" value="{{ sel.bandText }}" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;">
-                    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 6px;">
-                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">Taille</span>
-                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.bandTextSize }}px</span>
-                    </div>
-                    <input type="range" min="12" max="26" step="1" value="{{ sel.bandTextSize }}" onInput="{{ sel.onBandTextSize }}" style="width:100%;">
-                    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 6px;">
-                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">Position verticale</span>
-                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.bandTextBottom }}px</span>
-                    </div>
-                    <input type="range" min="10" max="70" step="1" value="{{ sel.bandTextBottom }}" onInput="{{ sel.onBandTextBottom }}" style="width:100%;">
-                    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 6px;">
-                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">Inclinaison bande</span>
-                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.bandTilt }}px</span>
-                    </div>
-                    <input type="range" min="0" max="110" step="1" value="{{ sel.bandTilt }}" onInput="{{ sel.onBandTilt }}" style="width:100%;">
-                    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 6px;">
-                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">Hauteur bande</span>
-                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.bandHeight }}px</span>
-                    </div>
-                    <input type="range" min="58" max="180" step="2" value="{{ sel.bandHeight }}" onInput="{{ sel.onBandHeight }}" style="width:100%;">
-                  </sc-if>
-                  <sc-if value="{{ sel.floatImg }}" hint-placeholder-val="{{ false }}">
-                    <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12px;line-height:1.5;color:#9a9aa2;margin:12px 0 0;">Déposez votre image dans la zone déco du bloc.</p>
-                    <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Cadre image déco</div>
-                    <div style="display:flex;gap:6px;">
-                      <button onClick="{{ sel.onFloatFrameNone }}" style="{{ sel.floatFrameNoneStyle }}">Simple</button>
-                      <button onClick="{{ sel.onFloatFramePolaroid }}" style="{{ sel.floatFramePolaroidStyle }}">Polaroïd</button>
-                      <button onClick="{{ sel.onFloatFrameTape }}" style="{{ sel.floatFrameTapeStyle }}">Scotch</button>
-                    </div>
-                    <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Forme image déco</div>
-                    <div style="display:flex;gap:6px;">
-                      <button onClick="{{ sel.onFloatShapeRect }}" style="{{ sel.floatShapeRectStyle }}">Carré</button>
-                      <button onClick="{{ sel.onFloatShapeRounded }}" style="{{ sel.floatShapeRoundedStyle }}">Arrondi</button>
-                      <button onClick="{{ sel.onFloatShapeCircle }}" style="{{ sel.floatShapeCircleStyle }}">Rond</button>
-                    </div>
-                    <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Taille image déco</div>
-                    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 6px;">
-                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">Taille</span>
-                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.floatSize }}px</span>
-                    </div>
-                    <input type="range" min="70" max="230" step="1" value="{{ sel.floatSize }}" onInput="{{ sel.onFloatSize }}" style="width:100%;">
-                    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 6px;">
-                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">Rotation</span>
-                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.floatRot }}°</span>
-                    </div>
-                    <input type="range" min="-35" max="35" step="1" value="{{ sel.floatRot }}" onInput="{{ sel.onFloatRot }}" style="width:100%;">
-                    <button onClick="{{ sel.onFloatReframe }}" style="width:100%;border:none;border-radius:50px;padding:9px;margin-top:10px;background:#141417;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;">Recadrer l’image uploadée</button>
-                    <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Position image déco</div>
-                    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 6px;">
-                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">X</span>
-                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.floatX }}px</span>
-                    </div>
-                    <input type="range" min="-160" max="160" step="1" value="{{ sel.floatX }}" onInput="{{ sel.onFloatX }}" style="width:100%;">
-                    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 6px;">
-                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">Y</span>
-                      <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;color:#141417;">{{ sel.floatY }}px</span>
-                    </div>
-                    <input type="range" min="-140" max="140" step="1" value="{{ sel.floatY }}" onInput="{{ sel.onFloatY }}" style="width:100%;">
                   </sc-if>
                 </div>
               </sc-if>
@@ -1444,7 +1383,17 @@ class Component extends DCLogic {
       { title: 'Titre carte', desc: 'Un court descriptif de ce produit ou service.', linkUrl: '' },
     ] };
     if (type === 'flash') return { id, type, color: '#FC1D37', textColor: '#FFFFFF', textSize: 13, text: "OFFRE FLASH · STOCK LIMITÉ · JUSQU'AU 30 JUIN 2026" };
-    if (type === 'oneforone') return { id, type, split: true, kicker: 'SPÉCIAL AUTO-ÉCOLES · VENTE FLASH', line1: '1 ACHETÉ', line2: '1 OFFERT', sub: "Vos disques A « jeune conducteur » floqués à votre nom. Commandez-en 50, on vous en imprime 100.", halftone: false, band: false, bandText: '100 disques A pour le prix de 50', bandTextSize: 16, bandTextBottom: 24, bandHeight: 94, bandTilt: 34, textX: 0, textY: 0, line2Tilt: -7, floatImg: false, floatFrame: 'none', floatShape: 'circle', floatShadow: true, floatX: 0, floatY: 0, floatSize: 130, floatRot: -7, linkUrl: '' };
+    if (type === 'oneforone') return { id, type,
+      bg: '#FC1D37', padY: 34, align: 'left',
+      kicker: 'SPÉCIAL AUTO-ÉCOLES · VENTE FLASH', kickerBg: '#141417', kickerColor: '#FFFFFF',
+      line1: '1 ACHETÉ', line1Size: 62, line1Color: '#FFFFFF',
+      split: true, line2: '1 OFFERT', line2Size: 50, line2Bg: '#141417', line2Color: '#FFFFFF', line2Tilt: -7,
+      sub: "Vos disques A « jeune conducteur » floqués à votre nom. Commandez-en 50, on vous en imprime 100.",
+      subSize: 15, subColor: '#FFFFFF', subWidth: 330,
+      halftone: false, halftoneColor: '#FFFFFF',
+      band: false, bandText: '100 disques A pour le prix de 50', bandTextSize: 16, bandTilt: 26, bandBg: '#141417', bandColor: '#FFFFFF',
+      floatImg: false, floatFrame: 'none', floatShape: 'circle', floatShadow: true, floatX: 0, floatY: 0, floatSize: 130, floatRot: -7,
+      linkUrl: '' };
     if (type === 'cta') return { id, type, text: "J'EN PROFITE MAINTENANT →", url: 'mailto:contact@positif.biz?subject=Demande%20Positif%20Design', btnBg: '#FC1D37', btnText: '#FFFFFF', size: 21 };
     if (type === 'contact') return { id, type, tel: '01.48.29.15.51', wa: '06 18 70 11 18', telBg: '#FFFFFF', telText: '#141417', telBorder: '#141417', telDot: true, telDotColor: '#FC1D37', waBg: '#25D366', waText: '#FFFFFF' };
     if (type === 'texte') return { id, type, title: 'UN TITRE QUI ACCROCHE', subtitle: "Présentez ici un service, une actualité ou un produit. Deux à trois lignes suffisent pour donner envie d'en savoir plus.", showBtn: true, btnText: 'DÉCOUVRIR →', btnUrl: 'https://positifdesign.fr', btnBg: '#FFFFFF', btnTextColor: '#141417', btnBorder: '#141417', titleColor: '#141417', textColor: '#5C5C64', bg: '#FFFFFF', align: 'left', titleSize: 28, textSize: 15 };
@@ -1525,9 +1474,12 @@ class Component extends DCLogic {
     return (blocks || []).map((b) => {
       const next = { ...b, id: this._nextId++ };
       if (next.type === 'oneforone') {
-        if (next.bandHeight == null || next.bandHeight === 132) next.bandHeight = 94;
-        if (next.bandTextBottom == null || next.bandTextBottom === 34) next.bandTextBottom = 24;
-        if (next.bandTilt == null || next.bandTilt === 68) next.bandTilt = 34;
+        // The band used to be an absolutely-positioned wedge tuned by height and a
+        // text offset; it now sizes itself to its text. Drop the dead fields and
+        // clamp the old tilt (a 0-110 clip value) into the new 0-60px range.
+        delete next.bandHeight;
+        delete next.bandTextBottom;
+        next.bandTilt = Math.max(0, Math.min(60, next.bandTilt == null ? 26 : next.bandTilt));
       }
       return next;
     });
@@ -1790,7 +1742,7 @@ class Component extends DCLogic {
     wrap.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
     wrap.style.width = w + 'px';
     wrap.style.minHeight = h + 'px';
-    wrap.style.background = '#FC1D37';
+    wrap.style.background = (b && b.bg) || '#FC1D37';
     wrap.style.fontFamily = 'Montserrat,Arial,Helvetica,sans-serif';
     wrap.appendChild(clone);
     const html = new XMLSerializer().serializeToString(wrap);
@@ -1821,7 +1773,7 @@ class Component extends DCLogic {
     const ctx = canvas.getContext('2d');
     ctx.scale(S, S);
     const w = W / S, h = H / S;
-    ctx.fillStyle = '#FC1D37';
+    ctx.fillStyle = b.bg || '#FC1D37';
     ctx.fillRect(0, 0, w, h);
 
     if (b.halftone) {
@@ -1959,25 +1911,26 @@ class Component extends DCLogic {
     }
 
     if (b.band) {
+      // Mirrors the DOM band: height derives from the text, the tilt only slopes
+      // the top edge, so the text always lands inside the solid part.
       ctx.save();
-      ctx.fillStyle = '#141417';
-      ctx.beginPath();
-      const bandTilt = b.bandTilt == null ? 34 : b.bandTilt;
-      const bandHeight = b.bandHeight == null ? 94 : b.bandHeight;
+      const bandTilt = Math.max(0, Math.min(60, b.bandTilt == null ? 26 : b.bandTilt));
+      const bandSize = b.bandTextSize || 16;
+      const bandHeight = bandTilt + 20 + bandSize * 1.35 + 22;
       const bandTop = Math.max(0, h - bandHeight);
-      ctx.moveTo(0, bandTop);
-      ctx.lineTo(w, bandTop - bandTilt);
+      ctx.fillStyle = b.bandBg || '#141417';
+      ctx.beginPath();
+      ctx.moveTo(0, bandTop + bandTilt);
+      ctx.lineTo(w, bandTop);
       ctx.lineTo(w, h);
       ctx.lineTo(0, h);
       ctx.closePath();
       ctx.fill();
-      const bandSize = b.bandTextSize || 16;
-      const bandBottom = b.bandTextBottom == null ? 24 : b.bandTextBottom;
-      ctx.fillStyle = '#ffffff';
+      ctx.fillStyle = b.bandColor || '#ffffff';
       ctx.font = '800 ' + bandSize + 'px ' + font;
       ctx.textBaseline = 'middle';
       ctx.textAlign = 'center';
-      ctx.fillText(String(b.bandText || '').toUpperCase(), w / 2, h - bandBottom - bandSize * 0.55);
+      ctx.fillText(String(b.bandText || ''), w / 2, bandTop + bandTilt + 20 + bandSize * 0.68);
       ctx.restore();
     }
 
@@ -2604,11 +2557,25 @@ class Component extends DCLogic {
       o.onWaText = (e) => this.setField(b.id, 'waText', e.target.value);
     } else if (b.type === 'oneforone') {
       o.kicker = b.kicker; o.line1 = b.line1; o.line2 = b.line2; o.sub = b.sub;
+      o.hasKicker = !!(b.kicker || '').trim(); o.hasSub = !!(b.sub || '').trim();
       o.split = !!b.split; o.notSplit = !b.split; o.splitDisplay = b.split ? 'block' : 'none';
       o.line2Tilt = b.line2Tilt == null ? -7 : b.line2Tilt;
-      o.line2PlainStyle = 'display:inline-block;font-family:Montserrat,Arial,sans-serif;font-weight:900;font-size:50px;line-height:1;letter-spacing:-0.01em;color:#fff;transform:skewX(' + o.line2Tilt + 'deg);';
-      o.kickerStyle = 'display:inline-block;background:#141417;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.14em;padding:7px 13px;transform:rotate(-2deg);';
-      o.line2Style = 'display:inline-block;background:#141417;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:900;font-size:50px;line-height:1;letter-spacing:-0.01em;padding:2px 14px 6px;transform:skewX(' + o.line2Tilt + 'deg);';
+      // Colours and sizes are all editable now; nothing about the promo block is hardcoded.
+      o.bg = b.bg || '#FC1D37'; o.padY = b.padY == null ? 34 : b.padY;
+      o.align = b.align === 'center' ? 'center' : b.align === 'right' ? 'right' : 'left';
+      o.kickerBg = b.kickerBg || '#141417'; o.kickerColor = b.kickerColor || '#FFFFFF';
+      o.line1Size = b.line1Size || 62; o.line1Color = b.line1Color || '#FFFFFF';
+      o.line2Size = b.line2Size || 50; o.line2Bg = b.line2Bg || '#141417'; o.line2Color = b.line2Color || '#FFFFFF';
+      o.subSize = b.subSize || 15; o.subColor = b.subColor || '#FFFFFF'; o.subWidth = b.subWidth || 330;
+      o.halftoneColor = b.halftoneColor || '#FFFFFF';
+      o.line2PlainStyle = 'display:inline-block;font-family:Montserrat,Arial,sans-serif;font-weight:900;font-size:' + o.line2Size + 'px;line-height:1;letter-spacing:-0.01em;color:' + o.line2Color + ';transform:skewX(' + o.line2Tilt + 'deg);';
+      o.kickerStyle = 'display:inline-block;background:' + o.kickerBg + ';color:' + o.kickerColor + ';font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.14em;padding:7px 13px;transform:rotate(-2deg);';
+      o.line2Style = 'display:inline-block;background:' + o.line2Bg + ';color:' + o.line2Color + ';font-family:Montserrat,Arial,sans-serif;font-weight:900;font-size:' + o.line2Size + 'px;line-height:1;letter-spacing:-0.01em;padding:2px 14px 6px;transform:skewX(' + o.line2Tilt + 'deg);';
+      // line1 wraps instead of overflowing: the block bakes to a PNG, so anything
+      // that spills past 600px would be permanently cut off in the export.
+      o.line1Style = 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:' + o.line1Size + 'px;line-height:.94;color:' + o.line1Color + ';letter-spacing:.01em;margin:16px 0 0;overflow-wrap:break-word;text-shadow:3px 4px 0 rgba(20,20,30,.20);';
+      o.subStyle = 'font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:' + o.subSize + 'px;line-height:1.45;color:' + o.subColor + ';margin:20px 0 0;max-width:' + o.subWidth + 'px;' + (o.align === 'center' ? 'margin-left:auto;margin-right:auto;' : o.align === 'right' ? 'margin-left:auto;' : '');
+      o.halftoneStyle = 'position:absolute;top:-40px;right:-40px;width:380px;height:380px;background-image:radial-gradient(circle, ' + o.halftoneColor + ' 30%, transparent 33%);background-size:27px 27px;opacity:.9;-webkit-mask-image:radial-gradient(circle at 72% 28%, #000 0%, transparent 56%);mask-image:radial-gradient(circle at 72% 28%, #000 0%, transparent 56%);z-index:1;pointer-events:none;';
       o.onKicker = (e) => this.setField(b.id, 'kicker', e.target.value);
       o.onLine1 = (e) => this.setField(b.id, 'line1', e.target.value);
       o.onLine2 = (e) => this.setField(b.id, 'line2', e.target.value);
@@ -2616,23 +2583,49 @@ class Component extends DCLogic {
       o.onSub = (e) => this.setField(b.id, 'sub', e.target.value);
       o.onToggleSplit = () => this.toggle(b.id, 'split');
       o.splitBtnStyle = 'flex:1;border:none;border-radius:50px;padding:9px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (b.split ? 'background:#141417;color:#fff;' : 'background:#ECECEF;color:#56565e;');
-      o.halftone = !!b.halftone; o.band = !!b.band; o.bandText = b.bandText; o.bandTextSize = b.bandTextSize || 16; o.bandTextBottom = b.bandTextBottom == null ? 24 : b.bandTextBottom; o.bandHeight = b.bandHeight == null ? 94 : b.bandHeight; o.bandTilt = b.bandTilt == null ? 34 : b.bandTilt; o.floatImg = !!b.floatImg;
-      o.ofWrapStyle = 'position:relative;overflow:hidden;background:#FC1D37;min-height:' + (b.floatImg || b.band ? '360px' : '0') + ';padding:30px 34px ' + (b.band ? Math.max(72, o.bandHeight) + 'px' : '32px') + ';';
-      o.bandTextStyle = 'position:absolute;left:0;right:0;bottom:' + o.bandTextBottom + 'px;z-index:3;text-align:center;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:' + o.bandTextSize + 'px;letter-spacing:.03em;color:#fff;padding:0 24px;';
-      const bandRightPct = Math.max(0, Math.min(58, 58 - o.bandTilt / 1.32));
-      o.bandShapeStyle = 'position:absolute;left:0;right:0;bottom:0;height:' + o.bandHeight + 'px;background:#141417;clip-path:polygon(0 58%, 100% ' + bandRightPct.toFixed(1) + '%, 100% 100%, 0% 100%);z-index:1;pointer-events:none;';
+      o.halftone = !!b.halftone; o.band = !!b.band; o.bandText = b.bandText;
+      o.bandTextSize = b.bandTextSize || 16;
+      o.bandTilt = b.bandTilt == null ? 26 : b.bandTilt;
+      o.bandBg = b.bandBg || '#141417'; o.bandColor = b.bandColor || '#FFFFFF';
+      o.floatImg = !!b.floatImg;
+      // The deco image is absolutely positioned, so the block must reserve room for it.
+      const floatRoom = b.floatImg ? (b.floatSize || 130) + 90 : 0;
+      o.ofWrapStyle = 'position:relative;overflow:hidden;background:' + o.bg + ';' + (floatRoom ? 'min-height:' + floatRoom + 'px;' : '')
+        + 'padding:' + o.padY + 'px 34px ' + (b.band ? '0' : o.padY + 'px') + ';';
+      // The band is a normal flow element that sizes to its own text, so the tilt is
+      // purely cosmetic and can never push the text out of the black. The top padding
+      // clears the sloped edge; no height or text-offset slider is needed.
+      o.bandWrapStyle = 'position:relative;z-index:3;margin:' + Math.max(24, o.padY) + 'px -34px 0;background:' + o.bandBg + ';clip-path:polygon(0 ' + o.bandTilt + 'px, 100% 0, 100% 100%, 0 100%);';
+      o.bandTextStyle = 'padding:' + (o.bandTilt + 20) + 'px 26px 22px;text-align:center;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:' + o.bandTextSize + 'px;letter-spacing:.03em;line-height:1.35;color:' + o.bandColor + ';';
       const tgl = (on) => 'border:none;border-radius:50px;padding:9px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (on ? 'background:#141417;color:#fff;' : 'background:#ECECEF;color:#56565e;');
       o.halftoneBtnStyle = tgl(b.halftone); o.bandBtnStyle = tgl(b.band); o.floatBtnStyle = tgl(b.floatImg);
+      o.alignLeftStyle = SEG(o.align === 'left'); o.alignCenterStyle = SEG(o.align === 'center'); o.alignRightStyle = SEG(o.align === 'right');
+      o.onAlignLeft = () => this.setField(b.id, 'align', 'left');
+      o.onAlignCenter = () => this.setField(b.id, 'align', 'center');
+      o.onAlignRight = () => this.setField(b.id, 'align', 'right');
       o.onToggleHalftone = () => this.toggle(b.id, 'halftone');
       o.onToggleBand = () => this.toggle(b.id, 'band');
       o.onToggleFloat = () => this.toggle(b.id, 'floatImg');
       o.onBandText = (e) => this.setField(b.id, 'bandText', e.target.value);
       o.onBandTextSize = (e) => this.setField(b.id, 'bandTextSize', +e.target.value);
-      o.onBandTextBottom = (e) => this.setField(b.id, 'bandTextBottom', +e.target.value);
-      o.onBandHeight = (e) => this.setField(b.id, 'bandHeight', +e.target.value);
       o.onBandTilt = (e) => this.setField(b.id, 'bandTilt', +e.target.value);
+      o.onBg = (e) => this.setField(b.id, 'bg', e.target.value);
+      o.onPadY = (e) => this.setField(b.id, 'padY', +e.target.value);
+      o.onKickerBg = (e) => this.setField(b.id, 'kickerBg', e.target.value);
+      o.onKickerColor = (e) => this.setField(b.id, 'kickerColor', e.target.value);
+      o.onLine1Size = (e) => this.setField(b.id, 'line1Size', +e.target.value);
+      o.onLine1Color = (e) => this.setField(b.id, 'line1Color', e.target.value);
+      o.onLine2Size = (e) => this.setField(b.id, 'line2Size', +e.target.value);
+      o.onLine2Bg = (e) => this.setField(b.id, 'line2Bg', e.target.value);
+      o.onLine2Color = (e) => this.setField(b.id, 'line2Color', e.target.value);
+      o.onSubSize = (e) => this.setField(b.id, 'subSize', +e.target.value);
+      o.onSubColor = (e) => this.setField(b.id, 'subColor', e.target.value);
+      o.onSubWidth = (e) => this.setField(b.id, 'subWidth', +e.target.value);
+      o.onBandBg = (e) => this.setField(b.id, 'bandBg', e.target.value);
+      o.onBandColor = (e) => this.setField(b.id, 'bandColor', e.target.value);
+      o.onHalftoneColor = (e) => this.setField(b.id, 'halftoneColor', e.target.value);
       o.textX = b.textX || 0; o.textY = b.textY || 0;
-      o.textGroupStyle = 'position:relative;z-index:3;transform:translate(' + o.textX + 'px,' + o.textY + 'px);';
+      o.textGroupStyle = 'position:relative;z-index:3;text-align:' + o.align + ';transform:translate(' + o.textX + 'px,' + o.textY + 'px);';
       o.onTextX = (e) => this.setField(b.id, 'textX', +e.target.value);
       o.onTextY = (e) => this.setField(b.id, 'textY', +e.target.value);
       const floatFrame = b.floatFrame || 'none', floatShape = b.floatShape || 'circle';

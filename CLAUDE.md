@@ -58,7 +58,7 @@ silently vanishes from the Brevo export.
 | `image` | Image | **`full` = pleine largeur** (edge-to-edge, no padding/radius), height, radius, shadow |
 | `produit` | Produit + prix | image left/right, colored panel behind the visual, multi-line desc, **big price** + mention, text align, 3 font sizes, 5 colors, optional button |
 | `cards` | Cartes images | 1–6 cards, per-card reframe, photo height + radius |
-| `oneforone` | Message promo spécial | Ben-Day halftone, tilted black band, floating deco image; **exported as a baked PNG** via `_bakeOneforoneImage` |
+| `oneforone` | Message promo spécial | Ben-Day halftone, bottom black band, floating deco image, all colours/sizes editable; **exported as a baked PNG** via `_bakeOneforoneImage` |
 | `flash` | Bandeau offre flash | band color, text color, text size |
 | `cta` | Bouton « J'en profite » | text, url, bg/text color, size (padding scales with it) |
 | `contact` | Téléphone + WhatsApp | per-button colors, red-dot toggle |
@@ -90,7 +90,13 @@ on the 7 MODEL signatures (read via `this.props['Points · taille']` etc).
 ## Notes / gotchas
 - DC rules: inline styles only; template holes are dotted-paths only (no expressions); compute in renderVals.
   Avoid `{{ }}` holes for static style/text (won't paint while streaming) — but live runtime values are fine.
-- image-slot persists dropped images by `id`; give every slot a unique id (`slot-<blockid>-a/b/c`).
+- image-slot persists dropped images by `id`. Slot ids go through `_slot()`, which prefixes a
+  per-page-load namespace — `_nextId` restarts at 1 each load, so without it a new block would
+  re-attach the photo an earlier session left on the same id. Never build a slot id by hand.
+- The promo band is a **flow element that sizes to its own text**; `bandTilt` only slopes its top
+  edge and the text padding compensates, so the text can never fall outside the black. It used to be
+  an absolute wedge with separately-positioned text and three interacting sliders — do not go back.
+  `_bakeOneforoneImage` has a canvas fallback that mirrors this; keep the two in sync.
 - Verifying locally: `node preview-server.js 8025` then drive http://127.0.0.1:8025/index.html with the globally
   installed Playwright (`/opt/node22/lib/node_modules/playwright`, PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers).
   React is loaded from unpkg and the sandbox browser cannot reach it — intercept `**://unpkg.com/**` with
