@@ -20,6 +20,22 @@
   .pd-panel{display:flex;flex-direction:column;gap:12px;}
   .pd-section{border:1px solid #ECECF1;background:#FBFBFC;border-radius:12px;padding:12px;}
   .pd-section-title{font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10.5px;letter-spacing:.08em;color:#141417;text-transform:uppercase;margin:0 0 10px;}
+  /* Foldable settings group: inspectors are long, so only the first group stays open. */
+  details.pd-section{padding:0;overflow:hidden;}
+  details.pd-section > summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:11px 12px;margin:0;user-select:none;}
+  details.pd-section > summary::-webkit-details-marker{display:none;}
+  details.pd-section > summary::after{content:'';margin-left:auto;width:7px;height:7px;border-right:2px solid #9a9aa2;border-bottom:2px solid #9a9aa2;transform:rotate(45deg) translateY(-2px);transition:transform .15s ease;}
+  details.pd-section[open] > summary::after{transform:rotate(-135deg) translateY(-2px);}
+  details.pd-section > summary:hover{background:#F3F3F6;}
+  details.pd-section[open] > summary{border-bottom:1px solid #ECECF1;margin-bottom:12px;}
+  details.pd-section > *:not(summary){margin-left:12px;margin-right:12px;}
+  details.pd-section > *:last-child:not(summary){margin-bottom:12px;}
+  details.pd-section[style*="#1d1d22"] .pd-label{color:#8e8e96;}
+  details.pd-section[style*="#1d1d22"] .pd-input,details.pd-section[style*="#1d1d22"] .pd-textarea{background:#141417;border-color:#34343c;color:#e9e9ee;}
+  details.pd-section[style*="#1d1d22"] > summary:hover{background:#26262c;}
+  details.pd-section[style*="#1d1d22"][open] > summary{border-bottom-color:#34343c;}
+  .pd-swatch{display:flex;align-items:center;gap:7px;border:1px solid #E2E2E8;border-radius:9px;padding:4px 7px 4px 4px;background:#fff;}
+  .pd-swatch input[type=color]{width:26px;height:26px;padding:0;border:none;border-radius:6px;background:none;cursor:pointer;flex:0 0 auto;}
   .pd-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
   .pd-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
   .pd-field{display:flex;flex-direction:column;gap:6px;min-width:0;}
@@ -473,10 +489,10 @@
               <div style="position:relative;z-index:2;text-align:center;">
                 <div><span style="{{ flKickerStyle }}">{{ fl.kicker }}</span> <span style="{{ flYearStyle }}">{{ fl.year }}</span></div>
                 <img src="{{ flLogoSrc }}" width="205" alt="Positif Design" style="display:block;width:205px;max-width:60%;height:auto;margin:20px auto 0;">
-                <div style="{{ flPhoneStyle }}">{{ fl.phone }}</div>
-                <a href="mailto:{{ fl.email }}" style="{{ flEmailStyle }}">{{ fl.email }}</a>
-                <div style="{{ flAddressStyle }}">{{ fl.address }}</div>
-                <div style="{{ flWebStyle }}">{{ fl.web }}</div>
+                <div style="{{ flPhoneStyle }}">{{ ct.phone }}</div>
+                <a href="{{ ctMailHref }}" style="{{ flEmailStyle }}">{{ ct.email }}</a>
+                <div style="{{ flAddressStyle }}">{{ ct.address }}</div>
+                <div style="{{ flWebStyle }}">{{ ct.web }}</div>
               </div>
 
               <div style="{{ flGridStyle }}">
@@ -529,9 +545,9 @@
               </div>
               <div style="{{ sigBarStyle }}">
                 <div style="flex:1 1 200px;min-width:0;">
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:15px;line-height:1.45;color:#ffffff;">{{ sigCompany }}</div>
+                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:15px;line-height:1.45;color:#ffffff;">{{ ct.company }}</div>
                   <div style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:14px;line-height:1.5;color:#ffffff;margin-top:2px;">
-                    <sc-for list="{{ sigAddrLines }}" as="l" hint-placeholder-count="0">
+                    <sc-for list="{{ ctBarLines }}" as="l" hint-placeholder-count="0">
                       <div>{{ l.text }}</div>
                     </sc-for>
                   </div>
@@ -547,16 +563,16 @@
             <img src="assets/arrows.png" alt="" style="position:absolute;right:{{ sigArrowRight }};bottom:{{ sigArrowBottom }};width:{{ sigArrowW }};height:auto;transform:{{ sigArrowTransform }};transform-origin:bottom right;pointer-events:none;z-index:1;">
             <div style="position:relative;z-index:2;">
               <img src="assets/logo.svg" width="142" alt="Positif Design" style="display:block;width:142px;height:auto;">
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.14em;color:#8e8e96;text-transform:uppercase;margin:12px 0 0;">Communication visuelle · Imprimerie · Signalétique</div>
+              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.14em;color:#8e8e96;text-transform:uppercase;margin:12px 0 0;">{{ ct.tagline }}</div>
               <div style="display:flex;flex-direction:column;gap:9px;margin:18px 0 0;max-width:340px;">
-                <div style="display:flex;align-items:baseline;gap:10px;"><span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span><span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Adresse</span><span style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">48 bis Bd Foch · 93800 Épinay-sur-Seine</span></div>
-                <div style="display:flex;align-items:baseline;gap:10px;"><span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span><span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Téléphone</span><a href="tel:+33148291551" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">01.48.29.15.51</a></div>
-                <div style="display:flex;align-items:baseline;gap:10px;"><span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span><span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">WhatsApp</span><a href="https://wa.me/33618701118" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">06 18 70 11 18</a></div>
-                <div style="display:flex;align-items:baseline;gap:10px;"><span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span><span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Email</span><a href="mailto:contact@positif.biz" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">contact@positif.biz</a></div>
-                <div style="display:flex;align-items:baseline;gap:10px;"><span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span><span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Web</span><a href="https://positifdesign.fr" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">positifdesign.fr</a></div>
+                <div style="display:flex;align-items:baseline;gap:10px;"><span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span><span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Adresse</span><span style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">{{ ct.address }}</span></div>
+                <div style="display:flex;align-items:baseline;gap:10px;"><span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span><span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Téléphone</span><a href="{{ ctTelHref }}" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">{{ ct.phone }}</a></div>
+                <div style="display:flex;align-items:baseline;gap:10px;"><span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span><span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">WhatsApp</span><a href="{{ ctWaHref }}" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">{{ ct.whatsapp }}</a></div>
+                <div style="display:flex;align-items:baseline;gap:10px;"><span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span><span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Email</span><a href="{{ ctMailHref }}" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">{{ ct.email }}</a></div>
+                <div style="display:flex;align-items:baseline;gap:10px;"><span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span><span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Web</span><a href="{{ ctWebHref }}" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">{{ ct.web }}</a></div>
               </div>
               <div style="height:1px;background:#2a2a30;margin:20px 0 12px;max-width:340px;"></div>
-              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.6;color:#6c6c75;margin:0;max-width:360px;">Vous recevez cet e-mail en tant que client ou partenaire de Positif Design.<br><a href="#" style="color:#8a8a93;text-decoration:underline;">Se désabonner</a> · <a href="#" style="color:#8a8a93;text-decoration:underline;">Voir dans le navigateur</a></p>
+              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.6;color:#6c6c75;margin:0;max-width:360px;">{{ ct.legal }}<br><a href="#" style="color:#8a8a93;text-decoration:underline;">Se désabonner</a> · <a href="#" style="color:#8a8a93;text-decoration:underline;">Voir dans le navigateur</a></p>
             </div>
           </div>
 
@@ -601,8 +617,8 @@
               </div>
               <sc-if value="{{ headerIsBarre }}" hint-placeholder-val="{{ true }}">
               <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.05em;color:#FC1D37;text-transform:uppercase;margin-bottom:12px;">Titre du header</div>
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin-bottom:6px;">Texte</div>
-              <input value="{{ headerTitle }}" onChange="{{ onHeaderTitle }}" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;">
+              <div class="pd-label" style="margin-bottom:6px;">Texte</div>
+              <input value="{{ headerTitle }}" onChange="{{ onHeaderTitle }}" class="pd-input">
               </sc-if>
               <sc-if value="{{ headerIsVisuel }}" hint-placeholder-val="{{ false }}">
                 <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12px;line-height:1.5;color:#9a9aa2;margin:0;">Utilise <code>header.svg</code> : logo, téléphone, e-mail, adresse et site en un seul visuel pleine largeur.</p>
@@ -617,9 +633,9 @@
               <!-- flash -->
               <sc-if value="{{ selIsFlash }}" hint-placeholder-val="{{ false }}">
                 <div>
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin-bottom:6px;">Texte du bandeau</div>
-                  <textarea onChange="{{ sel.onText }}" value="{{ sel.text }}" rows="3" style="width:100%;box-sizing:border-box;resize:vertical;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;"></textarea>
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Couleur du bandeau</div>
+                  <div class="pd-label" style="margin-bottom:6px;">Texte du bandeau</div>
+                  <textarea onChange="{{ sel.onText }}" value="{{ sel.text }}" rows="3" class="pd-textarea"></textarea>
+                  <div class="pd-label" style="margin:14px 0 6px;">Couleur du bandeau</div>
                   <div style="display:flex;align-items:center;gap:10px;">
                     <input type="color" value="{{ sel.color }}" onInput="{{ sel.onColorPick }}" style="width:46px;height:38px;padding:2px;border:1px solid #E2E2E8;border-radius:10px;background:#fff;cursor:pointer;flex:0 0 auto;">
                     <input value="{{ sel.color }}" onChange="{{ sel.onColorHex }}" style="flex:1;min-width:0;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12.5px;letter-spacing:.04em;color:#34343c;text-transform:uppercase;outline:none;">
@@ -640,10 +656,10 @@
               <!-- cta -->
               <sc-if value="{{ selIsCta }}" hint-placeholder-val="{{ false }}">
                 <div>
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin-bottom:6px;">Texte du bouton</div>
-                  <input onChange="{{ sel.onText }}" value="{{ sel.text }}" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;">
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Lien du bouton</div>
-                  <input onChange="{{ sel.onUrl }}" value="{{ sel.url }}" placeholder="https://positifdesign.fr" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;">
+                  <div class="pd-label" style="margin-bottom:6px;">Texte du bouton</div>
+                  <input onChange="{{ sel.onText }}" value="{{ sel.text }}" class="pd-input">
+                  <div class="pd-label" style="margin:14px 0 6px;">Lien du bouton</div>
+                  <input onChange="{{ sel.onUrl }}" value="{{ sel.url }}" placeholder="https://positifdesign.fr" class="pd-input">
                   <div style="display:flex;gap:14px;margin-top:14px;">
                     <label style="flex:1;display:flex;flex-direction:column;gap:6px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">Fond du bouton<input type="color" value="{{ sel.btnBg }}" onInput="{{ sel.onBtnBg }}" style="width:100%;height:34px;padding:2px;border:1px solid #E2E2E8;border-radius:9px;background:#fff;cursor:pointer;"></label>
                     <label style="flex:1;display:flex;flex-direction:column;gap:6px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;">Couleur du texte<input type="color" value="{{ sel.btnText }}" onInput="{{ sel.onBtnText }}" style="width:100%;height:34px;padding:2px;border:1px solid #E2E2E8;border-radius:9px;background:#fff;cursor:pointer;"></label>
@@ -658,11 +674,11 @@
               <!-- texte -->
               <sc-if value="{{ selIsTexte }}" hint-placeholder-val="{{ false }}">
                 <div>
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin-bottom:6px;">Titre</div>
-                  <input onChange="{{ sel.onTitle }}" value="{{ sel.title }}" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12.5px;color:#34343c;outline:none;">
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Sous-titre</div>
-                  <textarea onChange="{{ sel.onSubtitle }}" value="{{ sel.subtitle }}" rows="3" style="width:100%;box-sizing:border-box;resize:vertical;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12.5px;color:#34343c;outline:none;"></textarea>
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:16px 0 8px;">Alignement</div>
+                  <div class="pd-label" style="margin-bottom:6px;">Titre</div>
+                  <input onChange="{{ sel.onTitle }}" value="{{ sel.title }}" class="pd-input">
+                  <div class="pd-label" style="margin:14px 0 6px;">Sous-titre</div>
+                  <textarea onChange="{{ sel.onSubtitle }}" value="{{ sel.subtitle }}" rows="3" class="pd-textarea"></textarea>
+                  <div class="pd-label" style="margin:16px 0 8px;">Alignement</div>
                   <div style="display:flex;gap:7px;">
                     <button onClick="{{ sel.onAlignLeft }}" style="{{ sel.alignLeftStyle }}">Gauche</button>
                     <button onClick="{{ sel.onAlignCenter }}" style="{{ sel.alignCenterStyle }}">Centre</button>
@@ -686,10 +702,10 @@
                   <div style="height:1px;background:#EFEFF2;margin:18px 0 14px;"></div>
                   <button onClick="{{ sel.onToggleBtn }}" style="{{ sel.btnToggleStyle }};width:100%;">Afficher le bouton</button>
                   <sc-if value="{{ sel.showBtn }}" hint-placeholder-val="{{ true }}">
-                    <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Texte du bouton</div>
-                    <input onChange="{{ sel.onBtnText }}" value="{{ sel.btnText }}" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;">
-                    <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Lien du bouton</div>
-                    <input onChange="{{ sel.onBtnUrl }}" value="{{ sel.btnUrl }}" placeholder="https://positifdesign.fr" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;">
+                    <div class="pd-label" style="margin:14px 0 6px;">Texte du bouton</div>
+                    <input onChange="{{ sel.onBtnText }}" value="{{ sel.btnText }}" class="pd-input">
+                    <div class="pd-label" style="margin:14px 0 6px;">Lien du bouton</div>
+                    <input onChange="{{ sel.onBtnUrl }}" value="{{ sel.btnUrl }}" placeholder="https://positifdesign.fr" class="pd-input">
                     <div style="display:flex;gap:8px;margin-top:12px;">
                       <label style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.04em;color:#9a9aa2;text-transform:uppercase;">Fond<input type="color" value="{{ sel.btnBg }}" onInput="{{ sel.onBtnBg }}" style="width:100%;height:30px;padding:1px;border:1px solid #E2E2E8;border-radius:7px;background:#fff;cursor:pointer;"></label>
                       <label style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.04em;color:#9a9aa2;text-transform:uppercase;">Texte<input type="color" value="{{ sel.btnTextColor }}" onInput="{{ sel.onBtnTextColor }}" style="width:100%;height:30px;padding:1px;border:1px solid #E2E2E8;border-radius:7px;background:#fff;cursor:pointer;"></label>
@@ -702,17 +718,15 @@
               <!-- image -->
               <sc-if value="{{ selIsImage }}" hint-placeholder-val="{{ false }}">
                 <div class="pd-panel">
-                  <div class="pd-section">
-                    <div class="pd-section-title">Format</div>
+                  <details class="pd-section" open="true"><summary class="pd-section-title">Format</summary>
                     <div class="pd-grid-2">
                       <button onClick="{{ sel.onToggleFull }}" style="{{ sel.fullBtnStyle }}">Pleine largeur</button>
                       <button onClick="{{ sel.onToggleShadow }}" style="{{ sel.shadowBtnStyle }}">Ombre portée</button>
                     </div>
                     <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11.5px;line-height:1.45;color:#9a9aa2;margin:10px 0 0;">Pleine largeur : l'image touche les bords de l'e-mail, comme une bannière — sans titre ni bouton.</p>
-                  </div>
+                  </details>
 
-                  <div class="pd-section">
-                    <div class="pd-section-title">Dimensions</div>
+                  <details class="pd-section"><summary class="pd-section-title">Dimensions</summary>
                     <div class="pd-grid-2">
                       <div class="pd-slider">
                         <div class="pd-slider-head"><span class="pd-slider-name">Hauteur</span><span class="pd-slider-val">{{ sel.height }}px</span></div>
@@ -725,10 +739,9 @@
                         </div>
                       </sc-if>
                     </div>
-                  </div>
+                  </details>
 
-                  <div class="pd-section">
-                    <div class="pd-section-title">Photo</div>
+                  <details class="pd-section"><summary class="pd-section-title">Photo</summary>
                     <button onClick="{{ sel.onReframe }}" style="width:100%;background:#141417;color:#fff;border:none;border-radius:50px;padding:11px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.03em;cursor:pointer;">Repositionner l'image</button>
                     <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11.5px;line-height:1.45;color:#9a9aa2;margin:10px 0 0;">Déposez votre photo dans la zone grise. Double-cliquez pour recadrer : glissez pour déplacer, tirez les coins pour zoomer.</p>
                   <div class="pd-field" style="margin-top:12px;">
@@ -736,15 +749,14 @@
                     <input class="pd-input" onChange="{{ sel.onLinkUrl }}" value="{{ sel.linkUrl }}" placeholder="https://positifdesign.fr">
                     <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.4;color:#b1b1b8;margin:6px 0 0;">Laissez vide pour une image non cliquable.</p>
                   </div>
-                  </div>
+                  </details>
                 </div>
               </sc-if>
 
               <!-- produit + prix -->
               <sc-if value="{{ selIsProduit }}" hint-placeholder-val="{{ false }}">
                 <div class="pd-panel">
-                  <div class="pd-section">
-                    <div class="pd-section-title">Contenu</div>
+                  <details class="pd-section" open="true"><summary class="pd-section-title">Contenu</summary>
                     <div class="pd-field">
                       <div class="pd-label">Titre</div>
                       <input class="pd-input" onChange="{{ sel.onTitle }}" value="{{ sel.title }}">
@@ -763,10 +775,9 @@
                         <input class="pd-input" onChange="{{ sel.onPriceNote }}" value="{{ sel.priceNote }}" placeholder="HT · départ atelier">
                       </div>
                     </div>
-                  </div>
+                  </details>
 
-                  <div class="pd-section">
-                    <div class="pd-section-title">Mise en page</div>
+                  <details class="pd-section"><summary class="pd-section-title">Mise en page</summary>
                     <div class="pd-grid-2">
                       <div>
                         <div class="pd-label" style="margin-bottom:6px;">Image à</div>
@@ -798,10 +809,9 @@
                         <input type="range" min="20" max="80" step="1" value="{{ sel.priceSize }}" onInput="{{ sel.onPriceSize }}">
                       </div>
                     </div>
-                  </div>
+                  </details>
 
-                  <div class="pd-section">
-                    <div class="pd-section-title">Visuel</div>
+                  <details class="pd-section"><summary class="pd-section-title">Visuel</summary>
                     <div class="pd-grid-2">
                       <button onClick="{{ sel.onTogglePanel }}" style="{{ sel.panelBtnStyle }}">Fond coloré</button>
                       <button onClick="{{ sel.onToggleImgShadow }}" style="{{ sel.imgShadowBtnStyle }}">Ombre portée</button>
@@ -836,10 +846,9 @@
                     <input class="pd-input" onChange="{{ sel.onLinkUrl }}" value="{{ sel.linkUrl }}" placeholder="https://positifdesign.fr">
                     <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.4;color:#b1b1b8;margin:6px 0 0;">Rend le visuel cliquable. Laissez vide sinon.</p>
                   </div>
-                  </div>
+                  </details>
 
-                  <div class="pd-section">
-                    <div class="pd-section-title">Couleurs</div>
+                  <details class="pd-section"><summary class="pd-section-title">Couleurs</summary>
                     <div class="pd-grid-3">
                       <div class="pd-field"><div class="pd-label">Fond bloc</div><input type="color" value="{{ sel.bg }}" onInput="{{ sel.onBg }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
                       <div class="pd-field"><div class="pd-label">Fond visuel</div><input type="color" value="{{ sel.panelBg }}" onInput="{{ sel.onPanelBg }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
@@ -847,10 +856,9 @@
                       <div class="pd-field"><div class="pd-label">Texte</div><input type="color" value="{{ sel.textColor }}" onInput="{{ sel.onTextColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
                       <div class="pd-field"><div class="pd-label">Prix</div><input type="color" value="{{ sel.priceColor }}" onInput="{{ sel.onPriceColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
                     </div>
-                  </div>
+                  </details>
 
-                  <div class="pd-section">
-                    <div class="pd-section-title">Bouton</div>
+                  <details class="pd-section"><summary class="pd-section-title">Bouton</summary>
                     <button onClick="{{ sel.onToggleBtn }}" style="{{ sel.btnToggleStyle }};width:100%;">Afficher le bouton</button>
                     <sc-if value="{{ sel.showBtn }}" hint-placeholder-val="{{ false }}">
                       <div>
@@ -864,7 +872,7 @@
                         </div>
                       </div>
                     </sc-if>
-                  </div>
+                  </details>
                 </div>
               </sc-if>
 
@@ -879,26 +887,26 @@
                     <input class="pd-input" onChange="{{ sel.onLinkUrl }}" value="{{ sel.linkUrl }}" placeholder="https://positifdesign.fr">
                     <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.4;color:#b1b1b8;margin:6px 0 0;">Rend l&#39;image cliquable. Laissez vide sinon.</p>
                   </div>
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:16px 0 8px;">Cadre</div>
+                  <div class="pd-label" style="margin:16px 0 8px;">Cadre</div>
                   <div style="display:flex;gap:7px;">
                     <button onClick="{{ sel.onFrameNone }}" style="{{ sel.frameNoneStyle }}">Aucun</button>
                     <button onClick="{{ sel.onFramePolaroid }}" style="{{ sel.framePolaroidStyle }}">Photo</button>
                     <button onClick="{{ sel.onFrameTape }}" style="{{ sel.frameTapeStyle }}">Scotch</button>
                   </div>
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:16px 0 8px;">Forme</div>
+                  <div class="pd-label" style="margin:16px 0 8px;">Forme</div>
                   <div style="display:flex;gap:7px;">
                     <button onClick="{{ sel.onShapeRect }}" style="{{ sel.shapeRectStyle }}">Carre</button>
                     <button onClick="{{ sel.onShapeRounded }}" style="{{ sel.shapeRoundedStyle }}">Arrondi</button>
                     <button onClick="{{ sel.onShapeCircle }}" style="{{ sel.shapeCircleStyle }}">Rond</button>
                   </div>
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:16px 0 8px;">Alignement</div>
+                  <div class="pd-label" style="margin:16px 0 8px;">Alignement</div>
                   <div style="display:flex;gap:7px;">
                     <button onClick="{{ sel.onAlignLeft }}" style="{{ sel.alignLeftStyle }}">Gauche</button>
                     <button onClick="{{ sel.onAlignCenter }}" style="{{ sel.alignCenterStyle }}">Centre</button>
                     <button onClick="{{ sel.onAlignRight }}" style="{{ sel.alignRightStyle }}">Droite</button>
                   </div>
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:16px 0 6px;">Taille - {{ sel.size }} px</div>
-                  <input type="range" min="90" max="360" step="2" value="{{ sel.size }}" onChange="{{ sel.onSize }}" style="width:100%;accent-color:#FC1D37;">
+                  <div class="pd-label" style="margin:16px 0 6px;">Taille - {{ sel.size }} px</div>
+                  <input type="range" min="90" max="360" step="2" value="{{ sel.size }}" onInput="{{ sel.onSize }}" style="width:100%;accent-color:#FC1D37;">
                   <button onClick="{{ sel.onToggleShadow }}" style="{{ sel.shadowBtnStyle }};width:100%;margin-top:14px;">Ombre portee</button>
                 </div>
               </sc-if>
@@ -906,10 +914,10 @@
               <!-- contact -->
               <sc-if value="{{ selIsContact }}" hint-placeholder-val="{{ false }}">
                 <div>
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin-bottom:6px;">Téléphone</div>
-                  <input onChange="{{ sel.onTel }}" value="{{ sel.tel }}" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;">
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">WhatsApp</div>
-                  <input onChange="{{ sel.onWa }}" value="{{ sel.wa }}" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;">
+                  <div class="pd-label" style="margin-bottom:6px;">Téléphone</div>
+                  <input onChange="{{ sel.onTel }}" value="{{ sel.tel }}" class="pd-input">
+                  <div class="pd-label" style="margin:14px 0 6px;">WhatsApp</div>
+                  <input onChange="{{ sel.onWa }}" value="{{ sel.wa }}" class="pd-input">
 
                   <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.06em;color:#141417;text-transform:uppercase;margin:18px 0 8px;">Bouton téléphone</div>
                   <button onClick="{{ sel.onToggleTelDot }}" style="{{ sel.telDotBtnStyle }};width:100%;">Point rouge</button>
@@ -931,8 +939,7 @@
               <!-- oneforone -->
               <sc-if value="{{ selIsOneforone }}" hint-placeholder-val="{{ false }}">
                 <div class="pd-panel">
-                  <div class="pd-section">
-                    <div class="pd-section-title">Contenu</div>
+                  <details class="pd-section" open="true"><summary class="pd-section-title">Contenu</summary>
                     <div class="pd-field">
                       <div class="pd-label">Accroche</div>
                       <input class="pd-input" onChange="{{ sel.onKicker }}" value="{{ sel.kicker }}">
@@ -951,10 +958,9 @@
                       <div class="pd-label">Sous-texte</div>
                       <textarea class="pd-textarea" onChange="{{ sel.onSub }}" value="{{ sel.sub }}" rows="2"></textarea>
                     </div>
-                  </div>
+                  </details>
 
-                  <div class="pd-section">
-                    <div class="pd-section-title">Mise en page</div>
+                  <details class="pd-section"><summary class="pd-section-title">Mise en page</summary>
                     <div class="pd-label" style="margin-bottom:6px;">Alignement du texte</div>
                     <div style="display:flex;gap:7px;">
                       <button onClick="{{ sel.onAlignLeft }}" style="{{ sel.alignLeftStyle }}">Gauche</button>
@@ -1002,10 +1008,9 @@
                         <input type="range" min="-90" max="110" step="1" value="{{ sel.textY }}" onInput="{{ sel.onTextY }}">
                       </div>
                     </div>
-                  </div>
+                  </details>
 
-                  <div class="pd-section">
-                    <div class="pd-section-title">Couleurs</div>
+                  <details class="pd-section"><summary class="pd-section-title">Couleurs</summary>
                     <div class="pd-grid-3">
                       <div class="pd-field"><div class="pd-label">Fond</div><input type="color" value="{{ sel.bg }}" onInput="{{ sel.onBg }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
                       <div class="pd-field"><div class="pd-label">Accroche fond</div><input type="color" value="{{ sel.kickerBg }}" onInput="{{ sel.onKickerBg }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
@@ -1016,10 +1021,9 @@
                       <div class="pd-field"><div class="pd-label">Sous-texte</div><input type="color" value="{{ sel.subColor }}" onInput="{{ sel.onSubColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
                       <div class="pd-field"><div class="pd-label">Pois Ben-Day</div><input type="color" value="{{ sel.halftoneColor }}" onInput="{{ sel.onHalftoneColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
                     </div>
-                  </div>
+                  </details>
 
-                  <div class="pd-section">
-                    <div class="pd-section-title">Décorations</div>
+                  <details class="pd-section"><summary class="pd-section-title">Décorations</summary>
                     <div class="pd-actions">
                       <button onClick="{{ sel.onToggleHalftone }}" style="{{ sel.halftoneBtnStyle }}">Pois Ben-Day</button>
                       <button onClick="{{ sel.onToggleFloat }}" style="{{ sel.floatBtnStyle }}">Image déco</button>
@@ -1030,11 +1034,10 @@
                       <input class="pd-input" onChange="{{ sel.onLinkUrl }}" value="{{ sel.linkUrl }}" placeholder="https://positifdesign.fr">
                       <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.4;color:#b1b1b8;margin:6px 0 0;">Ce bloc est exporté en une seule image : le lien la rend cliquable entièrement.</p>
                     </div>
-                  </div>
+                  </details>
 
                   <sc-if value="{{ sel.band }}" hint-placeholder-val="{{ false }}">
-                    <div class="pd-section">
-                      <div class="pd-section-title">Bande noire du bas</div>
+                    <details class="pd-section"><summary class="pd-section-title">Bande noire du bas</summary>
                       <div class="pd-field">
                         <div class="pd-label">Texte de la bande</div>
                         <input class="pd-input" onChange="{{ sel.onBandText }}" value="{{ sel.bandText }}">
@@ -1062,12 +1065,11 @@
                         <div class="pd-field"><div class="pd-label">Fond de la bande</div><input type="color" value="{{ sel.bandBg }}" onInput="{{ sel.onBandBg }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
                         <div class="pd-field"><div class="pd-label">Texte de la bande</div><input type="color" value="{{ sel.bandColor }}" onInput="{{ sel.onBandColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
                       </div>
-                    </div>
+                    </details>
                   </sc-if>
 
                   <sc-if value="{{ sel.floatImg }}" hint-placeholder-val="{{ false }}">
-                    <div class="pd-section">
-                      <div class="pd-section-title">Image déco</div>
+                    <details class="pd-section"><summary class="pd-section-title">Image déco</summary>
                       <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12px;line-height:1.45;color:#9a9aa2;margin:0 0 10px;">Déposez votre image dans la zone déco du bloc.</p>
                       <div class="pd-grid-2">
                         <div>
@@ -1106,7 +1108,7 @@
                         </div>
                       </div>
                       <button onClick="{{ sel.onFloatReframe }}" style="width:100%;border:none;border-radius:50px;padding:9px;margin-top:12px;background:#141417;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;">Recadrer l'image uploadée</button>
-                    </div>
+                    </details>
                   </sc-if>
                 </div>
               </sc-if>
@@ -1114,7 +1116,7 @@
               <!-- services -->
               <sc-if value="{{ selIsServices }}" hint-placeholder-val="{{ false }}">
                 <div>
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin-bottom:8px;">Services</div>
+                  <div class="pd-label" style="margin-bottom:8px;">Services</div>
                   <div style="display:flex;flex-direction:column;gap:7px;">
                     <sc-for list="{{ sel.items }}" as="it" hint-placeholder-count="0">
                       <div style="display:flex;flex-direction:column;gap:7px;padding:9px;border:1px solid #EFEFF2;border-radius:11px;background:#FBFBFC;">
@@ -1142,15 +1144,15 @@
               <sc-if value="{{ selIsCards }}" hint-placeholder-val="{{ false }}">
                 <div>
                   <button onClick="{{ sel.onToggleTitle }}" style="{{ sel.titleBtnStyle }};width:100%;">Afficher le titre</button>
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Titre</div>
-                  <input onChange="{{ sel.onTitle }}" value="{{ sel.title }}" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;">
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Nombre de cartes</div>
+                  <div class="pd-label" style="margin:14px 0 6px;">Titre</div>
+                  <input onChange="{{ sel.onTitle }}" value="{{ sel.title }}" class="pd-input">
+                  <div class="pd-label" style="margin:14px 0 6px;">Nombre de cartes</div>
                   <div style="display:flex;align-items:center;gap:10px;">
                     <button onClick="{{ sel.onCardMinus }}" style="{{ stepBtn }}">−</button>
                     <span style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:15px;color:#141417;min-width:26px;text-align:center;">{{ sel.cardCount }}</span>
                     <button onClick="{{ sel.onCardPlus }}" style="{{ stepBtn }}">+</button>
                   </div>
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:16px 0 8px;">Contenu des cartes</div>
+                  <div class="pd-label" style="margin:16px 0 8px;">Contenu des cartes</div>
                   <div style="display:flex;flex-direction:column;gap:9px;">
                     <sc-for list="{{ sel.cardEdits }}" as="c" hint-placeholder-count="0">
                       <div style="padding:9px;border:1px solid #EFEFF2;border-radius:11px;background:#FBFBFC;display:flex;flex-direction:column;gap:6px;">
@@ -1179,14 +1181,14 @@
               <!-- bannière -->
               <sc-if value="{{ selIsBanner }}" hint-placeholder-val="{{ false }}">
                 <div>
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin-bottom:6px;">Titre</div>
-                  <input onChange="{{ sel.onTitle }}" value="{{ sel.title }}" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;">
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Sous-titre</div>
-                  <textarea onChange="{{ sel.onSubtitle }}" value="{{ sel.subtitle }}" rows="2" style="width:100%;box-sizing:border-box;resize:vertical;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12.5px;color:#34343c;outline:none;"></textarea>
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Texte du bouton</div>
-                  <input onChange="{{ sel.onBtnLabel }}" value="{{ sel.btnLabel }}" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;">
-                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Lien du bouton</div>
-                  <input onChange="{{ sel.onBtnUrl }}" value="{{ sel.btnUrl }}" placeholder="https://positifdesign.fr" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;">
+                  <div class="pd-label" style="margin-bottom:6px;">Titre</div>
+                  <input onChange="{{ sel.onTitle }}" value="{{ sel.title }}" class="pd-input">
+                  <div class="pd-label" style="margin:14px 0 6px;">Sous-titre</div>
+                  <textarea onChange="{{ sel.onSubtitle }}" value="{{ sel.subtitle }}" rows="2" class="pd-textarea"></textarea>
+                  <div class="pd-label" style="margin:14px 0 6px;">Texte du bouton</div>
+                  <input onChange="{{ sel.onBtnLabel }}" value="{{ sel.btnLabel }}" class="pd-input">
+                  <div class="pd-label" style="margin:14px 0 6px;">Lien du bouton</div>
+                  <input onChange="{{ sel.onBtnUrl }}" value="{{ sel.btnUrl }}" placeholder="https://positifdesign.fr" class="pd-input">
                   <div style="display:flex;gap:10px;margin-top:14px;">
                     <label style="flex:1;display:flex;flex-direction:column;gap:4px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#9a9aa2;text-transform:uppercase;">Fond bouton<input type="color" value="{{ sel.btnBg }}" onInput="{{ sel.onBnBg }}" style="width:100%;height:30px;padding:1px;border:1px solid #E2E2E8;border-radius:7px;background:#fff;cursor:pointer;"></label>
                     <label style="flex:1;display:flex;flex-direction:column;gap:4px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#9a9aa2;text-transform:uppercase;">Texte bouton<input type="color" value="{{ sel.btnColor }}" onInput="{{ sel.onBnColor }}" style="width:100%;height:30px;padding:1px;border:1px solid #E2E2E8;border-radius:7px;background:#fff;cursor:pointer;"></label>
@@ -1213,22 +1215,22 @@
           <sc-if value="{{ stickerSelected }}" hint-placeholder-val="{{ false }}">
             <div style="margin-top:14px;">
               <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.05em;color:#FC1D37;text-transform:uppercase;margin-bottom:12px;">Image encadree</div>
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin-bottom:8px;">Cadre</div>
+              <div class="pd-label" style="margin-bottom:8px;">Cadre</div>
               <div style="display:flex;gap:7px;">
                 <button onClick="{{ stk.onFrameNone }}" style="{{ stk.frameNoneStyle }}">Aucun</button>
                 <button onClick="{{ stk.onFramePolaroid }}" style="{{ stk.framePolaroidStyle }}">Polaroïd</button>
                 <button onClick="{{ stk.onFrameTape }}" style="{{ stk.frameTapeStyle }}">Scotch</button>
               </div>
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:16px 0 8px;">Forme de l'image</div>
+              <div class="pd-label" style="margin:16px 0 8px;">Forme de l'image</div>
               <div style="display:flex;gap:7px;">
                 <button onClick="{{ stk.onShapeRect }}" style="{{ stk.shapeRectStyle }}">Carré</button>
                 <button onClick="{{ stk.onShapeRounded }}" style="{{ stk.shapeRoundedStyle }}">Arrondi</button>
                 <button onClick="{{ stk.onShapeCircle }}" style="{{ stk.shapeCircleStyle }}">Rond</button>
               </div>
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:16px 0 6px;">Taille · {{ stk.size }} px</div>
-              <input type="range" min="60" max="320" step="2" value="{{ stk.size }}" onChange="{{ stk.onSize }}" style="width:100%;accent-color:#FC1D37;">
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Rotation · {{ stk.rot }}°</div>
-              <input type="range" min="-30" max="30" step="1" value="{{ stk.rot }}" onChange="{{ stk.onRot }}" style="width:100%;accent-color:#FC1D37;">
+              <div class="pd-label" style="margin:16px 0 6px;">Taille · {{ stk.size }} px</div>
+              <input type="range" min="60" max="320" step="2" value="{{ stk.size }}" onInput="{{ stk.onSize }}" style="width:100%;accent-color:#FC1D37;">
+              <div class="pd-label" style="margin:14px 0 6px;">Rotation · {{ stk.rot }}°</div>
+              <input type="range" min="-30" max="30" step="1" value="{{ stk.rot }}" onInput="{{ stk.onRot }}" style="width:100%;accent-color:#FC1D37;">
               <button onClick="{{ stk.onToggleShadow }}" style="{{ stk.shadowBtnStyle }};width:100%;margin-top:16px;">Ombre portée</button>
               <button onClick="{{ stk.onRemove }}" style="width:100%;margin-top:9px;background:#fff;border:1px solid #FC1D37;color:#FC1D37;border-radius:50px;padding:9px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;">Supprimer l'image</button>
               <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12px;line-height:1.5;color:#9a9aa2;margin:14px 0 0;">Déposez votre photo dans la zone, puis glissez « ✛ déplacer » pour la positionner.</p>
@@ -1239,14 +1241,14 @@
         <sc-if value="{{ railIsExport }}" hint-placeholder-val="{{ false }}"><div>
         <div style="background:#fff;border:1px solid #E2E2E8;border-radius:14px;padding:18px;box-shadow:0 4px 14px -8px rgba(20,20,30,.3);">
           <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:.1em;color:#141417;display:flex;align-items:center;gap:8px;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>EXPORT BREVO</div>
-          <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Objet</div>
-          <input value="{{ emailSubject }}" onChange="{{ onEmailSubject }}" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;">
-          <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Préheader</div>
-          <textarea value="{{ emailPreheader }}" onChange="{{ onEmailPreheader }}" rows="2" style="width:100%;box-sizing:border-box;resize:vertical;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12.5px;color:#34343c;outline:none;"></textarea>
-          <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Lien de désinscription</div>
-          <input value="{{ unsubscribeUrl }}" onChange="{{ onUnsubscribeUrl }}" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;">
-          <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Lien navigateur</div>
-          <input value="{{ viewOnlineUrl }}" onChange="{{ onViewOnlineUrl }}" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;">
+          <div class="pd-label" style="margin:14px 0 6px;">Objet</div>
+          <input value="{{ emailSubject }}" onChange="{{ onEmailSubject }}" class="pd-input">
+          <div class="pd-label" style="margin:14px 0 6px;">Préheader</div>
+          <textarea value="{{ emailPreheader }}" onChange="{{ onEmailPreheader }}" rows="2" class="pd-textarea"></textarea>
+          <div class="pd-label" style="margin:14px 0 6px;">Lien de désinscription</div>
+          <input value="{{ unsubscribeUrl }}" onChange="{{ onUnsubscribeUrl }}" class="pd-input">
+          <div class="pd-label" style="margin:14px 0 6px;">Lien navigateur</div>
+          <input value="{{ viewOnlineUrl }}" onChange="{{ onViewOnlineUrl }}" class="pd-input">
           <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11.5px;line-height:1.5;color:#9a9aa2;margin:12px 0 0;">Dans Brevo, remplacez ces liens par vos variables de campagne si besoin.</p>
         </div>
         </div></sc-if>
@@ -1255,6 +1257,13 @@
           <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:.1em;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:8px;">
             <span style="display:flex;align-items:center;gap:8px;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>SIGNATURE</span>
           </div>
+
+          <details class="pd-section" open="true" style="background:#1d1d22;border-color:#34343c;">
+            <summary class="pd-section-title" style="color:#e9e9ee;">Coordonnées — communes aux 3 signatures</summary>
+                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">Raison sociale</div><input class="pd-input" value="{{ ct.company }}" onChange="{{ onCtCompany }}"></div>                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">Accroche</div><input class="pd-input" value="{{ ct.tagline }}" onChange="{{ onCtTagline }}"></div>                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">Adresse</div><input class="pd-input" value="{{ ct.address }}" onChange="{{ onCtAddress }}"></div>                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">Téléphone</div><input class="pd-input" value="{{ ct.phone }}" onChange="{{ onCtPhone }}"></div>                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">WhatsApp</div><input class="pd-input" value="{{ ct.whatsapp }}" onChange="{{ onCtWhatsapp }}"></div>                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">E-mail</div><input class="pd-input" value="{{ ct.email }}" onChange="{{ onCtEmail }}"></div>                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">Site web</div><input class="pd-input" value="{{ ct.web }}" onChange="{{ onCtWeb }}"></div>                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">Mention légale</div>
+                <textarea class="pd-textarea" rows="2" value="{{ ct.legal }}" onChange="{{ onCtLegal }}"></textarea></div>
+                <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:10px 0 0;">Modifiées ici, elles se répercutent sur la carte de visite, la newsletter et le flyer.</p>
+          </details>
 
           <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:16px 0 8px;">Style de signature</div>
           <div style="display:flex;gap:7px;">
@@ -1277,10 +1286,10 @@
               </div>
 
               <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:16px 0 7px;">Coordonnées</div>
-              <input value="{{ fl.phone }}" onChange="{{ onFlPhone }}" placeholder="Téléphone" style="width:100%;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
-              <input value="{{ fl.email }}" onChange="{{ onFlEmail }}" placeholder="E-mail" style="width:100%;margin-top:7px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
-              <input value="{{ fl.address }}" onChange="{{ onFlAddress }}" placeholder="Adresse" style="width:100%;margin-top:7px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
-              <input value="{{ fl.web }}" onChange="{{ onFlWeb }}" placeholder="Site web" style="width:100%;margin-top:7px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
+              <input value="{{ ct.phone }}" onChange="{{ onCtPhone }}" placeholder="Téléphone" style="width:100%;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
+              <input value="{{ ct.email }}" onChange="{{ onCtEmail }}" placeholder="E-mail" style="width:100%;margin-top:7px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
+              <input value="{{ ct.address }}" onChange="{{ onCtAddress }}" placeholder="Adresse" style="width:100%;margin-top:7px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
+              <input value="{{ ct.web }}" onChange="{{ onCtWeb }}" placeholder="Site web" style="width:100%;margin-top:7px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
 
               <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 7px;">Cases affichées</div>
               <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:0 0 8px;">Visuels fournis en SVG, libellés inclus. Coupez une case pour la retirer de la grille, ou donnez-lui un lien.</p>
@@ -1319,6 +1328,54 @@
             </div>
           </sc-if>
 
+          <!-- NEWSLETTER SIGNATURE -->
+          <sc-if value="{{ sigIsNewsletter }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:20px 0 7px;">
+                <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;">Mentions légales</span>
+                <button onClick="{{ onToggleSigLegal }}" style="{{ sigLegalBtnStyle }}">Afficher</button>
+              </div>
+              <textarea value="{{ sigLegal }}" onChange="{{ onSigLegal }}" rows="4" style="width:100%;box-sizing:border-box;resize:vertical;border:1px solid #34343c;border-radius:10px;padding:10px 12px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12px;line-height:1.5;color:#e9e9ee;outline:none;"></textarea>
+
+              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 8px;">Réseaux sociaux</div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <sc-for list="{{ sigSocialRows }}" as="s" hint-placeholder-count="0">
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <img src="{{ s.src }}" width="28" height="28" alt="" style="display:block;width:28px;height:28px;border-radius:50%;flex:0 0 auto;">
+                    <input value="{{ s.url }}" onChange="{{ s.onUrl }}" placeholder="https://" style="flex:1;min-width:0;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:8px 10px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
+                    <button onClick="{{ s.onToggle }}" style="{{ s.btnStyle }}">{{ s.label }}</button>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 7px;">Expéditeur</div>
+              <input value="{{ sigSenderNote }}" onChange="{{ onSigSenderNote }}" style="width:100%;box-sizing:border-box;border:1px solid #34343c;border-radius:10px;padding:10px 12px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12px;color:#e9e9ee;outline:none;">
+
+              <div style="display:flex;gap:8px;margin-top:12px;">
+                <div style="flex:1;min-width:0;">
+                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin-bottom:6px;">Lien préférences</div>
+                  <input value="{{ sigPrefsLabel }}" onChange="{{ onSigPrefsLabel }}" style="width:100%;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:8px 10px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
+                  <input value="{{ sigPrefsUrl }}" onChange="{{ onSigPrefsUrl }}" placeholder="URL" style="width:100%;margin-top:6px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:8px 10px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#8e8e96;outline:none;">
+                </div>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin-bottom:6px;">Lien désinscription</div>
+                  <input value="{{ sigUnsubLabel }}" onChange="{{ onSigUnsubLabel }}" style="width:100%;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:8px 10px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
+                  <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:6px 0 0;">URL reprise du champ « Lien de désinscription » de l'export.</p>
+                </div>
+              </div>
+
+              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:14px 0 7px;">Phrase de bas de page</div>
+              <input value="{{ sigBottomNote }}" onChange="{{ onSigBottomNote }}" style="width:100%;box-sizing:border-box;border:1px solid #34343c;border-radius:10px;padding:10px 12px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12px;color:#e9e9ee;outline:none;">
+
+              <div style="height:1px;background:#2a2a30;margin:18px 0;"></div>
+
+              <div style="display:flex;gap:10px;margin-top:14px;">
+                <label style="flex:1;display:flex;flex-direction:column;gap:6px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:.06em;color:#8e8e96;text-transform:uppercase;">Fond bandeau<input type="color" value="{{ sigBarBg }}" onInput="{{ onSigBarBg }}" style="width:100%;height:32px;padding:2px;border:1px solid #34343c;border-radius:9px;background:#1d1d22;cursor:pointer;"></label>
+                <label style="flex:1;display:flex;flex-direction:column;gap:6px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:.06em;color:#8e8e96;text-transform:uppercase;">Couleur liens<input type="color" value="{{ sigLinkColor }}" onInput="{{ onSigLinkColor }}" style="width:100%;height:32px;padding:2px;border:1px solid #34343c;border-radius:9px;background:#1d1d22;cursor:pointer;"></label>
+              </div>
+            </div>
+          </sc-if>
+
           <!-- CARTE DE VISITE SIGNATURE -->
           <sc-if value="{{ sigIsCarte }}" hint-placeholder-val="{{ true }}">
           <div>
@@ -1334,12 +1391,12 @@
             <span style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11px;color:#8e8e96;">{{ sigPatternLabel }}</span>
           </div>
           <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:14px 0 7px;">Motif - taille - {{ sigPatternSizeVal }}px</div>
-          <input type="range" min="24" max="260" step="2" value="{{ sigPatternSizeVal }}" onChange="{{ onSigPatternSize }}" style="width:100%;accent-color:#FC1D37;">
+          <input type="range" min="24" max="260" step="2" value="{{ sigPatternSizeVal }}" onInput="{{ onSigPatternSize }}" style="width:100%;accent-color:#FC1D37;">
 
-          <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 7px;">Points · taille</div>
-          <input type="range" min="4" max="40" step="1" value="{{ dotSizeVal }}" onChange="{{ onDotSize }}" style="width:100%;accent-color:#FC1D37;">
-          <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:14px 0 7px;">Points · espacement</div>
-          <input type="range" min="16" max="90" step="1" value="{{ dotSpacingVal }}" onChange="{{ onDotSpacing }}" style="width:100%;accent-color:#FC1D37;">
+          <div class="pd-slider-head" style="margin:14px 0 7px;"><span class="pd-slider-name" style="color:#8e8e96;">Points · taille</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ dotSizeVal }}px</span></div>
+          <input type="range" min="4" max="40" step="1" value="{{ dotSizeVal }}" onInput="{{ onDotSize }}" style="width:100%;accent-color:#FC1D37;">
+          <div class="pd-slider-head" style="margin:14px 0 7px;"><span class="pd-slider-name" style="color:#8e8e96;">Points · espacement</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ dotSpacingVal }}px</span></div>
+          <input type="range" min="16" max="90" step="1" value="{{ dotSpacingVal }}" onInput="{{ onDotSpacing }}" style="width:100%;accent-color:#FC1D37;">
           <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:14px 0 8px;">Points · couleur</div>
           <div style="display:flex;align-items:center;gap:10px;">
             <input type="color" value="{{ dotColorVal }}" onInput="{{ onDotColorPick }}" style="width:46px;height:38px;padding:2px;border:1px solid #34343c;border-radius:10px;background:#1d1d22;cursor:pointer;flex:0 0 auto;">
@@ -1354,14 +1411,14 @@
 
           <div style="height:1px;background:#2a2a30;margin:18px 0;"></div>
 
-          <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:0 0 7px;">Flèches · taille</div>
-          <input type="range" min="160" max="440" step="4" value="{{ arrowSizeVal }}" onChange="{{ onArrowSize }}" style="width:100%;accent-color:#FC1D37;">
-          <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:14px 0 7px;">Flèches · décalage droite</div>
-          <input type="range" min="-180" max="40" step="2" value="{{ arrowXVal }}" onChange="{{ onArrowX }}" style="width:100%;accent-color:#FC1D37;">
-          <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:14px 0 7px;">Flèches · décalage bas</div>
-          <input type="range" min="-180" max="40" step="2" value="{{ arrowYVal }}" onChange="{{ onArrowY }}" style="width:100%;accent-color:#FC1D37;">
+          <div class="pd-slider-head" style="margin:14px 0 7px;"><span class="pd-slider-name" style="color:#8e8e96;">Flèches · taille</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ arrowSizeVal }}px</span></div>
+          <input type="range" min="160" max="440" step="4" value="{{ arrowSizeVal }}" onInput="{{ onArrowSize }}" style="width:100%;accent-color:#FC1D37;">
+          <div class="pd-slider-head" style="margin:14px 0 7px;"><span class="pd-slider-name" style="color:#8e8e96;">Flèches · décalage droite</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ arrowXVal }}px</span></div>
+          <input type="range" min="-180" max="40" step="2" value="{{ arrowXVal }}" onInput="{{ onArrowX }}" style="width:100%;accent-color:#FC1D37;">
+          <div class="pd-slider-head" style="margin:14px 0 7px;"><span class="pd-slider-name" style="color:#8e8e96;">Flèches · décalage bas</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ arrowYVal }}px</span></div>
+          <input type="range" min="-180" max="40" step="2" value="{{ arrowYVal }}" onInput="{{ onArrowY }}" style="width:100%;accent-color:#FC1D37;">
           <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:14px 0 7px;">Flèches · rotation · {{ arrowRotVal }}°</div>
-          <input type="range" min="-180" max="180" step="1" value="{{ arrowRotVal }}" onChange="{{ onArrowRot }}" style="width:100%;accent-color:#FC1D37;">
+          <input type="range" min="-180" max="180" step="1" value="{{ arrowRotVal }}" onInput="{{ onArrowRot }}" style="width:100%;accent-color:#FC1D37;">
           </div>
           </sc-if>
         </div>
@@ -1424,6 +1481,19 @@ class Component extends DCLogic {
     sigTextColor: '#ffffff',
     sigPatternDataUrl: '',
     sigPatternSize: 160,
+    // One editable source of truth for the coordonnées. Every signature reads these,
+    // so the address/phone/e-mail are changed once instead of three times (and the
+    // carte-de-visite ones are no longer hardcoded in the markup).
+    contact: {
+      company: 'Positif Design',
+      tagline: 'Communication visuelle · Imprimerie · Signalétique',
+      address: '48 bis Bd Foch · 93800 Épinay-sur-Seine',
+      phone: '01.48.29.15.51',
+      whatsapp: '06 18 70 11 18',
+      email: 'contact@positif.biz',
+      web: 'positifdesign.fr',
+      legal: 'Vous recevez cet e-mail en tant que client ou partenaire de Positif Design.',
+    },
     sigStyle: 'carte',
     sigLegal: "*offre valable jusqu'au 31 juillet 2026. Non cumulable avec d'autres actions.\nRéduction non échangeable en espèces ni contre d'autres produits.\nPositif Design se réserve le droit d'interrompre cette offre à tout moment...",
     sigShowLegal: true,
@@ -1432,8 +1502,6 @@ class Component extends DCLogic {
     sigPrefsUrl: '{{ update_profile }}',
     sigUnsubLabel: 'Se désinscrire',
     sigBottomNote: 'Si vous souhaitez vous désinscrire de notre newsletter, cliquez ici',
-    sigCompany: 'Positif Design',
-    sigAddr: "48 bis Bd Foch\n93800 Épinay-sur-Seine\nTél: 01.48.29.15.51\ncontact@positif.biz",
     sigBarBg: '#141417',
     sigLinkColor: '#FC1D37',
     // Third signature style, from the flyer: dark panel, "publicité depuis 1983",
@@ -1545,10 +1613,10 @@ class Component extends DCLogic {
       dotSize: this.state.dotSize,
       dotSpacing: this.state.dotSpacing,
       dotColor: this.state.dotColor,
-      dotColor2: this.state.dotColor2,
       sigTextColor: this.state.sigTextColor,
       sigPatternDataUrl: this.state.sigPatternDataUrl,
       sigPatternSize: this.state.sigPatternSize,
+      contact: this._clonePlain(this.state.contact),
       sigStyle: this.state.sigStyle,
       sigLegal: this.state.sigLegal,
       sigShowLegal: this.state.sigShowLegal,
@@ -1557,8 +1625,6 @@ class Component extends DCLogic {
       sigPrefsUrl: this.state.sigPrefsUrl,
       sigUnsubLabel: this.state.sigUnsubLabel,
       sigBottomNote: this.state.sigBottomNote,
-      sigCompany: this.state.sigCompany,
-      sigAddr: this.state.sigAddr,
       sigBarBg: this.state.sigBarBg,
       sigLinkColor: this.state.sigLinkColor,
       sigSocial: this._clonePlain(this.state.sigSocial),
@@ -1615,10 +1681,10 @@ class Component extends DCLogic {
       dotSize: p.dotSize || 29,
       dotSpacing: p.dotSpacing || 40,
       dotColor: p.dotColor || '#474747',
-      dotColor2: p.dotColor2 || '#FC1D37',
       sigTextColor: p.sigTextColor || '#ffffff',
       sigPatternDataUrl: p.sigPatternDataUrl || '',
       sigPatternSize: p.sigPatternSize || 160,
+      contact: { ...this._clonePlain(this.state.contact), ...(p.contact ? this._clonePlain(p.contact) : {}) },
       sigStyle: ['newsletter', 'flyer'].indexOf(p.sigStyle) >= 0 ? p.sigStyle : 'carte',
       sigLegal: p.sigLegal == null ? this.state.sigLegal : p.sigLegal,
       sigShowLegal: p.sigShowLegal !== false,
@@ -1627,8 +1693,6 @@ class Component extends DCLogic {
       sigPrefsUrl: p.sigPrefsUrl == null ? this.state.sigPrefsUrl : p.sigPrefsUrl,
       sigUnsubLabel: p.sigUnsubLabel == null ? this.state.sigUnsubLabel : p.sigUnsubLabel,
       sigBottomNote: p.sigBottomNote == null ? this.state.sigBottomNote : p.sigBottomNote,
-      sigCompany: p.sigCompany == null ? this.state.sigCompany : p.sigCompany,
-      sigAddr: p.sigAddr == null ? this.state.sigAddr : p.sigAddr,
       sigBarBg: p.sigBarBg || '#141417',
       sigLinkColor: p.sigLinkColor || '#FC1D37',
       sigSocial: Array.isArray(p.sigSocial) && p.sigSocial.length ? this._clonePlain(p.sigSocial) : this._clonePlain(this.state.sigSocial),
@@ -1709,6 +1773,7 @@ class Component extends DCLogic {
   toggle(id, k) { this.setState(s => ({ blocks: s.blocks.map(b => b.id === id ? { ...b, [k]: !b[k] } : b) })); }
   setS(k, v) { this.setState({ [k]: v }); }
   setSocial(idx, k, v) { this.setState(s => ({ sigSocial: s.sigSocial.map((x, i) => i === idx ? { ...x, [k]: v } : x) })); }
+  setContact(k, v) { this.setState(s => ({ contact: { ...s.contact, [k]: v } })); }
   setFlyer(k, v) { this.setState(s => ({ sigFlyer: { ...s.sigFlyer, [k]: v } })); }
   setFlyerTile(idx, k, v) { this.setState(s => ({ sigFlyer: { ...s.sigFlyer, tiles: s.sigFlyer.tiles.map((t, i) => i === idx ? { ...t, [k]: v } : t) } })); }
   onSigPatternFile(e) {
@@ -2164,6 +2229,8 @@ class Component extends DCLogic {
 
   // Build email-safe (table-based, inline-styled, light-locked) HTML + image files, zipped for ESP import.
   async exportHtml() {
+    const CT = this.state.contact;
+    const ctWeb = /^https?:/.test(CT.web || '') ? CT.web : 'https://' + (CT.web || '');
     const F = "'Montserrat',Arial,Helvetica,sans-serif";
     const files = [];
     let n = 0;
@@ -2349,10 +2416,10 @@ class Component extends DCLogic {
       let head = '<div style="font-family:' + F + ';font-weight:700;font-size:12px;letter-spacing:4px;color:' + TXT + ';text-transform:uppercase;">'
         + esc(S.kicker) + ' <span style="color:' + S.accent + ';font-weight:800;">' + esc(S.year) + '</span></div>';
       if (flLogo) head += '<div style="padding-top:18px;"><img src="' + flLogo + '" width="205" alt="Positif Design" style="display:inline-block;width:205px;max-width:60%;height:auto;border:0;"></div>';
-      head += '<div style="font-family:' + F + ';font-weight:800;font-size:18px;letter-spacing:2.4px;color:' + TXT + ';padding-top:16px;">' + esc(S.phone) + '</div>';
-      head += '<div style="padding-top:6px;"><a href="mailto:' + esc(S.email) + '" style="font-family:' + F + ';font-weight:700;font-size:14px;letter-spacing:1px;color:' + S.accent + ';text-decoration:none;">' + esc(S.email) + '</a></div>';
-      head += '<div style="font-family:' + F + ';font-weight:600;font-size:11.5px;color:' + TXT + ';padding-top:10px;">' + esc(S.address) + '</div>';
-      head += '<div style="font-family:' + F + ';font-weight:800;font-size:14px;letter-spacing:3px;color:' + TXT + ';padding-top:8px;">' + esc(S.web) + '</div>';
+      head += '<div style="font-family:' + F + ';font-weight:800;font-size:18px;letter-spacing:2.4px;color:' + TXT + ';padding-top:16px;">' + esc(CT.phone) + '</div>';
+      head += '<div style="padding-top:6px;"><a href="mailto:' + esc(CT.email) + '" style="font-family:' + F + ';font-weight:700;font-size:14px;letter-spacing:1px;color:' + S.accent + ';text-decoration:none;">' + esc(CT.email) + '</a></div>';
+      head += '<div style="font-family:' + F + ';font-weight:600;font-size:11.5px;color:' + TXT + ';padding-top:10px;">' + esc(CT.address) + '</div>';
+      head += '<div style="font-family:' + F + ';font-weight:800;font-size:14px;letter-spacing:3px;color:' + TXT + ';padding-top:8px;">' + esc(CT.web) + '</div>';
 
       // 3 columns inside a 548px content box, 9px gutters.
       const shown = (S.tiles || []).filter((t) => t.on !== false);
@@ -2433,7 +2500,7 @@ class Component extends DCLogic {
       let bar = '<tr><td bgcolor="' + barBg + '" class="px" style="background:' + barBg + ';padding:26px 32px;">'
         + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>'
         + '<td class="stack" valign="middle" style="vertical-align:middle;font-family:' + F + ';font-weight:500;font-size:14px;line-height:1.5;color:#ffffff;">'
-        + '<span style="font-weight:600;font-size:15px;">' + esc(S.sigCompany) + '</span><br>' + addr + '</td>'
+        + '<span style="font-weight:600;font-size:15px;">' + esc(CT.company) + '</span><br>' + addr + '</td>'
         + '<td class="stack" valign="middle" align="right" style="vertical-align:middle;text-align:right;font-size:0;line-height:0;">'
         + (logoName ? '<img src="' + logoName + '" width="230" alt="Positif Design" style="display:inline-block;width:230px;max-width:100%;height:auto;border:0;">' : '')
         + '</td></tr></table></td></tr>';
@@ -2463,9 +2530,9 @@ class Component extends DCLogic {
       '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>' +
       '<td class="px" valign="top" style="padding:34px 32px 26px 32px;vertical-align:top;">';
     if (logoName) sig += '<img src="' + logoName + '" width="142" alt="Positif Design" style="display:block;width:142px;height:auto;">';
-    sig += '<div style="font-family:' + F + ';font-weight:700;font-size:11px;letter-spacing:1.5px;color:#8e8e96;text-transform:uppercase;padding:12px 0 4px;">Communication visuelle &middot; Imprimerie &middot; Signal&eacute;tique</div>';
-    sig += '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:12px;">' + sigRow('Adresse', '48 bis Bd Foch &middot; 93800 &Eacute;pinay-sur-Seine') + sigRow('T&eacute;l&eacute;phone', '01.48.29.15.51', 'tel:+33148291551') + sigRow('WhatsApp', '06 18 70 11 18', 'https://wa.me/33618701118') + sigRow('Email', 'contact@positif.biz', 'mailto:contact@positif.biz') + sigRow('Web', 'positifdesign.fr', 'https://positifdesign.fr') + '</table>';
-    sig += '<div style="border-top:1px solid #2a2a30;margin-top:18px;padding-top:12px;font-family:' + F + ';font-weight:500;font-size:11px;line-height:1.6;color:#6c6c75;max-width:360px;">Vous recevez cet e-mail en tant que client ou partenaire de Positif Design.<br><a href="' + href(this.state.unsubscribeUrl) + '" style="color:#8a8a93;text-decoration:underline;">Se d&eacute;sabonner</a> &middot; <a href="' + href(this.state.viewOnlineUrl) + '" style="color:#8a8a93;text-decoration:underline;">Voir dans le navigateur</a></div>';
+    sig += '<div style="font-family:' + F + ';font-weight:700;font-size:11px;letter-spacing:1.5px;color:#8e8e96;text-transform:uppercase;padding:12px 0 4px;">' + esc(CT.tagline) + '</div>';
+    sig += '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:12px;">' + sigRow('Adresse', esc(CT.address)) + sigRow('T&eacute;l&eacute;phone', esc(CT.phone), 'tel:' + esc(String(CT.phone || '').replace(/[^0-9+]/g, ''))) + sigRow('WhatsApp', esc(CT.whatsapp), 'https://wa.me/' + esc(String(CT.whatsapp || '').replace(/[^0-9]/g, ''))) + sigRow('Email', esc(CT.email), 'mailto:' + esc(CT.email)) + sigRow('Web', esc(CT.web), ctWeb) + '</table>';
+    sig += '<div style="border-top:1px solid #2a2a30;margin-top:18px;padding-top:12px;font-family:' + F + ';font-weight:500;font-size:11px;line-height:1.6;color:#6c6c75;max-width:360px;">' + esc(CT.legal) + '<br><a href="' + href(this.state.unsubscribeUrl) + '" style="color:#8a8a93;text-decoration:underline;">Se d&eacute;sabonner</a> &middot; <a href="' + href(this.state.viewOnlineUrl) + '" style="color:#8a8a93;text-decoration:underline;">Voir dans le navigateur</a></div>';
     if (cornerName) {
       const cornerW = cornerMeta && cornerMeta.width ? cornerMeta.width : Math.max(160, Math.min(440, this.state.arrowSize || 316));
       const cornerH = cornerMeta && cornerMeta.height ? cornerMeta.height : Math.round(cornerW * 0.55);
@@ -2715,8 +2782,7 @@ class Component extends DCLogic {
       const imgW = Math.max(28, Math.min(70, b.imgW == null ? 46 : b.imgW));
       const shp = b.imgShape || 'rect';
       o.title = b.title; o.desc = b.desc; o.price = b.price; o.priceNote = b.priceNote || '';
-      o.hasPriceNote = !!(b.priceNote || '').trim();
-      o.imgSide = side; o.align = al; o.imgW = imgW; o.imgH = b.imgH || 300;
+      o.hasPriceNote = !!(b.priceNote || '').trim(); o.align = al; o.imgW = imgW; o.imgH = b.imgH || 300;
       o.panel = b.panel !== false; o.panelBg = b.panelBg || '#DFC98F'; o.panelRadius = b.panelRadius == null ? 34 : b.panelRadius;
       o.bg = b.bg || '#FFFFFF';
       o.titleColor = b.titleColor || '#141417'; o.textColor = b.textColor || '#141417'; o.priceColor = b.priceColor || '#141417';
@@ -2993,6 +3059,7 @@ class Component extends DCLogic {
 
     const sigStyle = ['newsletter', 'flyer'].indexOf(this.state.sigStyle) >= 0 ? this.state.sigStyle : 'carte';
     const sigSeg = (on) => 'flex:1;border:1px solid ' + (on ? '#fff' : '#34343c') + ';background:' + (on ? '#fff' : '#1d1d22') + ';border-radius:8px;padding:8px 4px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;cursor:pointer;color:' + (on ? '#141417' : '#8e8e96') + ';';
+    const CT = this.state.contact;
     const railTabStyle = (on) => 'flex:1;border:none;border-radius:9px;padding:9px 6px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.02em;cursor:pointer;transition:background .12s ease;'
       + (on ? 'background:#fff;color:#141417;box-shadow:0 1px 3px rgba(20,20,30,.16);' : 'background:transparent;color:#71717a;');
     const socialOn = (this.state.sigSocial || []).filter((s) => s.on !== false && (s.url || '').trim());
@@ -3049,14 +3116,8 @@ class Component extends DCLogic {
       noSavedTemplates: savedTemplates.length === 0,
 
       // model signatures
-      dotCell: dCell + 'px ' + dCell + 'px',
-      dotGradient: 'radial-gradient(circle, ' + dCol + ' ' + dR.toFixed(1) + 'px, transparent ' + (dR + 1).toFixed(1) + 'px)',
-      arrowRight: aX + 'px', arrowBottom: aY + 'px', arrowW: aW + 'px',
-      arrowTransform: 'rotate(' + this.state.arrowRot + 'deg)',
 
       // builder signature (two-tone halftone)
-      sigCell: bcell + 'px ' + bcell + 'px',
-      sigGradient: 'radial-gradient(circle, ' + bdc + ' ' + br.toFixed(1) + 'px, transparent ' + (br + 1).toFixed(1) + 'px)',
       sigPatternBgImage: sigPatternDataUrl ? 'url("' + sigPatternDataUrl + '")' : 'radial-gradient(circle, ' + bdc + ' ' + br.toFixed(1) + 'px, transparent ' + (br + 1).toFixed(1) + 'px)',
       sigPatternBgSize: sigPatternDataUrl ? sigPatternSize + 'px ' + sigPatternSize + 'px' : bcell + 'px ' + bcell + 'px',
       sigPatternOpacity: sigPatternDataUrl ? '1' : '.12',
@@ -3065,6 +3126,23 @@ class Component extends DCLogic {
       sigDotsDisplay: tglOn ? 'block' : 'none',
       sigArrowRight: this.state.arrowX + 'px', sigArrowBottom: this.state.arrowY + 'px', sigArrowW: this.state.arrowSize + 'px',
       sigArrowTransform: 'rotate(' + this.state.arrowRot + 'deg)',
+
+      // shared coordonnées
+      ct: CT,
+      ctBarLines: String(CT.address||'').split(' · ').map((t,k)=>({id:k,text:t}))
+        .concat([{id:90,text:'Tél: '+(CT.phone||'')},{id:91,text:CT.email||''}]),
+      ctTelHref: 'tel:' + String(CT.phone||'').replace(/[^0-9+]/g,''),
+      ctWaHref: 'https://wa.me/' + String(CT.whatsapp||'').replace(/[^0-9]/g,''),
+      ctWebHref: /^https?:/.test(CT.web||'') ? CT.web : 'https://' + (CT.web||''),
+      ctMailHref: 'mailto:' + (CT.email||''),
+      onCtCompany: (e) => this.setContact('company', e.target.value),
+      onCtTagline: (e) => this.setContact('tagline', e.target.value),
+      onCtAddress: (e) => this.setContact('address', e.target.value),
+      onCtPhone: (e) => this.setContact('phone', e.target.value),
+      onCtWhatsapp: (e) => this.setContact('whatsapp', e.target.value),
+      onCtEmail: (e) => this.setContact('email', e.target.value),
+      onCtWeb: (e) => this.setContact('web', e.target.value),
+      onCtLegal: (e) => this.setContact('legal', e.target.value),
 
       // alt signature ("newsletter")
       sigIsCarte: sigStyle === 'carte',
@@ -3099,10 +3177,6 @@ class Component extends DCLogic {
       flNfcImgStyle: 'width:100%;height:auto;display:block;',
       onFlKicker: (e) => this.setFlyer('kicker', e.target.value),
       onFlYear: (e) => this.setFlyer('year', e.target.value),
-      onFlPhone: (e) => this.setFlyer('phone', e.target.value),
-      onFlEmail: (e) => this.setFlyer('email', e.target.value),
-      onFlAddress: (e) => this.setFlyer('address', e.target.value),
-      onFlWeb: (e) => this.setFlyer('web', e.target.value),
       onFlBg: (e) => this.setFlyer('bg', e.target.value),
       onFlAccent: (e) => this.setFlyer('accent', e.target.value),
       onFlTextColor: (e) => this.setFlyer('textColor', e.target.value),
@@ -3110,7 +3184,6 @@ class Component extends DCLogic {
       onToggleFlNfc: () => this.setFlyer('nfc', FL.nfc === false),
       onToggleFlBgArt: () => this.setFlyer('bgArt', FL.bgArt === false),
       flNfcOn: FL.nfc !== false,
-      flBgArtOn: FL.bgArt !== false,
       flNfcBtnStyle: sigSeg(FL.nfc !== false),
       flBgArtBtnStyle: sigSeg(FL.bgArt !== false),
       sigShowLegal: this.state.sigShowLegal !== false,
@@ -3125,7 +3198,6 @@ class Component extends DCLogic {
       sigBottomNote: this.state.sigBottomNote,
       sigCompany: this.state.sigCompany,
       sigAddr: this.state.sigAddr,
-      sigAddrLines: String(this.state.sigAddr || '').split('\n').map((t, k) => ({ id: k, text: t })),
       sigBarBg: this.state.sigBarBg,
       sigBarStyle: 'background:' + (this.state.sigBarBg || '#141417') + ';padding:26px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;',
       sigLinkColor: this.state.sigLinkColor,
@@ -3146,8 +3218,6 @@ class Component extends DCLogic {
       onSigPrefsUrl: (e) => this.setS('sigPrefsUrl', e.target.value),
       onSigUnsubLabel: (e) => this.setS('sigUnsubLabel', e.target.value),
       onSigBottomNote: (e) => this.setS('sigBottomNote', e.target.value),
-      onSigCompany: (e) => this.setS('sigCompany', e.target.value),
-      onSigAddr: (e) => this.setS('sigAddr', e.target.value),
       onSigBarBg: (e) => this.setS('sigBarBg', e.target.value),
       onSigLinkColor: (e) => this.setS('sigLinkColor', e.target.value),
 
@@ -3166,7 +3236,6 @@ class Component extends DCLogic {
       onRailSignature: () => this.setS('railTab', 'signature'),
 
       // builder
-      yes: true,
       isEmpty: blocks.length === 0,
       blocks,
       canvasRef: (el) => { if (el) this._canvasEl = el; },
@@ -3257,18 +3326,13 @@ class Component extends DCLogic {
       onViewOnlineUrl: (e) => this.setS('viewOnlineUrl', e.target.value),
 
       // decoration controls
-      halftoneOn: tglOn,
       onToggleHalftone: () => this.setS('halftone', !this.state.halftone),
       halftoneBtnStyle: 'border:none;border-radius:50px;padding:7px 16px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (tglOn ? 'background:#141417;color:#fff;' : 'background:#ECECEF;color:#56565e;'),
       dotSizeVal: bds, onDotSize: (e) => this.setS('dotSize', +e.target.value),
       dotSpacingVal: bdp, onDotSpacing: (e) => this.setS('dotSpacing', +e.target.value),
-      dotColorSwatches: ['#FFFFFF', '#FC1D37', '#9a9aa2', '#1F8A5B'].map(c => ({ style: swatchStyle(c, bdc), onClick: () => this.setS('dotColor', c) })),
       dotColorVal: bdc,
       onDotColorPick: (e) => this.setS('dotColor', e.target.value),
       onDotColorHex: (e) => { const v = this._normHex(e.target.value); if (v) this.setS('dotColor', v); },
-      dotColor2Val: bdc2,
-      onDotColor2Pick: (e) => this.setS('dotColor2', e.target.value),
-      onDotColor2Hex: (e) => { const v = this._normHex(e.target.value); if (v) this.setS('dotColor2', v); },
       sigPatternLabel: sigPatternDataUrl ? 'Image motif active' : 'Aucune image, points générés',
       sigPatternSizeVal: sigPatternSize,
       onSigPatternFile: (e) => this.onSigPatternFile(e),
