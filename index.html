@@ -578,9 +578,13 @@
       </div>
 
       <!-- RIGHT RAIL: inspector + decoration -->
-      <div style="width:420px;flex:0 0 auto;position:sticky;top:24px;display:flex;flex-direction:column;gap:18px;">
-
-        <!-- INSPECTOR -->
+      <div style="{{ railWrapStyle }}">
+        <div style="{{ railTabBarStyle }}">
+          <button onClick="{{ onRailBloc }}" style="{{ railBlocStyle }}">Bloc</button>
+          <button onClick="{{ onRailExport }}" style="{{ railExportStyle }}">Export</button>
+          <button onClick="{{ onRailSignature }}" style="{{ railSignatureStyle }}">Signature</button>
+        </div>
+        <sc-if value="{{ railIsBloc }}" hint-placeholder-val="{{ true }}"><div>
         <div style="background:#fff;border:1px solid #E2E2E8;border-radius:14px;padding:18px;box-shadow:0 4px 14px -8px rgba(20,20,30,.3);">
           <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:.1em;color:#141417;display:flex;align-items:center;gap:8px;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>RÉGLAGES DU BLOC</div>
 
@@ -1231,6 +1235,8 @@
             </div>
           </sc-if>
         </div>
+        </div></sc-if>
+        <sc-if value="{{ railIsExport }}" hint-placeholder-val="{{ false }}"><div>
         <div style="background:#fff;border:1px solid #E2E2E8;border-radius:14px;padding:18px;box-shadow:0 4px 14px -8px rgba(20,20,30,.3);">
           <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:.1em;color:#141417;display:flex;align-items:center;gap:8px;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>EXPORT BREVO</div>
           <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin:14px 0 6px;">Objet</div>
@@ -1243,6 +1249,8 @@
           <input value="{{ viewOnlineUrl }}" onChange="{{ onViewOnlineUrl }}" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;">
           <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11.5px;line-height:1.5;color:#9a9aa2;margin:12px 0 0;">Dans Brevo, remplacez ces liens par vos variables de campagne si besoin.</p>
         </div>
+        </div></sc-if>
+        <sc-if value="{{ railIsSignature }}" hint-placeholder-val="{{ false }}"><div>
         <div style="background:#141417;border-radius:14px;padding:18px;box-shadow:0 4px 14px -8px rgba(20,20,30,.4);">
           <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:.1em;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:8px;">
             <span style="display:flex;align-items:center;gap:8px;"><span style="width:8px;height:8px;border-radius:50%;background:#FC1D37;display:inline-block;"></span>SIGNATURE</span>
@@ -1357,6 +1365,7 @@
           </div>
           </sc-if>
         </div>
+        </div></sc-if>
 
       </div>
 
@@ -1399,6 +1408,7 @@ class Component extends DCLogic {
   _socialDataUrl(key, glyph, bg) { return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(this._socialSvg(key, glyph, bg)); }
   state = {
     tab: 'builder',
+    railTab: 'bloc',
     selectedId: null,
     stickers: [],
     selStickerId: null,
@@ -1593,6 +1603,7 @@ class Component extends DCLogic {
     const p = tpl.payload;
     this.setState({
       tab: 'builder',
+    railTab: 'bloc',
       headerTitle: p.headerTitle || 'VOTRE E-MAIL',
       headerStyle: p.headerStyle === 'visuel' ? 'visuel' : 'barre',
       headerFile: p.headerFile || 'header.svg',
@@ -2588,7 +2599,7 @@ class Component extends DCLogic {
     const drop = b.id === this.state.dropBlockId;
     const dropBefore = drop && this.state.dropPos === 'before';
     const dropAfter = drop && this.state.dropPos === 'after';
-    const TGL = (on) => 'border:none;border-radius:50px;padding:9px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (on ? 'background:#141417;color:#fff;' : 'background:#ECECEF;color:#56565e;');
+    const TGL = (on) => 'border:1px solid ' + (on ? '#FC1D37' : '#DEDEE4') + ';border-radius:10px;padding:9px 10px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;cursor:pointer;transition:background .12s ease;' + (on ? 'background:#FC1D37;color:#fff;' : 'background:#fff;color:#71717a;');
     const SEG = (on) => 'flex:1;border:1px solid ' + (on ? '#141417' : '#DADADE') + ';background:' + (on ? '#141417' : '#fff') + ';border-radius:8px;padding:8px 4px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;cursor:pointer;color:' + (on ? '#fff' : '#56565e') + ';';
     const reframe = (slotId) => () => {
       const el = this._canvasEl && this._canvasEl.querySelector('#' + slotId);
@@ -2677,7 +2688,7 @@ class Component extends DCLogic {
       o.onBtnText = (e) => this.setField(b.id, 'btnText', e.target.value);
       o.onBtnUrl = (e) => this.setField(b.id, 'btnUrl', e.target.value);
       o.onToggleBtn = () => this.toggle(b.id, 'showBtn');
-      o.btnToggleStyle = 'border:none;border-radius:50px;padding:9px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (b.showBtn ? 'background:#141417;color:#fff;' : 'background:#ECECEF;color:#56565e;');
+      o.btnToggleStyle = TGL(!!b.showBtn);
       o.onBtnBg = (e) => this.setField(b.id, 'btnBg', e.target.value);
       o.onBtnTextColor = (e) => this.setField(b.id, 'btnTextColor', e.target.value);
       o.onBtnBorder = (e) => this.setField(b.id, 'btnBorder', e.target.value);
@@ -2773,7 +2784,7 @@ class Component extends DCLogic {
       o.onTel = (e) => this.setField(b.id, 'tel', e.target.value);
       o.onWa = (e) => this.setField(b.id, 'wa', e.target.value);
       o.onToggleTelDot = () => this.toggle(b.id, 'telDot');
-      o.telDotBtnStyle = 'border:none;border-radius:50px;padding:9px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (b.telDot ? 'background:#141417;color:#fff;' : 'background:#ECECEF;color:#56565e;');
+      o.telDotBtnStyle = TGL(!!b.telDot);
       o.onTelBg = (e) => this.setField(b.id, 'telBg', e.target.value);
       o.onTelText = (e) => this.setField(b.id, 'telText', e.target.value);
       o.onTelBorder = (e) => this.setField(b.id, 'telBorder', e.target.value);
@@ -2807,7 +2818,7 @@ class Component extends DCLogic {
       o.onLine2Tilt = (e) => this.setField(b.id, 'line2Tilt', +e.target.value);
       o.onSub = (e) => this.setField(b.id, 'sub', e.target.value);
       o.onToggleSplit = () => this.toggle(b.id, 'split');
-      o.splitBtnStyle = 'flex:1;border:none;border-radius:50px;padding:9px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (b.split ? 'background:#141417;color:#fff;' : 'background:#ECECEF;color:#56565e;');
+      o.splitBtnStyle = 'flex:1;' + TGL(!!b.split);
       o.halftone = !!b.halftone; o.band = !!b.band; o.bandText = b.bandText;
       o.bandTextSize = b.bandTextSize || 16;
       // Top-left and top-right corners are independent, so the band can slope either
@@ -2828,7 +2839,7 @@ class Component extends DCLogic {
       const bandDeep = Math.max(o.bandLeft, o.bandRight);
       o.bandWrapStyle = 'position:relative;z-index:3;margin:' + Math.max(24, o.padY) + 'px -34px 0;background:' + o.bandBg + ';clip-path:polygon(0 ' + o.bandLeft + 'px, 100% ' + o.bandRight + 'px, 100% 100%, 0 100%);';
       o.bandTextStyle = 'padding:' + (bandDeep + 20) + 'px 26px 22px;text-align:center;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:' + o.bandTextSize + 'px;letter-spacing:.03em;line-height:1.35;color:' + o.bandColor + ';';
-      const tgl = (on) => 'border:none;border-radius:50px;padding:9px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (on ? 'background:#141417;color:#fff;' : 'background:#ECECEF;color:#56565e;');
+      const tgl = TGL;
       o.halftoneBtnStyle = tgl(b.halftone); o.bandBtnStyle = tgl(b.band); o.floatBtnStyle = tgl(b.floatImg);
       o.alignLeftStyle = SEG(o.align === 'left'); o.alignCenterStyle = SEG(o.align === 'center'); o.alignRightStyle = SEG(o.align === 'right');
       o.onAlignLeft = () => this.setField(b.id, 'align', 'left');
@@ -2913,7 +2924,7 @@ class Component extends DCLogic {
       o.alignLeftStyle = seg(al === 'left'); o.alignCenterStyle = seg(al === 'center'); o.alignRightStyle = seg(al === 'right');
       o.onSize = (e) => this.setField(b.id, 'size', +e.target.value);
       o.onToggleShadow = () => this.toggle(b.id, 'shadow');
-      o.shadowBtnStyle = 'border:none;border-radius:50px;padding:9px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (b.shadow ? 'background:#141417;color:#fff;' : 'background:#ECECEF;color:#56565e;');
+      o.shadowBtnStyle = TGL(!!b.shadow);
     } else if (b.type === 'services') {
       o.items = b.services.map((s, idx) => {
         const dotC = s.dot || '#FC1D37', bgC = s.bg || '#FFFFFF', fgC = s.fg || '#34343C', bdC = s.border || '#E6E6EA';
@@ -2949,7 +2960,7 @@ class Component extends DCLogic {
       }));
       o.onTitle = (e) => this.setField(b.id, 'title', e.target.value);
       o.onToggleTitle = () => this.toggle(b.id, 'showTitle');
-      o.titleBtnStyle = 'border:none;border-radius:50px;padding:9px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (b.showTitle ? 'background:#141417;color:#fff;' : 'background:#ECECEF;color:#56565e;');
+      o.titleBtnStyle = TGL(!!b.showTitle);
       o.onCardMinus = () => this.cardCount(b.id, -1);
       o.onCardPlus = () => this.cardCount(b.id, 1);
     }
@@ -2982,6 +2993,8 @@ class Component extends DCLogic {
 
     const sigStyle = ['newsletter', 'flyer'].indexOf(this.state.sigStyle) >= 0 ? this.state.sigStyle : 'carte';
     const sigSeg = (on) => 'flex:1;border:1px solid ' + (on ? '#fff' : '#34343c') + ';background:' + (on ? '#fff' : '#1d1d22') + ';border-radius:8px;padding:8px 4px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;cursor:pointer;color:' + (on ? '#141417' : '#8e8e96') + ';';
+    const railTabStyle = (on) => 'flex:1;border:none;border-radius:9px;padding:9px 6px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.02em;cursor:pointer;transition:background .12s ease;'
+      + (on ? 'background:#fff;color:#141417;box-shadow:0 1px 3px rgba(20,20,30,.16);' : 'background:transparent;color:#71717a;');
     const socialOn = (this.state.sigSocial || []).filter((s) => s.on !== false && (s.url || '').trim());
 
     // Flyer signature: tiles are supplied artwork (label baked in), so each cell is
@@ -3138,6 +3151,20 @@ class Component extends DCLogic {
       onSigBarBg: (e) => this.setS('sigBarBg', e.target.value),
       onSigLinkColor: (e) => this.setS('sigLinkColor', e.target.value),
 
+      // right rail: three cards stacked to 2400px in a 1400px viewport, so sticky
+      // never engaged. One card at a time, and the rail scrolls on its own.
+      railWrapStyle: 'width:420px;flex:0 0 auto;position:sticky;top:24px;max-height:calc(100vh - 48px);overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:14px;padding-right:2px;',
+      railTabBarStyle: 'display:flex;gap:5px;background:#E8E8EE;border-radius:12px;padding:5px;position:sticky;top:0;z-index:5;flex:0 0 auto;',
+      railIsBloc: this.state.railTab !== 'export' && this.state.railTab !== 'signature',
+      railIsExport: this.state.railTab === 'export',
+      railIsSignature: this.state.railTab === 'signature',
+      railBlocStyle: railTabStyle(this.state.railTab !== 'export' && this.state.railTab !== 'signature'),
+      railExportStyle: railTabStyle(this.state.railTab === 'export'),
+      railSignatureStyle: railTabStyle(this.state.railTab === 'signature'),
+      onRailBloc: () => this.setS('railTab', 'bloc'),
+      onRailExport: () => this.setS('railTab', 'export'),
+      onRailSignature: () => this.setS('railTab', 'signature'),
+
       // builder
       yes: true,
       isEmpty: blocks.length === 0,
@@ -3188,7 +3215,7 @@ class Component extends DCLogic {
         onFrameNone: () => this.setStk(s2.id, 'frame', 'none'), onFramePolaroid: () => this.setStk(s2.id, 'frame', 'polaroid'), onFrameTape: () => this.setStk(s2.id, 'frame', 'tape'),
         frameNoneStyle: seg(s2.frame === 'none'), framePolaroidStyle: seg(s2.frame === 'polaroid'), frameTapeStyle: seg(s2.frame === 'tape'),
         onToggleShadow: () => this.setStk(s2.id, 'shadow', !s2.shadow),
-        shadowBtnStyle: 'border:none;border-radius:50px;padding:9px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (s2.shadow ? 'background:#141417;color:#fff;' : 'background:#ECECEF;color:#56565e;'),
+        shadowBtnStyle: 'border:1px solid ' + (s2.shadow ? '#FC1D37' : '#DEDEE4') + ';border-radius:10px;padding:9px 10px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;cursor:pointer;' + (s2.shadow ? 'background:#FC1D37;color:#fff;' : 'background:#fff;color:#71717a;'),
         onRemove: () => this.removeSticker(s2.id),
       }; })(),
       sel: sel || {},

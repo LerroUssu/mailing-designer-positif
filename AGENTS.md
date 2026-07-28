@@ -40,7 +40,11 @@ Older files are archives, do not edit: `Mailings Positif Design.dc.html` (V1, th
 
 V2 is **builder-first**, two tabs (`state.tab`: 'modeles' | 'builder'):
 1. **Builder** (default) — 3 columns: palette (left, 11 blocks), canvas (center, 600px email), right rail
-   (inspector + export settings + signature panel).
+   (inspector + export settings + signature panel). The rail is **tabbed** (`state.railTab`:
+   'bloc' | 'export' | 'signature') and scrolls independently (`max-height:calc(100vh - 48px)`) —
+   stacked, the three cards ran to ~2400px and `position:sticky` never engaged.
+   Button colour is semantic: **red = an active on/off toggle** (`TGL()`), black = the selected
+   option of a segmented choice (`SEG()`) or a primary action. Don't mix them up.
 2. **Modèles** — saved templates, persisted to `localStorage` under `positif-mailing-builder-templates-v1`
    via `saveTemplate()` / `loadTemplate()` / `_templatePayload()`. **When you add new state that must survive
    a save, add it to BOTH `_templatePayload()` and `loadTemplate()`.**
