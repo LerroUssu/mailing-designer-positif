@@ -7,7 +7,7 @@ Output goal: "beau ET prêt à envoyer" — visually strong AND paste-ready into
 User communicates in French; keep all UI copy and emails in French.
 
 ## Client facts (verified)
-- Agence de publicité & imprimerie, Épinay-sur-Seine. **Do NOT use "depuis 1983"** copy — user flagged it as unprofessional (mails go to existing clients).
+- Agence de publicité & imprimerie, Épinay-sur-Seine. **"PUBLICITÉ DEPUIS 1983" is now approved copy** (user reversed the earlier ban on it in July 2026); it headlines the flyer signature.
 - Address: 48 bis Boulevard Foch · 93800 Épinay-sur-Seine
 - Tel: 01 48 29 15 51 · WhatsApp: 06 18 70 11 18 (wa.me/33618701118)
 - Email: contact@positif.biz · Web: positifdesign.fr
@@ -69,7 +69,7 @@ Every block with an `image-slot` exposes `onReframe` (built by the shared `refra
 `_mapBlock`) so the user can double-click-recadrer from the inspector. `TGL()` / `SEG()` at the top of
 `_mapBlock` are the shared toggle-pill and segmented-button style helpers — use them, don't re-inline.
 
-## Signatures — two styles (`state.sigStyle`)
+## Signatures — three styles (`state.sigStyle`)
 - **`'carte'`** (default) — the carte-de-visite footer: dark bg + dot/uploaded pattern, arrows corner
   visual, labelled contact rows. Controlled by the dot/pattern/arrow sliders (all gated behind
   `<sc-if sigIsCarte>` in the right-rail SIGNATURE card). Exported with a baked pattern PNG +
@@ -77,8 +77,15 @@ Every block with an `image-slot` exposes `onReframe` (built by the shared `refra
 - **`'newsletter'`** — the alternate style: bold centered mentions légales, a row of round social icons,
   sender note, « Mettre à jour vos préférences | Se désinscrire » links, closing note, then a black bar
   with the raison sociale + coordonnées on the left and the logo on the right. All strings editable.
+- **`'flyer'`** — from the carte-de-visite verso: dark panel with red halo + dot trame,
+  « PUBLICITÉ DEPUIS 1983 » kicker, logo, coordonnées, a 3-column grid of service tiles, and the red
+  NFC offer band. State lives in one nested `state.sigFlyer` object (clone it whole in
+  `_templatePayload`/`loadTemplate`). **The tiles are real `image-slot`s** — ids come from
+  `_slot('sigtile-N')` and `_slot('signfc')` — so the user drops the photos in like any block.
+  The social cell is a grid cell (row 1, centre) built in `flyerCells`, not an overlay.
+  Exported as a table of per-tile images + HTML labels over a baked 13px dot tile, so links stay live.
 - Social icons are **generated, not asset files**: `_SOCIAL` holds 24×24 monochrome paths (web, tiktok,
-  whatsapp, instagram, facebook), `_socialSvg()` wraps one in a light circle, `_socialDataUrl()` feeds the
+  whatsapp, instagram, facebook, linkedin), `_socialSvg()` wraps one in a light circle, `_socialDataUrl()` feeds the
   canvas preview, and `_rasterizeSvg()` bakes each to a 2× PNG at export time (`images/reseau-*.png`).
 
 ## Tweaks props (root DC, French key-names ARE the labels shown in panel)

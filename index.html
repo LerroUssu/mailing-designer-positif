@@ -460,6 +460,66 @@
             </sc-for>
           </div>
 
+          <!-- ALT SIGNATURE: flyer (publicité depuis 1983 + grille de services + bandeau NFC) -->
+          <sc-if value="{{ sigIsFlyer }}" hint-placeholder-val="{{ false }}">
+            <div style="{{ flWrapStyle }}">
+              <sc-if value="{{ flGlowOn }}" hint-placeholder-val="{{ true }}">
+                <div style="{{ flGlowStyle }}"></div>
+              </sc-if>
+              <sc-if value="{{ flDotsOn }}" hint-placeholder-val="{{ true }}">
+                <div style="{{ flDotsStyle }}"></div>
+              </sc-if>
+
+              <div style="position:relative;z-index:2;text-align:center;">
+                <div><span style="{{ flKickerStyle }}">{{ fl.kicker }}</span> <span style="{{ flYearStyle }}">{{ fl.year }}</span></div>
+                <img src="assets/logo-positif-white.png" width="230" alt="Positif Design" style="display:block;width:230px;max-width:70%;height:auto;margin:20px auto 0;">
+                <div style="{{ flPhoneStyle }}">{{ fl.phone }}</div>
+                <a href="mailto:{{ fl.email }}" style="{{ flEmailStyle }}">{{ fl.email }}</a>
+                <div style="{{ flAddressStyle }}">{{ fl.address }}</div>
+                <div style="{{ flWebStyle }}">{{ fl.web }}</div>
+              </div>
+
+              <div style="{{ flGridStyle }}">
+                <sc-for list="{{ flCells }}" as="c" hint-placeholder-count="0">
+                  <sc-if value="{{ c.isTile }}" hint-placeholder-val="{{ true }}">
+                    <div style="{{ flTileStyle }}">
+                      <image-slot id="{{ c.slot }}" style="{{ flTileSlotStyle }}" shape="rounded" radius="9" placeholder="Visuel"></image-slot>
+                      <div style="{{ flTileLabelStyle }}">
+                        <sc-for list="{{ c.labelLines }}" as="l" hint-placeholder-count="0">
+                          <div>{{ l.text }}</div>
+                        </sc-for>
+                      </div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ c.isSocial }}" hint-placeholder-val="{{ false }}">
+                    <div style="{{ flSocialCellStyle }}">
+                      <div style="{{ flSocialTitleStyle }}">{{ fl.socialTitle }}</div>
+                      <div style="display:flex;align-items:center;gap:9px;">
+                        <a href="{{ fl.instaUrl }}" style="line-height:0;"><img src="{{ flInstaSrc }}" width="34" height="34" alt="Instagram" style="display:block;width:34px;height:34px;"></a>
+                        <a href="{{ fl.linkedinUrl }}" style="line-height:0;"><img src="{{ flLinkedinSrc }}" width="34" height="34" alt="LinkedIn" style="display:block;width:34px;height:34px;"></a>
+                      </div>
+                      <div style="{{ flHandleStyle }}">{{ fl.handle }}</div>
+                    </div>
+                  </sc-if>
+                </sc-for>
+              </div>
+
+              <sc-if value="{{ flNfcOn }}" hint-placeholder-val="{{ true }}">
+                <div style="{{ flNfcWrapStyle }}">
+                  <div style="flex:1 1 auto;min-width:0;">
+                    <p style="{{ flNfcTitleStyle }}">{{ fl.nfcTitle }}</p>
+                    <div style="margin-top:9px;">
+                      <sc-for list="{{ flNfcBullets }}" as="l" hint-placeholder-count="0">
+                        <div style="{{ flNfcBulletStyle }}">{{ l.text }}</div>
+                      </sc-for>
+                    </div>
+                  </div>
+                  <image-slot id="{{ flNfcSlot }}" style="{{ flNfcSlotStyle }}" shape="rounded" radius="8" placeholder="Visuel NFC"></image-slot>
+                </div>
+              </sc-if>
+            </div>
+          </sc-if>
+
           <!-- ALT SIGNATURE: newsletter (mentions + réseaux + bandeau noir) -->
           <sc-if value="{{ sigIsNewsletter }}" hint-placeholder-val="{{ false }}">
             <div>
@@ -1199,7 +1259,82 @@
           <div style="display:flex;gap:7px;">
             <button onClick="{{ onSigStyleCarte }}" style="{{ sigCarteBtnStyle }}">Carte de visite</button>
             <button onClick="{{ onSigStyleNews }}" style="{{ sigNewsBtnStyle }}">Newsletter</button>
+            <button onClick="{{ onSigStyleFlyer }}" style="{{ sigFlyerBtnStyle }}">Flyer</button>
           </div>
+
+          <!-- FLYER SIGNATURE -->
+          <sc-if value="{{ sigIsFlyer }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:20px 0 8px;">Décor</div>
+              <div style="display:flex;gap:7px;">
+                <button onClick="{{ onToggleFlGlow }}" style="{{ flGlowBtnStyle }}">Halo rouge</button>
+                <button onClick="{{ onToggleFlDots }}" style="{{ flDotsBtnStyle }}">Trame de points</button>
+              </div>
+
+              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 7px;">Accroche</div>
+              <div style="display:flex;gap:8px;">
+                <input value="{{ fl.kicker }}" onChange="{{ onFlKicker }}" style="flex:1;min-width:0;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
+                <input value="{{ fl.year }}" onChange="{{ onFlYear }}" style="flex:0 0 76px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;color:#FC1D37;outline:none;">
+              </div>
+
+              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:16px 0 7px;">Coordonnées</div>
+              <input value="{{ fl.phone }}" onChange="{{ onFlPhone }}" placeholder="Téléphone" style="width:100%;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
+              <input value="{{ fl.email }}" onChange="{{ onFlEmail }}" placeholder="E-mail" style="width:100%;margin-top:7px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
+              <input value="{{ fl.address }}" onChange="{{ onFlAddress }}" placeholder="Adresse" style="width:100%;margin-top:7px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
+              <input value="{{ fl.web }}" onChange="{{ onFlWeb }}" placeholder="Site web" style="width:100%;margin-top:7px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
+
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:18px 0 8px;">
+                <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;">Cases services — {{ flTileCount }}</span>
+                <span style="display:flex;gap:6px;">
+                  <button onClick="{{ onFlyerTileMinus }}" style="width:28px;height:28px;border:1px solid #34343c;background:#1d1d22;border-radius:8px;color:#e9e9ee;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:15px;line-height:1;cursor:pointer;">−</button>
+                  <button onClick="{{ onFlyerTilePlus }}" style="width:28px;height:28px;border:1px solid #34343c;background:#1d1d22;border-radius:8px;color:#e9e9ee;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:15px;line-height:1;cursor:pointer;">+</button>
+                </span>
+              </div>
+              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:0 0 8px;">Déposez le visuel de chaque case directement dans la signature. Un retour à la ligne coupe le libellé en deux.</p>
+              <div style="display:flex;flex-direction:column;gap:7px;">
+                <sc-for list="{{ flTiles }}" as="t" hint-placeholder-count="0">
+                  <div style="display:flex;gap:7px;align-items:center;">
+                    <textarea onChange="{{ t.onLabel }}" value="{{ t.label }}" rows="2" style="flex:1;min-width:0;box-sizing:border-box;resize:vertical;border:1px solid #34343c;border-radius:9px;padding:8px 10px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;line-height:1.3;color:#e9e9ee;outline:none;"></textarea>
+                    <button onClick="{{ t.onReframe }}" title="Repositionner le visuel" style="flex:0 0 auto;border:1px solid #34343c;background:#1d1d22;border-radius:9px;padding:9px 10px;color:#e9e9ee;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;cursor:pointer;">Recadrer</button>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:18px 0 8px;">
+                <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;">Case réseaux</span>
+                <button onClick="{{ onToggleFlSocialCell }}" style="{{ flSocialBtnStyle }};flex:0 0 96px;">Afficher</button>
+              </div>
+              <sc-if value="{{ flSocialCellOn }}" hint-placeholder-val="{{ true }}">
+                <div>
+                  <input value="{{ fl.socialTitle }}" onChange="{{ onFlSocialTitle }}" placeholder="Suivez-nous !" style="width:100%;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
+                  <input value="{{ fl.handle }}" onChange="{{ onFlHandle }}" placeholder="@positifdesign" style="width:100%;margin-top:7px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
+                  <input value="{{ fl.instaUrl }}" onChange="{{ onFlInstaUrl }}" placeholder="Lien Instagram" style="width:100%;margin-top:7px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11px;color:#8e8e96;outline:none;">
+                  <input value="{{ fl.linkedinUrl }}" onChange="{{ onFlLinkedinUrl }}" placeholder="Lien LinkedIn" style="width:100%;margin-top:7px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11px;color:#8e8e96;outline:none;">
+                </div>
+              </sc-if>
+
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:18px 0 8px;">
+                <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;">Bandeau NFC</span>
+                <button onClick="{{ onToggleFlNfc }}" style="{{ flNfcBtnStyle }};flex:0 0 96px;">Afficher</button>
+              </div>
+              <sc-if value="{{ flNfcOn }}" hint-placeholder-val="{{ true }}">
+                <div>
+                  <textarea value="{{ fl.nfcTitle }}" onChange="{{ onFlNfcTitle }}" rows="2" style="width:100%;box-sizing:border-box;resize:vertical;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;line-height:1.4;color:#e9e9ee;outline:none;"></textarea>
+                  <textarea value="{{ fl.nfcBullets }}" onChange="{{ onFlNfcBullets }}" rows="2" placeholder="Une ligne par argument" style="width:100%;margin-top:7px;box-sizing:border-box;resize:vertical;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11px;line-height:1.4;color:#e9e9ee;outline:none;"></textarea>
+                  <button onClick="{{ onFlNfcReframe }}" style="width:100%;margin-top:7px;border:1px solid #34343c;background:#1d1d22;border-radius:9px;padding:9px;color:#e9e9ee;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10.5px;cursor:pointer;">Recadrer le visuel NFC</button>
+                </div>
+              </sc-if>
+
+              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 8px;">Couleurs</div>
+              <div style="display:flex;gap:8px;">
+                <label style="flex:1;display:flex;flex-direction:column;gap:5px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#8e8e96;text-transform:uppercase;">Fond<input type="color" value="{{ fl.bg }}" onInput="{{ onFlBg }}" style="width:100%;height:30px;padding:2px;border:1px solid #34343c;border-radius:8px;background:#1d1d22;cursor:pointer;"></label>
+                <label style="flex:1;display:flex;flex-direction:column;gap:5px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#8e8e96;text-transform:uppercase;">Rouge<input type="color" value="{{ fl.accent }}" onInput="{{ onFlAccent }}" style="width:100%;height:30px;padding:2px;border:1px solid #34343c;border-radius:8px;background:#1d1d22;cursor:pointer;"></label>
+                <label style="flex:1;display:flex;flex-direction:column;gap:5px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#8e8e96;text-transform:uppercase;">Cases<input type="color" value="{{ fl.tileBg }}" onInput="{{ onFlTileBg }}" style="width:100%;height:30px;padding:2px;border:1px solid #34343c;border-radius:8px;background:#1d1d22;cursor:pointer;"></label>
+                <label style="flex:1;display:flex;flex-direction:column;gap:5px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#8e8e96;text-transform:uppercase;">Texte<input type="color" value="{{ fl.textColor }}" onInput="{{ onFlTextColor }}" style="width:100%;height:30px;padding:2px;border:1px solid #34343c;border-radius:8px;background:#1d1d22;cursor:pointer;"></label>
+                <label style="flex:1;display:flex;flex-direction:column;gap:5px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#8e8e96;text-transform:uppercase;">NFC<input type="color" value="{{ fl.nfcBg }}" onInput="{{ onFlNfcBg }}" style="width:100%;height:30px;padding:2px;border:1px solid #34343c;border-radius:8px;background:#1d1d22;cursor:pointer;"></label>
+              </div>
+            </div>
+          </sc-if>
 
           <!-- NEWSLETTER SIGNATURE -->
           <sc-if value="{{ sigIsNewsletter }}" hint-placeholder-val="{{ false }}">
@@ -1330,6 +1465,7 @@ class Component extends DCLogic {
     whatsapp: { label: 'WhatsApp', path: 'M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.42.25-.69.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.22-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.89 9.89-9.89 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 0 1 2.89 6.99c0 5.45-4.43 9.89-9.88 9.89M20.46 3.49A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.69 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.17-3.48-8.42' },
     instagram: { label: 'Instagram', path: 'M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.43.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38c-.42.42-.82.68-1.38.9-.43.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.43-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.43-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.72-2.13 1.38C1.35 2.68.93 3.35.63 4.14.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13.67.67 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56a5.9 5.9 0 0 0 2.13-1.38 5.9 5.9 0 0 0 1.38-2.13c.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91a5.9 5.9 0 0 0-1.38-2.13A5.9 5.9 0 0 0 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0m0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8m7.85-10.41a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0' },
     facebook: { label: 'Facebook', path: 'M9.1 23.69v-7.98H6.63v-3.67H9.1v-1.58c0-4.08 1.85-5.98 5.86-5.98.4 0 .96.04 1.47.1.51.06.96.14 1.14.2v3.32a8.6 8.6 0 0 0-.65-.04c-.28-.01-.53-.01-.73-.01-.71 0-1.26.1-1.68.31a1.7 1.7 0 0 0-.68.62c-.26.42-.37 1-.37 1.75v1.3h3.92l-.39 2.1-.29 1.57h-3.25v8.24C19.4 23.24 24 18.18 24 12.04 24 5.42 18.63.04 12 .04S0 5.42 0 12.04c0 5.63 3.87 10.35 9.1 11.65' },
+    linkedin: { label: 'LinkedIn', path: 'M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05a3.74 3.74 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13m1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0' },
   };
   _socialSvg(key, glyph, bg) {
     const g = this._SOCIAL[key];
@@ -1366,6 +1502,34 @@ class Component extends DCLogic {
     sigAddr: "48 bis Bd Foch\n93800 Épinay-sur-Seine\nTél: 01.48.29.15.51\ncontact@positif.biz",
     sigBarBg: '#141417',
     sigLinkColor: '#FC1D37',
+    // Third signature style, from the flyer: dark panel, "publicité depuis 1983",
+    // logo + coordonnées, a 3x3 grid of service tiles, and the NFC offer band.
+    sigFlyer: {
+      kicker: 'PUBLICITÉ DEPUIS', year: '1983',
+      bg: '#0B0B0D', accent: '#FC1D37', tileBg: '#1B1B20', textColor: '#FFFFFF',
+      glow: true, dots: true,
+      phone: '01.48.29.15.51',
+      email: 'contact@positif.biz',
+      address: '48bis, Boulevard Foch · 93800 EPINAY SUR SEINE',
+      web: 'www.positifdesign.fr',
+      socialCell: true, socialTitle: 'Suivez-nous !', handle: '@POSITIFDESIGN',
+      instaUrl: 'https://www.instagram.com/positifdesign',
+      linkedinUrl: 'https://www.linkedin.com/company/positifdesign',
+      tiles: [
+        { label: 'CONCEPTION\nGRAPHIQUE' },
+        { label: 'MARQUAGE\nTEXTILE' },
+        { label: 'MARQUAGE\nVÉHICULES' },
+        { label: 'DÉCO VITRINE\n& ENSEIGNE' },
+        { label: 'SIGNALÉTIQUE' },
+        { label: 'PANNEAUX\nPUBLICITAIRES' },
+        { label: 'IMPRIMERIE' },
+        { label: 'STICKERS\n& ÉTIQUETTES' },
+      ],
+      nfc: true,
+      nfcTitle: 'Boostez les avis de vos clients grâce à une plaque NFC',
+      nfcBullets: 'Collectez des Avis en 3 Secondes !\nSoyez 1er dans les recherches Google',
+      nfcBg: '#D0102C',
+    },
     sigSocial: [
       { key: 'web', url: 'https://positifdesign.fr', on: true },
       { key: 'tiktok', url: 'https://www.tiktok.com/', on: true },
@@ -1463,6 +1627,7 @@ class Component extends DCLogic {
       sigBarBg: this.state.sigBarBg,
       sigLinkColor: this.state.sigLinkColor,
       sigSocial: this._clonePlain(this.state.sigSocial),
+      sigFlyer: this._clonePlain(this.state.sigFlyer),
       arrowSize: this.state.arrowSize,
       arrowX: this.state.arrowX,
       arrowY: this.state.arrowY,
@@ -1516,7 +1681,7 @@ class Component extends DCLogic {
       sigTextColor: p.sigTextColor || '#ffffff',
       sigPatternDataUrl: p.sigPatternDataUrl || '',
       sigPatternSize: p.sigPatternSize || 160,
-      sigStyle: p.sigStyle === 'newsletter' ? 'newsletter' : 'carte',
+      sigStyle: ['newsletter', 'flyer'].indexOf(p.sigStyle) >= 0 ? p.sigStyle : 'carte',
       sigLegal: p.sigLegal == null ? this.state.sigLegal : p.sigLegal,
       sigShowLegal: p.sigShowLegal !== false,
       sigSenderNote: p.sigSenderNote == null ? this.state.sigSenderNote : p.sigSenderNote,
@@ -1529,6 +1694,7 @@ class Component extends DCLogic {
       sigBarBg: p.sigBarBg || '#141417',
       sigLinkColor: p.sigLinkColor || '#FC1D37',
       sigSocial: Array.isArray(p.sigSocial) && p.sigSocial.length ? this._clonePlain(p.sigSocial) : this._clonePlain(this.state.sigSocial),
+      sigFlyer: { ...this._clonePlain(this.state.sigFlyer), ...(p.sigFlyer ? this._clonePlain(p.sigFlyer) : {}) },
       arrowSize: p.arrowSize || 316,
       arrowX: p.arrowX == null ? -94 : p.arrowX,
       arrowY: p.arrowY == null ? 40 : p.arrowY,
@@ -1598,6 +1764,17 @@ class Component extends DCLogic {
   toggle(id, k) { this.setState(s => ({ blocks: s.blocks.map(b => b.id === id ? { ...b, [k]: !b[k] } : b) })); }
   setS(k, v) { this.setState({ [k]: v }); }
   setSocial(idx, k, v) { this.setState(s => ({ sigSocial: s.sigSocial.map((x, i) => i === idx ? { ...x, [k]: v } : x) })); }
+  setFlyer(k, v) { this.setState(s => ({ sigFlyer: { ...s.sigFlyer, [k]: v } })); }
+  setFlyerTile(idx, k, v) { this.setState(s => ({ sigFlyer: { ...s.sigFlyer, tiles: s.sigFlyer.tiles.map((t, i) => i === idx ? { ...t, [k]: v } : t) } })); }
+  flyerTileCount(delta) {
+    this.setState(s => {
+      const n = Math.max(1, Math.min(12, s.sigFlyer.tiles.length + delta));
+      let tiles = s.sigFlyer.tiles.slice();
+      while (tiles.length < n) tiles.push({ label: 'NOUVEAU SERVICE' });
+      if (tiles.length > n) tiles = tiles.slice(0, n);
+      return { sigFlyer: { ...s.sigFlyer, tiles } };
+    });
+  }
   addSticker() { const id = this._nextId++; const st = { id, x: 220, y: 150, size: 150, rot: -7, shape: 'circle', radius: 18, shadow: true, frame: 'none' }; this.setState(s => ({ stickers: [...s.stickers, st], selStickerId: id, selectedId: null, headerSelected: false })); }
   selSticker(id) { this.setState({ selStickerId: id, selectedId: null, headerSelected: false }); }
   removeSticker(id) { this.setState(s => ({ stickers: s.stickers.filter(x => x.id !== id), selStickerId: null })); }
@@ -2177,7 +2354,81 @@ class Component extends DCLogic {
     }
 
     let sig = '';
-    if (this.state.sigStyle === 'newsletter') {
+    if (this.state.sigStyle === 'flyer') {
+      const S = this.state.sigFlyer;
+      const TXT = S.textColor || '#FFFFFF';
+      // Solid bgcolor + a baked dot tile: email clients can't be trusted with CSS
+      // gradients, but a repeating background image degrades to the bgcolor safely.
+      let dotName = '';
+      if (S.dots !== false) {
+        try {
+          const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"><rect width="13" height="13" fill="' + (S.bg || '#0B0B0D') + '"/><circle cx="6.5" cy="6.5" r="1.4" fill="#ffffff" fill-opacity="0.10"/></svg>';
+          const bytes = await this._rasterizeSvg(svg, 13);
+          dotName = imgName('signature-flyer-trame', 'png');
+          files.push({ name: dotName, bytes });
+        } catch (e) {}
+      }
+      const panelBg = dotName
+        ? 'background-color:' + S.bg + ';background-image:url(' + dotName + ');background-repeat:repeat;'
+        : 'background:' + S.bg + ';';
+
+      let head = '<div style="font-family:' + F + ';font-weight:700;font-size:12px;letter-spacing:4px;color:' + TXT + ';text-transform:uppercase;">'
+        + esc(S.kicker) + ' <span style="color:' + S.accent + ';font-weight:800;">' + esc(S.year) + '</span></div>';
+      if (logoName) head += '<div style="padding-top:20px;"><img src="' + logoName + '" width="230" alt="Positif Design" style="display:inline-block;width:230px;max-width:70%;height:auto;border:0;"></div>';
+      head += '<div style="font-family:' + F + ';font-weight:800;font-size:21px;letter-spacing:3px;color:' + TXT + ';padding-top:18px;">' + esc(S.phone) + '</div>';
+      head += '<div style="padding-top:6px;"><a href="mailto:' + esc(S.email) + '" style="font-family:' + F + ';font-weight:700;font-size:14px;letter-spacing:1px;color:' + S.accent + ';text-decoration:none;">' + esc(S.email) + '</a></div>';
+      head += '<div style="font-family:' + F + ';font-weight:600;font-size:11.5px;color:' + TXT + ';padding-top:10px;">' + esc(S.address) + '</div>';
+      head += '<div style="font-family:' + F + ';font-weight:800;font-size:14px;letter-spacing:3px;color:' + TXT + ';padding-top:8px;">' + esc(S.web) + '</div>';
+
+      // Grid: real table cells, so the labels stay selectable text and each visual
+      // is its own image rather than one big screenshot.
+      let instaName = '', liName = '';
+      try { instaName = imgName('reseau-instagram', 'png'); files.push({ name: instaName, bytes: await this._rasterizeSvg(this._socialSvg('instagram', '#ffffff', S.accent), 34) }); } catch (e) { instaName = ''; }
+      try { liName = imgName('reseau-linkedin', 'png'); files.push({ name: liName, bytes: await this._rasterizeSvg(this._socialSvg('linkedin', '#ffffff', '#0A66C2'), 34) }); } catch (e) { liName = ''; }
+      const socialCellHtml = '<td width="33%" align="center" valign="middle" style="vertical-align:middle;padding:6px;">'
+        + '<div style="font-family:' + F + ';font-weight:700;font-style:italic;font-size:14px;color:' + S.accent + ';padding-bottom:7px;">' + esc(S.socialTitle) + '</div>'
+        + (instaName ? '<a href="' + href(S.instaUrl) + '"><img src="' + instaName + '" width="34" height="34" alt="Instagram" style="display:inline-block;width:34px;height:34px;border:0;margin:0 4px;"></a>' : '')
+        + (liName ? '<a href="' + href(S.linkedinUrl) + '"><img src="' + liName + '" width="34" height="34" alt="LinkedIn" style="display:inline-block;width:34px;height:34px;border:0;margin:0 4px;"></a>' : '')
+        + '<div style="font-family:' + F + ';font-weight:800;font-size:9px;letter-spacing:1px;color:' + TXT + ';padding-top:7px;">' + esc(S.handle) + '</div></td>';
+      const tileHtml = (t, i) => {
+        const im = pushImg(this._slot('sigtile-' + i), 172, 'signature-case-' + (i + 1));
+        const label = String(t.label || '').split('\n').map((x) => esc(x)).join('<br>');
+        return '<td width="33%" valign="top" align="center" style="vertical-align:top;padding:5px;">'
+          + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="' + S.tileBg + '" align="center" style="background:' + S.tileBg + ';border-radius:14px;padding:10px 10px 12px;">'
+          + (im ? '<img src="' + im + '" width="150" alt="" style="display:block;width:100%;height:auto;border-radius:9px;">' : '<div style="height:74px;background:rgba(255,255,255,.06);border-radius:9px;"></div>')
+          + '<div style="font-family:' + F + ';font-weight:800;font-size:9.5px;letter-spacing:.5px;line-height:1.25;color:' + TXT + ';padding-top:8px;text-transform:uppercase;">' + label + '</div>'
+          + '</td></tr></table></td>';
+      };
+      const cells = [];
+      (S.tiles || []).forEach((t, i) => {
+        if (S.socialCell !== false && i === 1) cells.push(socialCellHtml);
+        cells.push(tileHtml(t, i));
+      });
+      let grid = '';
+      for (let i = 0; i < cells.length; i += 3) {
+        const row = cells.slice(i, i + 3);
+        while (row.length < 3) row.push('<td width="33%" style="padding:5px;">&nbsp;</td>');
+        grid += '<tr>' + row.join('') + '</tr>';
+      }
+      const gridHtml = grid ? '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:18px;">' + grid + '</table>' : '';
+
+      sig = '<tr><td background="' + dotName + '" bgcolor="' + S.bg + '" class="px" style="' + panelBg + 'padding:34px 26px 30px;text-align:center;">'
+        + head + gridHtml + '</td></tr>';
+
+      if (S.nfc !== false) {
+        const nfcIm = pushImg(this._slot('signfc'), 150, 'signature-nfc');
+        const bullets = String(S.nfcBullets || '').split('\n').filter((x) => x.trim())
+          .map((x) => '<div style="font-family:' + F + ';font-weight:700;font-size:11px;line-height:1.5;color:#ffffff;">' + esc(x) + '</div>').join('');
+        sig += '<tr><td bgcolor="' + S.nfcBg + '" class="px" style="background:' + S.nfcBg + ';padding:20px 26px;">'
+          + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>'
+          + '<td class="stack" valign="middle" style="vertical-align:middle;">'
+          + '<div style="font-family:' + F + ';font-weight:800;font-size:16px;line-height:1.3;color:#ffffff;">' + esc(S.nfcTitle) + '</div>'
+          + (bullets ? '<div style="padding-top:9px;">' + bullets + '</div>' : '')
+          + '</td>'
+          + (nfcIm ? '<td class="stack" width="150" valign="middle" align="right" style="vertical-align:middle;font-size:0;line-height:0;"><img src="' + nfcIm + '" width="150" alt="" style="display:inline-block;width:150px;max-width:100%;height:auto;border-radius:8px;border:0;"></td>' : '')
+          + '</tr></table></td></tr>';
+      }
+    } else if (this.state.sigStyle === 'newsletter') {
       const S = this.state;
       let inner = '';
       if (S.sigShowLegal !== false && (S.sigLegal || '').trim()) {
@@ -2770,9 +3021,26 @@ class Component extends DCLogic {
     const bcell = Math.max(bdp, bds + 2), br = bds / 2, bhalf = (bcell / 2).toFixed(1);
     const stepBtn = 'width:36px;height:36px;border:1px solid #DADADE;background:#fff;border-radius:10px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:18px;line-height:1;color:#141417;cursor:pointer;flex:0 0 auto;';
 
-    const sigStyle = this.state.sigStyle === 'newsletter' ? 'newsletter' : 'carte';
+    const sigStyle = ['newsletter', 'flyer'].indexOf(this.state.sigStyle) >= 0 ? this.state.sigStyle : 'carte';
     const sigSeg = (on) => 'flex:1;border:1px solid ' + (on ? '#fff' : '#34343c') + ';background:' + (on ? '#fff' : '#1d1d22') + ';border-radius:8px;padding:8px 4px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;cursor:pointer;color:' + (on ? '#141417' : '#8e8e96') + ';';
     const socialOn = (this.state.sigSocial || []).filter((s) => s.on !== false && (s.url || '').trim());
+
+    // Flyer signature: the grid is a flat cell list so the social cell can sit inside
+    // it (row 1, centre on the flyer) without a separate absolutely-placed element.
+    const FL = this.state.sigFlyer;
+    const flyerTiles = (FL.tiles || []).map((t, idx) => ({
+      idx, label: t.label,
+      labelLines: String(t.label || '').split('\n').map((x, k) => ({ id: k, text: x })),
+      slot: this._slot('sigtile-' + idx),
+      onLabel: (e) => this.setFlyerTile(idx, 'label', e.target.value),
+      onReframe: () => { const el = this._canvasEl && this._canvasEl.querySelector('#' + this._slot('sigtile-' + idx)); if (el && typeof el.reframe === 'function') el.reframe(); },
+    }));
+    const flyerCells = [];
+    flyerTiles.forEach((t, i) => {
+      if (FL.socialCell && i === 1) flyerCells.push({ id: 'social', isSocial: true, isTile: false });
+      flyerCells.push({ id: 't' + i, isSocial: false, isTile: true, ...t });
+    });
+    if (FL.socialCell && flyerTiles.length < 2) flyerCells.push({ id: 'social', isSocial: true, isTile: false });
 
     const blocks = this.state.blocks.map((b, i) => this._mapBlock(b, i));
     const sel = this.state.selectedId != null ? blocks.find(x => x.id === this.state.selectedId) : null;
@@ -2823,11 +3091,76 @@ class Component extends DCLogic {
       // alt signature ("newsletter")
       sigIsCarte: sigStyle === 'carte',
       sigIsNewsletter: sigStyle === 'newsletter',
+      sigIsFlyer: sigStyle === 'flyer',
       sigCarteDisplay: sigStyle === 'carte' ? 'block' : 'none',
       sigCarteBtnStyle: sigSeg(sigStyle === 'carte'),
       sigNewsBtnStyle: sigSeg(sigStyle === 'newsletter'),
+      sigFlyerBtnStyle: sigSeg(sigStyle === 'flyer'),
       onSigStyleCarte: () => this.setS('sigStyle', 'carte'),
       onSigStyleNews: () => this.setS('sigStyle', 'newsletter'),
+      onSigStyleFlyer: () => this.setS('sigStyle', 'flyer'),
+
+      // flyer signature
+      fl: FL,
+      flCells: flyerCells,
+      flTiles: flyerTiles,
+      flTileCount: flyerTiles.length,
+      flNfcBullets: String(FL.nfcBullets || '').split('\n').map((t, k) => ({ id: k, text: t })),
+      flNfcSlot: this._slot('signfc'),
+      flWrapStyle: 'position:relative;overflow:hidden;background:' + FL.bg + ';padding:34px 30px 0;',
+      flGlowStyle: 'position:absolute;left:50%;bottom:-140px;width:760px;height:520px;transform:translateX(-50%);background:radial-gradient(ellipse at center, ' + FL.accent + '66 0%, transparent 68%);pointer-events:none;z-index:0;',
+      flDotsStyle: 'position:absolute;inset:0;background-image:radial-gradient(circle, rgba(255,255,255,.10) 1.4px, transparent 1.7px);background-size:13px 13px;pointer-events:none;z-index:0;',
+      flKickerStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12px;letter-spacing:.42em;color:' + FL.textColor + ';text-transform:uppercase;',
+      flYearStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.42em;color:' + FL.accent + ';',
+      flPhoneStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:21px;letter-spacing:.16em;color:' + FL.textColor + ';margin:18px 0 0;',
+      flEmailStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:14px;letter-spacing:.06em;color:' + FL.accent + ';',
+      flAddressStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;letter-spacing:.04em;color:' + FL.textColor + ';margin:10px 0 0;',
+      flWebStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:14px;letter-spacing:.16em;color:' + FL.textColor + ';margin:8px 0 0;',
+      flGridStyle: 'position:relative;z-index:2;display:flex;flex-wrap:wrap;gap:10px;margin:24px 0 0;',
+      flTileStyle: 'flex:0 0 calc((100% - 20px) / 3);max-width:calc((100% - 20px) / 3);box-sizing:border-box;background:' + FL.tileBg + ';border-radius:14px;padding:10px 10px 12px;text-align:center;',
+      flTileSlotStyle: 'width:100%;height:74px;display:block;',
+      flTileLabelStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:9.5px;letter-spacing:.06em;line-height:1.25;color:' + FL.textColor + ';margin:8px 0 0;text-transform:uppercase;',
+      flSocialCellStyle: 'flex:0 0 calc((100% - 20px) / 3);max-width:calc((100% - 20px) / 3);box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:6px;',
+      flSocialTitleStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:700;font-style:italic;font-size:14px;color:' + FL.accent + ';',
+      flHandleStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:9px;letter-spacing:.06em;color:' + FL.textColor + ';',
+      flInstaSrc: this._socialDataUrl('instagram', '#ffffff', FL.accent),
+      flLinkedinSrc: this._socialDataUrl('linkedin', '#ffffff', '#0A66C2'),
+      flNfcWrapStyle: 'position:relative;z-index:2;margin:26px -30px 0;background:' + FL.nfcBg + ';padding:20px 30px;display:flex;align-items:center;gap:16px;',
+      flNfcTitleStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:16px;line-height:1.3;color:#ffffff;margin:0;',
+      flNfcBulletStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;line-height:1.5;color:#ffffff;',
+      flNfcSlotStyle: 'width:150px;height:96px;display:block;flex:0 0 150px;',
+      onFlyerTileMinus: () => this.flyerTileCount(-1),
+      onFlyerTilePlus: () => this.flyerTileCount(1),
+      onFlKicker: (e) => this.setFlyer('kicker', e.target.value),
+      onFlYear: (e) => this.setFlyer('year', e.target.value),
+      onFlPhone: (e) => this.setFlyer('phone', e.target.value),
+      onFlEmail: (e) => this.setFlyer('email', e.target.value),
+      onFlAddress: (e) => this.setFlyer('address', e.target.value),
+      onFlWeb: (e) => this.setFlyer('web', e.target.value),
+      onFlSocialTitle: (e) => this.setFlyer('socialTitle', e.target.value),
+      onFlHandle: (e) => this.setFlyer('handle', e.target.value),
+      onFlInstaUrl: (e) => this.setFlyer('instaUrl', e.target.value),
+      onFlLinkedinUrl: (e) => this.setFlyer('linkedinUrl', e.target.value),
+      onFlBg: (e) => this.setFlyer('bg', e.target.value),
+      onFlAccent: (e) => this.setFlyer('accent', e.target.value),
+      onFlTileBg: (e) => this.setFlyer('tileBg', e.target.value),
+      onFlTextColor: (e) => this.setFlyer('textColor', e.target.value),
+      onFlNfcBg: (e) => this.setFlyer('nfcBg', e.target.value),
+      onFlNfcTitle: (e) => this.setFlyer('nfcTitle', e.target.value),
+      onFlNfcBullets: (e) => this.setFlyer('nfcBullets', e.target.value),
+      onToggleFlSocialCell: () => this.setFlyer('socialCell', !FL.socialCell),
+      onToggleFlNfc: () => this.setFlyer('nfc', !FL.nfc),
+      onToggleFlGlow: () => this.setFlyer('glow', FL.glow === false),
+      onToggleFlDots: () => this.setFlyer('dots', FL.dots === false),
+      onFlNfcReframe: () => { const el = this._canvasEl && this._canvasEl.querySelector('#' + this._slot('signfc')); if (el && typeof el.reframe === 'function') el.reframe(); },
+      flSocialCellOn: FL.socialCell !== false,
+      flNfcOn: FL.nfc !== false,
+      flGlowOn: FL.glow !== false,
+      flDotsOn: FL.dots !== false,
+      flSocialBtnStyle: sigSeg(FL.socialCell !== false),
+      flNfcBtnStyle: sigSeg(FL.nfc !== false),
+      flGlowBtnStyle: sigSeg(FL.glow !== false),
+      flDotsBtnStyle: sigSeg(FL.dots !== false),
       sigShowLegal: this.state.sigShowLegal !== false,
       sigLegalBtnStyle: 'border:none;border-radius:50px;padding:7px 16px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (this.state.sigShowLegal !== false ? 'background:#fff;color:#141417;' : 'background:#2a2a30;color:#8e8e96;'),
       onToggleSigLegal: () => this.setS('sigShowLegal', !(this.state.sigShowLegal !== false)),
