@@ -69,6 +69,9 @@ Every block with an `image-slot` exposes `onReframe` (built by the shared `refra
 `_mapBlock`) so the user can double-click-recadrer from the inspector. `TGL()` / `SEG()` at the top of
 `_mapBlock` are the shared toggle-pill and segmented-button style helpers — use them, don't re-inline.
 
+## Header + signatures
+`state.headerStyle`: `'barre'` (logo + editable title) or `'visuel'` (`assets/header.svg` full width, baked to PNG on export).
+
 ## Signatures — three styles (`state.sigStyle`)
 - **`'carte'`** (default) — the carte-de-visite footer: dark bg + dot/uploaded pattern, arrows corner
   visual, labelled contact rows. Controlled by the dot/pattern/arrow sliders (all gated behind
@@ -78,7 +81,7 @@ Every block with an `image-slot` exposes `onReframe` (built by the shared `refra
   sender note, « Mettre à jour vos préférences | Se désinscrire » links, closing note, then a black bar
   with the raison sociale + coordonnées on the left and the logo on the right. All strings editable.
 - **`'flyer'`** — the carte-de-visite verso, built from **supplied SVG artwork** in `assets/`:
-  `sig-flyer-bg.svg`, `tile-*.svg` (9 cells — 8 services + « Suivez-nous », each already carrying its
+  `sig-flyer-bg-clean.svg` (the dégradé + trame layers pulled out of `sig-flyer-bg.svg`, whose other layers are the header text and would double it), `tile-*.svg` (9 cells — 8 services + « Suivez-nous », each already carrying its
   own rounded panel *and its label*), `sig-nfc-band.svg`, `logo.svg` / `logo-long.svg`, `header.svg`.
   Because the labels are baked into the artwork the grid renders plain `<img>`, not image-slots, and
   there are no text labels to edit — each cell just toggles on/off and takes an optional link.

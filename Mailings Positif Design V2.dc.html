@@ -264,10 +264,17 @@
         <div ref="{{ canvasRef }}" style="position:relative;width:600px;max-width:100%;background-color:#fff;background-image:radial-gradient(rgba(20,20,28,.045) 1px, transparent 1.6px);background-size:16px 16px;border-radius:10px;overflow:hidden;box-shadow:0 26px 60px -22px rgba(20,20,30,.36);border:1px solid #E2E2E8;">
 
           <!-- canvas header -->
-          <div onClick="{{ onHeaderSelect }}" style="{{ headerWrapStyle }}">
-            <img src="assets/logo.svg" width="150" alt="Positif Design" style="display:block;width:150px;height:auto;">
-            <span data-tools="1" style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.18em;color:#9a9aa2;">{{ headerTitle }}</span>
-          </div>
+          <sc-if value="{{ headerIsBarre }}" hint-placeholder-val="{{ true }}">
+            <div onClick="{{ onHeaderSelect }}" style="{{ headerWrapStyle }}">
+              <img src="assets/logo.svg" width="150" alt="Positif Design" style="display:block;width:150px;height:auto;">
+              <span data-tools="1" style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.18em;color:#9a9aa2;">{{ headerTitle }}</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ headerIsVisuel }}" hint-placeholder-val="{{ false }}">
+            <div onClick="{{ onHeaderSelect }}" style="{{ headerVisuelWrapStyle }}">
+              <img src="{{ headerSrc }}" alt="Positif Design" style="display:block;width:100%;height:auto;">
+            </div>
+          </sc-if>
 
           <!-- drop zone -->
           <div onDragOver="{{ onDragOver }}" onDrop="{{ onDrop }}" style="min-height:160px;">
@@ -583,9 +590,19 @@
 
           <sc-if value="{{ headerSelected }}" hint-placeholder-val="{{ false }}">
             <div style="margin-top:14px;">
+              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.05em;color:#FC1D37;text-transform:uppercase;margin-bottom:10px;">En-tête</div>
+              <div style="display:flex;gap:7px;margin-bottom:14px;">
+                <button onClick="{{ onHeaderStyleBarre }}" style="{{ headerBarreBtnStyle }}">Barre + titre</button>
+                <button onClick="{{ onHeaderStyleVisuel }}" style="{{ headerVisuelBtnStyle }}">Visuel fourni</button>
+              </div>
+              <sc-if value="{{ headerIsBarre }}" hint-placeholder-val="{{ true }}">
               <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.05em;color:#FC1D37;text-transform:uppercase;margin-bottom:12px;">Titre du header</div>
               <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#9a9aa2;text-transform:uppercase;margin-bottom:6px;">Texte</div>
               <input value="{{ headerTitle }}" onChange="{{ onHeaderTitle }}" style="width:100%;box-sizing:border-box;border:1px solid #E2E2E8;border-radius:10px;padding:10px 12px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:12.5px;color:#34343c;outline:none;">
+              </sc-if>
+              <sc-if value="{{ headerIsVisuel }}" hint-placeholder-val="{{ false }}">
+                <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12px;line-height:1.5;color:#9a9aa2;margin:0;">Utilise <code>header.svg</code> : logo, téléphone, e-mail, adresse et site en un seul visuel pleine largeur.</p>
+              </sc-if>
             </div>
           </sc-if>
 
@@ -1387,6 +1404,8 @@ class Component extends DCLogic {
     selStickerId: null,
     headerSelected: false,
     headerTitle: 'VOTRE E-MAIL',
+    headerStyle: 'barre',
+    headerFile: 'header.svg',
     dragBlockId: null,
     dropBlockId: null,
     dropPos: null,
@@ -1506,6 +1525,8 @@ class Component extends DCLogic {
   _templatePayload() {
     return {
       headerTitle: this.state.headerTitle,
+      headerStyle: this.state.headerStyle,
+      headerFile: this.state.headerFile,
       emailSubject: this.state.emailSubject,
       emailPreheader: this.state.emailPreheader,
       unsubscribeUrl: this.state.unsubscribeUrl,
@@ -1573,6 +1594,8 @@ class Component extends DCLogic {
     this.setState({
       tab: 'builder',
       headerTitle: p.headerTitle || 'VOTRE E-MAIL',
+      headerStyle: p.headerStyle === 'visuel' ? 'visuel' : 'barre',
+      headerFile: p.headerFile || 'header.svg',
       emailSubject: p.emailSubject || 'Votre offre Positif Design',
       emailPreheader: p.emailPreheader || '',
       unsubscribeUrl: p.unsubscribeUrl || '{{ unsubscribe }}',
@@ -2158,7 +2181,20 @@ class Component extends DCLogic {
       if (baked) { logoName = 'images/logo-positif.png'; files.push({ name: logoName, bytes: baked.bytes }); }
     } catch (e) {}
 
-    let rows = '<tr><td bgcolor="#141417" style="background:#141417;padding:16px 28px;">' +
+    let rows = '';
+    if (this.state.headerStyle === 'visuel') {
+      const hdr = await (async () => {
+        try {
+          const baked = await this._rasterizeAsset('assets/' + (this.state.headerFile || 'header.svg'), 600);
+          if (!baked) return null;
+          const name = imgName('en-tete-positif', 'png');
+          files.push({ name, bytes: baked.bytes });
+          return name;
+        } catch (e) { return null; }
+      })();
+      if (hdr) rows += '<tr><td bgcolor="#141417" style="background:#141417;padding:0;font-size:0;line-height:0;"><img src="' + hdr + '" width="600" alt="Positif Design" style="display:block;width:100%;max-width:600px;height:auto;border:0;"></td></tr>';
+    } else
+    rows += '<tr><td bgcolor="#141417" style="background:#141417;padding:16px 28px;">' +
       '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>' +
       '<td align="left" valign="middle">' + (logoName ? '<img src="' + logoName + '" width="150" alt="Positif Design" style="display:block;width:150px;height:auto;">' : '') + '</td>' +
       '<td align="right" valign="middle" style="font-family:' + F + ';font-weight:800;font-size:11px;letter-spacing:2px;color:#9a9aa2;text-transform:uppercase;">' + esc(this.state.headerTitle || 'VOTRE E-MAIL') + '</td>' +
@@ -3104,6 +3140,14 @@ class Component extends DCLogic {
       canvasRef: (el) => { if (el) this._canvasEl = el; },
       headerTitle: this.state.headerTitle,
       headerSelected: !!this.state.headerSelected,
+      headerIsBarre: this.state.headerStyle !== 'visuel',
+      headerIsVisuel: this.state.headerStyle === 'visuel',
+      headerSrc: 'assets/' + (this.state.headerFile || 'header.svg'),
+      headerVisuelWrapStyle: 'position:relative;cursor:pointer;line-height:0;font-size:0;' + (this.state.headerSelected ? 'outline:2px solid #FC1D37;outline-offset:-2px;' : ''),
+      headerBarreBtnStyle: sigSeg(this.state.headerStyle !== 'visuel'),
+      headerVisuelBtnStyle: sigSeg(this.state.headerStyle === 'visuel'),
+      onHeaderStyleBarre: () => this.setS('headerStyle', 'barre'),
+      onHeaderStyleVisuel: () => this.setS('headerStyle', 'visuel'),
       headerWrapStyle: 'background:#141417;padding:17px 28px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;' + (this.state.headerSelected ? 'outline:2px solid #FC1D37;outline-offset:-2px;' : ''),
       onHeaderSelect: () => this.selectHeader(),
       onHeaderTitle: (e) => this.setS('headerTitle', e.target.value),
