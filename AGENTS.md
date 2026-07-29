@@ -26,7 +26,8 @@ What follows is the minimum needed to not break things.
    vector at full resolution; `ctx.scale()` over an image the browser already rasterised small
    just blows up pixels, and that was the aliasing on the promo block.
 5. **New state must be added to BOTH `_templatePayload()` and `loadTemplate()`**, or it won't
-   survive a save. Clone nested objects (`contact`, `sigFlyer`) whole.
+   survive a save. Clone nested objects (`contact`, `sigFlyer`) whole. `_templatePayload()` also
+   feeds the saved defaults, so anything added there is picked up by both.
 
 ## DC constraints
 
@@ -138,6 +139,14 @@ The "Pop blast" red variant is the keeper; the dark "Black pop" one was deleted.
 The host Tweaks panel uses the prop KEY as its label, so keys are French: `Points · taille`,
 `Points · espacement`, `Points · couleur`, `Flèches · taille`, `Flèches · décalage droite`,
 `Flèches · décalage bas`. They control the dot pattern + arrows on the V1 model signatures.
+
+## Saved defaults
+
+The Export tab's « Enregistrer les réglages actuels » writes `_defaultsPayload()` to
+`localStorage['positif-mailing-defaults-v1']`, and `state` is built through `_withDefaults()`,
+so the app opens on them. **Settings only** — `blocks` and `stickers` are stripped; content is
+what the Modèles tab is for. `_withDefaults` applies only keys the built-in state already
+declares, so a stale entry can't inject anything unknown.
 
 ## Only relevant options, in relevant places
 

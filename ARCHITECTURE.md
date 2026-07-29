@@ -347,7 +347,22 @@ above `class Component`. Block outline, sticker outline, header ring and the dra
 bar all use them. Red was the brand colour, so a red ring read as part of the design rather than
 as UI state.
 
-## 9. Saved templates
+## 9. Saved defaults
+
+« Enregistrer les réglages actuels » (Export tab) writes `_defaultsPayload()` to
+`localStorage['positif-mailing-defaults-v1']`. `state` is built as
+`this._withDefaults({ ...built-in defaults... })`, so a saved set is applied at construction
+and the app opens on it. « Revenir aux réglages d'origine » removes the key.
+
+- The payload is `_templatePayload()` **minus `blocks` and `stickers`**, plus `halftone` and
+  the four export fields (subject, preheader, unsubscribe, mirror). Settings persist; content
+  does not — that is the Modèles tab's job, and conflating the two would make every new e-mail
+  start with the last one's blocks.
+- `_withDefaults` copies **only keys the built-in state already declares**, so a stale or
+  hand-edited entry cannot introduce state the app doesn't know about.
+- Anything added to `_templatePayload()` is therefore picked up by saved defaults too.
+
+## 10. Saved templates
 
 `localStorage` key `positif-mailing-builder-templates-v1`, via `saveTemplate()` /
 `loadTemplate()` / `_templatePayload()`.
@@ -355,7 +370,7 @@ as UI state.
 **Any new state that must survive a save has to be added to BOTH `_templatePayload()` and
 `loadTemplate()`.** Nested objects (`contact`, `sigFlyer`) must be cloned whole.
 
-## 10. Verifying locally
+## 11. Verifying locally
 
 ```bash
 node preview-server.js 8025
@@ -375,13 +390,13 @@ Checks worth running after any change:
   endpoint — no need to unzip the download) and grep for: unresolved `{{` holes, `.svg`
   references, `href=""`
 
-## 11. Deploying
+## 12. Deploying
 
 Vercel auto-deploys `main` through the GitHub integration. **The project is invisible to the
 Vercel MCP account** — `list_projects` returns nothing, which does not mean the site is down.
 Verify a deploy by curling the live URL and grepping for a marker string you just shipped.
 
-## 12. Known open items
+## 13. Known open items
 
 - 8 of 11 block inspectors are flat, always-expanded control runs (only `image`, `produit`,
   `oneforone` use collapsible sections)
