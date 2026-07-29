@@ -20,7 +20,11 @@ What follows is the minimum needed to not break things.
    `exportHtml()` first (it is earlier in the file) and your code lands in the wrong method.
    Anchor on a string unique to the target method, then grep to confirm.
 4. **E-mail strips SVG** — never reference a `.svg` from `exportHtml()`. Bake with
-   `_rasterizeAsset(path, outW, slice?)` or `_rasterizeSvg(svg, size)`.
+   `_rasterizeAsset(path, outW, slice?, patch?)` or `_rasterizeSvg(svg, size)`.
+   **Rasterise at the output size, never scale the canvas over a 1× raster.** Stamp the target
+   pixel size on the `<svg>` root (replacing any it already declares) so the browser renders the
+   vector at full resolution; `ctx.scale()` over an image the browser already rasterised small
+   just blows up pixels, and that was the aliasing on the promo block.
 5. **New state must be added to BOTH `_templatePayload()` and `loadTemplate()`**, or it won't
    survive a save. Clone nested objects (`contact`, `sigFlyer`) whole.
 
@@ -80,7 +84,8 @@ red is the brand colour and read as part of the design rather than as UI state.
   black cell** — background images are the first thing an e-mail client drops. Both numbers
   render at the same size, each with its own picto (`phonesInline` puts them on one row).
   `panelOpacity` fades **the dark panel inside each tile**, not the cell: every `tile-*.svg`
-  carries one `<rect fill:#343333;mix-blend-mode:multiply>` behind its photo and label, and that
+  carries one `<rect fill:#343333;mix-blend-mode:multiply>` behind its photo and label (repainted
+  black), and that
   rect is what the slider rewrites (`_patchTilePanel`). `#343333` occurs exactly once per file,
   so the match cannot stray into the artwork. Canvas serves a patched data URL
   (`_tileDataUrl`, cached, re-renders once fetched); the export passes the same patch to
