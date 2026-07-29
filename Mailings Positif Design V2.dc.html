@@ -1390,6 +1390,12 @@
                 <input type="range" min="0" max="80" step="2" value="{{ flPadBottom }}" onInput="{{ onFlPadBottom }}">
               </div>
 
+              <div class="pd-slider" style="margin-top:14px;">
+                <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Opacité des panneaux noirs</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flPanelOpacity }}%</span></div>
+                <input type="range" min="0" max="100" step="5" value="{{ flPanelOpacity }}" onInput="{{ onFlPanelOpacity }}">
+              </div>
+              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:8px 0 0;">Le voile sombre derrière chaque visuel de case et derrière le bandeau NFC.</p>
+
               <sc-if value="{{ flIsPoints }}" hint-placeholder-val="{{ false }}">
                 <div style="margin-top:10px;">
                   <div class="pd-grid-2">
@@ -1421,10 +1427,6 @@
                   <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Écart</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flGap }}px</span></div>
                   <input type="range" min="0" max="20" step="1" value="{{ flGap }}" onInput="{{ onFlGap }}">
                 </div>
-                <div class="pd-slider">
-                  <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Opacité du fond des cases</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flPanelOpacity }}%</span></div>
-                  <input type="range" min="0" max="100" step="5" value="{{ flPanelOpacity }}" onInput="{{ onFlPanelOpacity }}">
-                </div>
               </div>
 
               <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:18px 0 8px;">
@@ -1452,6 +1454,10 @@
               <sc-if value="{{ flWhatsappOn }}" hint-placeholder-val="{{ true }}">
                 <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:8px 0 0;">Fixe et WhatsApp à la même taille, chacun avec son propre pictogramme.</p>
               </sc-if>
+              <div class="pd-slider" style="margin-top:12px;">
+                <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Espacement des lignes</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flRowGap }}px</span></div>
+                <input type="range" min="0" max="28" step="1" value="{{ flRowGap }}" onInput="{{ onFlRowGap }}">
+              </div>
 
               <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 7px;">Accroche</div>
               <div style="display:flex;gap:8px;">
@@ -1666,8 +1672,11 @@ class Component extends DCLogic {
   _brandSvg(key) {
     const G = this._SOCIAL;
     if (key === 'linkedin') {
-      // the path already carries the rounded square with the "in" knocked out
+      // The path is the rounded square with the "in" knocked out, so filling it flat leaves
+      // the letters transparent — they showed the red background instead of white. A white
+      // shape behind, inset so the blue corners still cover it, fills them in.
       return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="56" height="56">'
+        + '<rect x="2" y="2" width="20" height="20" fill="#ffffff"/>'
         + '<path d="' + G.linkedin.path + '" fill="#0A66C2"/></svg>';
     }
     if (key === 'instagram') {
@@ -1681,7 +1690,9 @@ class Component extends DCLogic {
         + '<g transform="translate(3.6 3.6) scale(.7)"><path d="' + G.instagram.path + '" fill="#ffffff"/></g></svg>';
     }
     if (key === 'facebook') {
+      // same knocked-out construction as LinkedIn — the "f" needs something white behind it
       return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="56" height="56">'
+        + '<circle cx="12" cy="12" r="10" fill="#ffffff"/>'
         + '<path d="' + G.facebook.path + '" fill="#1877F2"/></svg>';
     }
     return this._socialSvg(key, '#ffffff', '#141417');
@@ -1744,7 +1755,7 @@ class Component extends DCLogic {
       bgPosY: 30, bgZoom: 100, blackTop: 200, blackFade: 150,
       dotSize: 29, dotSpacing: 40, dotColor: '#5A1520', dotOpacity: 100,
       tileCols: 4, tileGap: 6, panelOpacity: 50,
-      showWhatsapp: true, phonesInline: true,
+      showWhatsapp: true, phonesInline: true, rowGap: 7,
       padBottom: 26,
       socialLine: true, socialLabel: 'Suivez-nous :', socialColor: '#FFFFFF',
       linkedinUrl: 'https://www.linkedin.com/company/positifdesign',
@@ -2756,23 +2767,27 @@ class Component extends DCLogic {
       const flPhone = onRows.find((r) => r.key === 'phone');
       const flWa = onRows.find((r) => r.key === 'whatsapp');
       const flInline = S.phonesInline !== false && flPhone && flWa;
-      let paired = false;
+      // One gap between rows, matching the canvas flex gap; the first row carries the
+      // fixed lead-in under the logo instead.
+      const rowGap = S.rowGap == null ? 7 : S.rowGap;
+      let paired = false, firstRow = true;
+      const pad = () => { const v = firstRow ? 16 : rowGap; firstRow = false; return v; };
       for (const r of onRows) {
         if (flInline && (r.key === 'phone' || r.key === 'whatsapp')) {
           if (paired) continue;
           paired = true;
-          head += '<div style="padding-top:16px;">' + numHtml(flPhone)
+          head += '<div style="padding-top:' + pad() + 'px;">' + numHtml(flPhone)
             + '<span style="font-family:' + F + ';font-size:17px;color:' + TXT + ';opacity:.35;">&nbsp;&nbsp;&#124;&nbsp;&nbsp;</span>'
             + numHtml(flWa) + '</div>';
           continue;
         }
         if (r.key === 'phone' || r.key === 'whatsapp') {
-          head += '<div style="padding-top:' + (r.key === 'phone' ? 16 : 8) + 'px;">' + numHtml(r) + '</div>';
+          head += '<div style="padding-top:' + pad() + 'px;">' + numHtml(r) + '</div>';
           continue;
         }
         const st = r.key === 'email' ? 'font-weight:700;font-size:13px;letter-spacing:.8px;color:' + S.accent + ';'
           : 'font-weight:700;font-size:13px;letter-spacing:.5px;color:' + TXT + ';';
-        head += '<div style="padding-top:8px;font-family:' + F + ';' + st + '">'
+        head += '<div style="padding-top:' + pad() + 'px;font-family:' + F + ';' + st + '">'
           + (r.href ? '<a href="' + esc(r.href) + '" style="font-family:' + F + ';' + st + 'text-decoration:none;">' + esc(r.value) + '</a>' : esc(r.value)) + '</div>';
       }
 
@@ -2821,7 +2836,7 @@ class Component extends DCLogic {
 
       const flPad = S.padBottom == null ? 26 : S.padBottom;
       if (S.nfc !== false) {
-        const nfcIm = await asset(S.nfcFile || 'sig-nfc-band.svg', 600, 'signature-nfc');
+        const nfcIm = await asset(S.nfcFile || 'sig-nfc-band.svg', 600, 'signature-nfc', tilePatch);
         if (nfcIm) {
           const tag = '<img src="' + nfcIm + '" width="600" alt="Plaque NFC avis Google" style="display:block;width:100%;max-width:600px;height:auto;border:0;">';
           const shift = S.nfcShift == null ? -24 : S.nfcShift;
@@ -3450,6 +3465,7 @@ class Component extends DCLogic {
     const flBlackFade = _FL.blackFade == null ? 150 : _FL.blackFade;
     const flPadBottom = _FL.padBottom == null ? 26 : _FL.padBottom;
     const flPanelOpacity = _FL.panelOpacity == null ? 50 : _FL.panelOpacity;
+    const flRowGap = _FL.rowGap == null ? 7 : _FL.rowGap;
     // Layer order matters: the black cap is listed first so it paints over the artwork.
     const flCap = flBlackTop > 0
       ? 'linear-gradient(to bottom, ' + _FL.bg + ' 0px, ' + _FL.bg + ' ' + flBlackTop + 'px, transparent ' + (flBlackTop + flBlackFade) + 'px)'
@@ -3645,7 +3661,10 @@ class Component extends DCLogic {
       flCells: flyerCells,
       flTiles: flyerTiles,
       flLogoSrc: 'assets/' + (FL.logoFile || 'logo.svg'),
-      flNfcSrc: 'assets/' + (FL.nfcFile || 'sig-nfc-band.svg'),
+      // The NFC band carries the same #343333 multiply panel as the tiles, and it is the
+      // first such rect in the file, so the shared patch lands on it and not on the two
+      // little shadows inside the artwork.
+      flNfcSrc: this._tileDataUrl(FL.nfcFile || 'sig-nfc-band.svg', flPanelOpacity),
       flWrapStyle: 'position:relative;overflow:hidden;background-color:' + FL.bg + ';padding:46px 34px ' + flPadBottom + 'px;' + flBg,
       flKickerStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.34em;color:' + FL.textColor + ';text-transform:uppercase;',
       flYearStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10.5px;letter-spacing:.34em;color:' + FL.accent + ';',
@@ -3668,7 +3687,9 @@ class Component extends DCLogic {
       flInstagramIcon: this._brandDataUrl('instagram'),
       flWhatsappIcon: this._socialDataUrl('whatsapp', '#ffffff', '#25D366'),
       flPhoneIcon: this._socialDataUrl('phone', '#ffffff', FL.accent),
-      flRowsWrapStyle: 'display:flex;flex-direction:column;align-items:center;gap:7px;margin:16px 0 0;',
+      flRowsWrapStyle: 'display:flex;flex-direction:column;align-items:center;gap:' + flRowGap + 'px;margin:16px 0 0;',
+      flRowGap: flRowGap,
+      onFlRowGap: (e) => this.setFlyer('rowGap', +e.target.value),
       flIconStyle: 'display:inline-block;width:20px;height:20px;vertical-align:-4px;margin-right:8px;',
       flNumStyle: flNumStyle,
       flPairRowStyle: 'display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;',
