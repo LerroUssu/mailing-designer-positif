@@ -1628,8 +1628,9 @@ class Component extends DCLogic {
   // #343333 appears exactly once per file, so the match cannot stray into the artwork.
   _patchTilePanel(svg, pct) {
     return String(svg).replace(
-      /(fill:\s*#343333;\s*mix-blend-mode:\s*multiply;\s*opacity:\s*)[\d.]+/,
-      (m, head) => head + (Math.max(0, Math.min(100, pct)) / 100));
+      /fill:\s*#343333;(\s*)mix-blend-mode:\s*multiply;(\s*)opacity:\s*[\d.]+/,
+      (m, s1, s2) => 'fill: #000000;' + s1 + 'mix-blend-mode: multiply;' + s2
+        + 'opacity: ' + (Math.max(0, Math.min(100, pct)) / 100));
   }
   _tileSvgCache = {};
   // renderVals is synchronous, so a tile that is not cached yet keeps its plain file URL
@@ -2056,14 +2057,22 @@ class Component extends DCLogic {
   }
 
   async _rasterizeSvg(svg, size) {
-    const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    // Rewrite the root to the output size: a generated icon declares its own width/height,
+    // and the browser rasterises at that, so drawing it larger would upscale a small raster.
+    const px = size * 2;
+    const sized = String(svg)
+      .replace(/(<svg[^>]*?)\swidth="[^"]*"/, '$1')
+      .replace(/(<svg[^>]*?)\sheight="[^"]*"/, '$1')
+      .replace(/<svg/, '<svg width="' + px + '" height="' + px + '"');
+    const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(sized);
     const img = new Image();
     img.decoding = 'async';
     await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; img.src = url; });
     const canvas = document.createElement('canvas');
-    canvas.width = size * 2; canvas.height = size * 2;
+    canvas.width = px; canvas.height = px;
     const ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0, size * 2, size * 2);
+    ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(img, 0, 0, px, px);
     return this._bytesFromDataUrl(canvas.toDataURL('image/png'));
   }
 
@@ -2081,15 +2090,21 @@ class Component extends DCLogic {
     }
     const W = Math.max(1, Math.round(outW * 2));
     const H = Math.max(1, Math.round(W * ratio));
-    // Firefox/Chrome need intrinsic dimensions on the root to rasterise reliably.
-    if (!/<svg[^>]*\swidth=/.test(svg)) svg = svg.replace(/<svg/, '<svg width="' + W + '" height="' + H + '"');
+    // Always stamp the output size on the root — an asset that declares its own (small)
+    // width would otherwise be rasterised at that size and then upscaled, which aliases.
+    svg = svg
+      .replace(/(<svg[^>]*?)\swidth="[^"]*"/, '$1')
+      .replace(/(<svg[^>]*?)\sheight="[^"]*"/, '$1')
+      .replace(/<svg/, '<svg width="' + W + '" height="' + H + '"');
     const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
     const img = new Image();
     img.decoding = 'async';
     await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = url; });
     const canvas = document.createElement('canvas');
     canvas.width = W; canvas.height = H;
-    canvas.getContext('2d').drawImage(img, 0, 0, W, H);
+    const ctx2d = canvas.getContext('2d');
+    ctx2d.imageSmoothingEnabled = true; ctx2d.imageSmoothingQuality = 'high';
+    ctx2d.drawImage(img, 0, 0, W, H);
     if (slice) {
       const sx = Math.round(W * slice[0]);
       const sw = Math.max(1, Math.round(W * (slice[1] - slice[0])));
@@ -2172,17 +2187,20 @@ class Component extends DCLogic {
     wrap.style.fontFamily = 'Montserrat,Arial,Helvetica,sans-serif';
     wrap.appendChild(clone);
     const html = new XMLSerializer().serializeToString(wrap);
-    const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '"><foreignObject width="100%" height="100%">' + html + '</foreignObject></svg>';
+    const scale = 2;
+    // The root carries the 2x pixel size while the viewBox stays 1x, so the browser
+    // rasterises the foreignObject at full resolution. Declaring it at 1x and scaling the
+    // canvas instead blew a 600px raster up to 1200px — that was the jagged edges.
+    const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + (w * scale) + '" height="' + (h * scale) + '" viewBox="0 0 ' + w + ' ' + h + '"><foreignObject width="100%" height="100%">' + html + '</foreignObject></svg>';
     const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
     const img = new Image();
     img.decoding = 'async';
     await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; img.src = url; });
-    const scale = 2;
     const canvas = document.createElement('canvas');
     canvas.width = w * scale; canvas.height = h * scale;
     const ctx = canvas.getContext('2d');
-    ctx.scale(scale, scale);
-    ctx.drawImage(img, 0, 0);
+    ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(img, 0, 0, w * scale, h * scale);
     const png = canvas.toDataURL('image/png');
     return { bytes: this._bytesFromDataUrl(png), ext: 'png', width: w, height: h };
   }

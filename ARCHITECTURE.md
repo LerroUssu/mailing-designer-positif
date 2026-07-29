@@ -236,7 +236,7 @@ than the panel. Anchored at `bottom` it showed almost nothing but red, which mad
 - `padBottom` gives the block breathing room under the NFC band
 - `panelOpacity` fades **the dark panel inside each tile — not the cell.** Every `tile-*.svg`
   has one `<rect fill:#343333; mix-blend-mode:multiply; opacity:.5>` sitting behind its photo
-  and label; the slider rewrites that rect's opacity via `_patchTilePanel(svg, pct)`. `#343333`
+  and label; `_patchTilePanel(svg, pct)` rewrites that rect's opacity **and repaints it black**. `#343333`
   occurs exactly once per file, so the regex cannot reach the artwork (several tiles use
   `mix-blend-mode:multiply` inside their photos too — match on the fill, not the blend mode).
   The canvas serves a patched data URL through `_tileDataUrl(file, pct)`, which caches the
@@ -282,6 +282,17 @@ must not be.
 
 - `_rasterizeAsset(path, outW, slice?)` bakes a file asset to a 2× PNG at export time
 - `_rasterizeSvg(svgString, size)` does the same for generated markup
+
+**Rasterise at the output size.** Both bakers stamp the target pixel size on the `<svg>` root,
+stripping any width/height the file already declares, so the browser renders the vector at full
+resolution. The trap: declare the SVG at 1×, then `ctx.scale(2,2)` and draw — the browser has
+already rasterised at 1× and the canvas simply enlarges those pixels. That is what made the
+promo block's sloped band and letterforms jagged; `_captureBlockImage` now sizes its
+`foreignObject` wrapper at 2× and draws 1:1. All three canvases set
+`imageSmoothingQuality = 'high'`.
+
+There is no post-processing fix for this — once an edge is rasterised the intermediate values
+are gone, and no filter puts them back. It has to be rendered right the first time.
 
 **Inset margins:** the supplied Illustrator SVGs have padding inside their viewBox.
 `background-size:100% 100%` maps that padding onto the panel edges as visible bands — use
