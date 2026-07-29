@@ -1295,9 +1295,12 @@
           <div class="pd-label" style="margin-bottom:8px;">Réglages par défaut</div>
           <button onClick="{{ onSaveDefaults }}" style="width:100%;background:#141417;color:#fff;border:none;border-radius:50px;padding:11px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.03em;cursor:pointer;">Enregistrer les réglages actuels</button>
           <sc-if value="{{ hasDefaults }}" hint-placeholder-val="{{ false }}">
-            <button onClick="{{ onClearDefaults }}" style="width:100%;margin-top:8px;background:#fff;border:1px solid #DEDEE4;color:#71717a;border-radius:50px;padding:10px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;cursor:pointer;">Revenir aux réglages d&#39;origine</button>
+            <div>
+              <button onClick="{{ onRestoreDefaults }}" style="width:100%;margin-top:8px;background:#fff;border:1px solid #DEDEE4;color:#141417;border-radius:50px;padding:10px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;">Revenir aux réglages d&#39;origine</button>
+              <button onClick="{{ onClearDefaults }}" style="width:100%;margin-top:7px;background:none;border:none;color:#9a9aa2;padding:6px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11px;text-decoration:underline;cursor:pointer;">Effacer les réglages enregistrés</button>
+            </div>
           </sc-if>
-          <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11.5px;line-height:1.5;color:#9a9aa2;margin:10px 0 0;">En-tête, coordonnées, signature et réglages d&#39;export sont rechargés à chaque ouverture. Le contenu de l&#39;e-mail n&#39;est pas concerné — pour ça, utilisez les modèles.</p>
+          <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11.5px;line-height:1.5;color:#9a9aa2;margin:10px 0 0;">En-tête, coordonnées, signature et réglages d&#39;export sont rechargés à chaque ouverture, et « Revenir aux réglages d&#39;origine » y ramène à tout moment. Le contenu de l&#39;e-mail n&#39;est pas concerné — pour ça, utilisez les modèles.</p>
           <sc-if value="{{ hasDefaultsFlash }}" hint-placeholder-val="{{ false }}">
             <p style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;line-height:1.5;color:#141417;margin:8px 0 0;">{{ defaultsFlash }}</p>
           </sc-if>
@@ -1867,11 +1870,22 @@ class Component extends DCLogic {
   }
   saveDefaults() {
     try { localStorage.setItem(this._defaultsKey(), JSON.stringify(this._defaultsPayload())); } catch (e) { return; }
-    this.setState({ hasDefaults: true, defaultsFlash: 'Réglages enregistrés — ils seront chargés à l\'ouverture.' });
+    this.setState({ hasDefaults: true, defaultsFlash: 'Réglages enregistrés — ce sont désormais vos réglages d\'origine.' });
+  }
+  // Once something is saved, that IS the origin: this restores it into the running session
+  // instead of dropping back to the built-in values. Same key filter as `_withDefaults`, and
+  // `blocks` is absent from the payload so the e-mail's content is left alone.
+  restoreDefaults() {
+    const d = this._readDefaults();
+    if (!d) return;
+    const patch = { selectedId: null, selStickerId: null, headerSelected: false };
+    Object.keys(d).forEach((k) => { if (Object.prototype.hasOwnProperty.call(this.state, k)) patch[k] = d[k]; });
+    patch.defaultsFlash = 'Réglages d\'origine rétablis.';
+    this.setState(patch);
   }
   clearDefaults() {
     try { localStorage.removeItem(this._defaultsKey()); } catch (e) {}
-    this.setState({ hasDefaults: false, defaultsFlash: 'Réglages par défaut effacés — recharger la page pour repartir des réglages d\'origine.' });
+    this.setState({ hasDefaults: false, defaultsFlash: 'Réglages enregistrés effacés — rechargez la page pour repartir des réglages Positif.' });
   }
 
   _templateKey() { return 'positif-mailing-builder-templates-v1'; }
@@ -3789,6 +3803,7 @@ class Component extends DCLogic {
       defaultsFlash: this.state.defaultsFlash || '',
       hasDefaultsFlash: !!this.state.defaultsFlash,
       onSaveDefaults: () => this.saveDefaults(),
+      onRestoreDefaults: () => this.restoreDefaults(),
       onClearDefaults: () => this.clearDefaults(),
       railIsExport: this.state.railTab === 'export',
       railIsSignature: this.state.railTab === 'signature',

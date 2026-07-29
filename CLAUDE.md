@@ -147,9 +147,12 @@ The host Tweaks panel uses the prop KEY as its label, so keys are French: `Point
 
 The Export tab's « Enregistrer les réglages actuels » writes `_defaultsPayload()` to
 `localStorage['positif-mailing-defaults-v1']`, and `state` is built through `_withDefaults()`,
-so the app opens on them. **Settings only** — `blocks` and `stickers` are stripped; content is
-what the Modèles tab is for. `_withDefaults` applies only keys the built-in state already
-declares, so a stale entry can't inject anything unknown.
+so the app opens on them. **Once saved, those are the origin**: « Revenir aux réglages
+d'origine » calls `restoreDefaults()`, which reapplies the saved set to the running session.
+« Effacer les réglages enregistrés » is the separate, secondary way back to the built-in ones.
+**Settings only** — `blocks` and `stickers` are stripped; content is what the Modèles tab is
+for. Both paths apply only keys the state already declares, so a stale entry can't inject
+anything unknown.
 
 ## Only relevant options, in relevant places
 

@@ -363,14 +363,22 @@ as UI state.
 « Enregistrer les réglages actuels » (Export tab) writes `_defaultsPayload()` to
 `localStorage['positif-mailing-defaults-v1']`. `state` is built as
 `this._withDefaults({ ...built-in defaults... })`, so a saved set is applied at construction
-and the app opens on it. « Revenir aux réglages d'origine » removes the key.
+and the app opens on it.
+
+**Once something is saved, that is the origin.** « Revenir aux réglages d'origine » calls
+`restoreDefaults()`, which reapplies the stored set to the running session — it does not drop
+back to the built-in values, and it does not need a reload. Wiping the stored set is a separate,
+secondary action, « Effacer les réglages enregistrés », which removes the key so the next load
+falls back to the built-in defaults.
 
 - The payload is `_templatePayload()` **minus `blocks` and `stickers`**, plus `halftone` and
   the four export fields (subject, preheader, unsubscribe, mirror). Settings persist; content
   does not — that is the Modèles tab's job, and conflating the two would make every new e-mail
   start with the last one's blocks.
-- `_withDefaults` copies **only keys the built-in state already declares**, so a stale or
-  hand-edited entry cannot introduce state the app doesn't know about.
+- `_withDefaults` (at construction) and `restoreDefaults` (at runtime) both copy **only keys the
+  state already declares**, so a stale or hand-edited entry cannot introduce state the app
+  doesn't know about. `restoreDefaults` also clears the current selection, and leaves `blocks`
+  alone because the payload never contained it.
 - Anything added to `_templatePayload()` is therefore picked up by saved defaults too.
 
 ## 10. Saved templates
