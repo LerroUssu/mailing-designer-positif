@@ -55,9 +55,14 @@ canvas *and* in `exportHtml()`. **Never hardcode a coordinate.** Each entry rend
 row so line breaks are controlled, not accidental. Rows with no target (address) render as
 plain text — an `<a href="">` is a bug.
 
-**Header**: `state.headerArt` — `true` = `header-bg-clean.svg` artwork + `logo-long.svg` +
-editable title, `false` = plain black bar. Both must stay selectable. Selection ring is a soft
-inset shadow, not a hard red outline.
+**Header**: `state.headerArt` — `true` = `header-swoosh.svg` strip anchored at the bottom (its
+own natural ratio, black `#010202` above it) + `logo-long.svg` + editable title, `false` = plain
+black bar. Both must stay selectable. **Never stretch the swoosh to the bar's height** — the bar
+sizes to its content, so `background-size:100% 100%` flattened the curve and squashed the Avis
+Google lockup. The export ships it as its own full-width image row for the same reason.
+
+**Selection is blue** (`SEL` / `SEL_RING`, module-scope consts at the top of the logic half) —
+red is the brand colour and read as part of the design rather than as UI state.
 
 **Signatures** (`state.sigStyle`):
 - `'carte'` — carte-de-visite footer. `sigCarteLayout`: `'labels'` or `'centre'` (no-label
@@ -66,9 +71,15 @@ inset shadow, not a hard red outline.
 - `'flyer'` — carte-de-visite verso from supplied SVG artwork (`sig-flyer-bg-clean.svg`,
   `tile-*.svg`, `sig-nfc-band.svg`). Labels are baked into the artwork, so tiles are plain
   `<img>` that only toggle + take a link. State is the nested `state.sigFlyer`.
-  **Dot settings are per-signature, not shared.**
+  **Dot settings are per-signature, not shared.** The artwork runs black→red top to bottom and
+  is taller than the panel: `bgPosY` / `bgZoom` frame it and `blackTop` / `blackFade` paint a
+  black cap so the coordonnées never land on red. In the export that cap is a **separate solid
+  black cell** — background images are the first thing an e-mail client drops. Both numbers
+  render at the same size, each with its own picto (`phonesInline` puts them on one row).
 
-Social icons are **generated** (`_SOCIAL` / `_socialSvg()`), not asset files.
+Social icons are **generated** (`_SOCIAL` / `_socialSvg()`), not asset files. Instagram and
+LinkedIn go through `_brandSvg()` instead — official rounded-square marks with the real brand
+colours, including Instagram's gradient. Do not tint a brand mark with `FL.accent`.
 
 Use the user's supplied artwork. Do not reimplement it in CSS — that has been rejected before.
 
