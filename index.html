@@ -483,13 +483,12 @@
               <div style="position:relative;z-index:2;text-align:center;">
                 <div><span style="{{ flKickerStyle }}">{{ fl.kicker }}</span> <span style="{{ flYearStyle }}">{{ fl.year }}</span></div>
                 <img src="{{ flLogoSrc }}" width="205" alt="Positif Design" style="display:block;width:205px;max-width:60%;height:auto;margin:20px auto 0;">
-                <div style="{{ flPhoneStyle }}">{{ ct.phone }}</div>
-                <a href="{{ ctMailHref }}" style="{{ flEmailStyle }}">{{ ct.email }}</a>
-                <div style="{{ flAddressStyle }}">{{ ct.address }}</div>
-                <div style="{{ flWebStyle }}">{{ ct.web }}</div>
-                <sc-if value="{{ flWhatsappOn }}" hint-placeholder-val="{{ true }}">
-                  <a href="{{ ctWaHref }}" style="{{ flWaRowStyle }}"><img src="{{ flWhatsappIcon }}" width="20" height="20" alt="WhatsApp" style="display:inline-block;width:20px;height:20px;">{{ ct.whatsapp }}</a>
-                </sc-if>
+                <div style="{{ flRowsWrapStyle }}">
+                  <sc-for list="{{ flRows }}" as="r" hint-placeholder-count="0">
+                    <a href="{{ r.href }}" style="{{ r.style }}">
+                      <sc-if value="{{ r.isWhatsapp }}" hint-placeholder-val="{{ false }}"><img src="{{ flWhatsappIcon }}" width="18" height="18" alt="" style="display:inline-block;width:18px;height:18px;vertical-align:-3px;margin-right:7px;"></sc-if>{{ r.value }}</a>
+                  </sc-for>
+                </div>
               </div>
 
               <div style="{{ flGridStyle }}">
@@ -559,16 +558,27 @@
           <div style="position:relative;background:#141417;overflow:hidden;padding:28px 32px 22px;display:{{ sigCarteDisplay }};">
             <div style="position:absolute;inset:20px;display:{{ sigDotsDisplay }};background-image:{{ sigPatternBgImage }};background-size:{{ sigPatternBgSize }};background-position:{{ sigPos }};background-repeat:repeat;opacity:{{ sigPatternOpacity }};pointer-events:none;"></div>
             <img src="assets/arrows.png" alt="" style="position:absolute;right:{{ sigArrowRight }};bottom:{{ sigArrowBottom }};width:{{ sigArrowW }};height:auto;transform:{{ sigArrowTransform }};transform-origin:bottom right;pointer-events:none;z-index:1;">
-            <div style="position:relative;z-index:2;">
-              <img src="assets/logo.svg" width="142" alt="Positif Design" style="display:block;width:142px;height:auto;">
+            <div style="{{ sigCarteInnerStyle }}">
+              <img src="assets/logo.svg" width="142" alt="Positif Design" style="{{ sigCarteLogoStyle }}">
               <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:.14em;color:#8e8e96;text-transform:uppercase;margin:12px 0 0;">{{ ct.tagline }}</div>
-              <div style="display:flex;flex-direction:column;gap:9px;margin:18px 0 0;max-width:340px;">
-                <div style="display:flex;align-items:baseline;gap:10px;"><span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span><span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Adresse</span><span style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">{{ ct.address }}</span></div>
-                <div style="display:flex;align-items:baseline;gap:10px;"><span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span><span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Téléphone</span><a href="{{ ctTelHref }}" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">{{ ct.phone }}</a></div>
-                <div style="display:flex;align-items:baseline;gap:10px;"><span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span><span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">WhatsApp</span><a href="{{ ctWaHref }}" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">{{ ct.whatsapp }}</a></div>
-                <div style="display:flex;align-items:baseline;gap:10px;"><span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span><span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Email</span><a href="{{ ctMailHref }}" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">{{ ct.email }}</a></div>
-                <div style="display:flex;align-items:baseline;gap:10px;"><span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span><span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">Web</span><a href="{{ ctWebHref }}" style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:{{ sigTextColor }};">{{ ct.web }}</a></div>
-              </div>
+              <sc-if value="{{ sigCarteLabels }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex;flex-direction:column;gap:9px;margin:18px 0 0;max-width:340px;">
+                  <sc-for list="{{ ctRowsShown }}" as="r" hint-placeholder-count="0">
+                    <div style="display:flex;align-items:baseline;gap:10px;">
+                      <span style="flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:#FC1D37;display:inline-block;box-shadow:0 0 0 3px rgba(252,29,55,.18);transform:translateY(-1px);"></span>
+                      <span style="flex:0 0 74px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;color:#7a7a82;text-transform:uppercase;">{{ r.label }}</span>
+                      <span style="{{ sigRowValStyle }}"><sc-if value="{{ r.hasHref }}" hint-placeholder-val="{{ true }}"><a href="{{ r.href }}" style="{{ sigRowValStyle }}">{{ r.value }}</a></sc-if><sc-if value="{{ r.noHref }}" hint-placeholder-val="{{ false }}">{{ r.value }}</sc-if></span>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ sigCarteCentre }}" hint-placeholder-val="{{ false }}">
+                <div style="{{ sigCentreWrapStyle }}">
+                  <sc-for list="{{ ctRowsShown }}" as="r" hint-placeholder-count="0">
+                    <div style="{{ sigCentreRowStyle }}"><sc-if value="{{ r.hasHref }}" hint-placeholder-val="{{ true }}"><a href="{{ r.href }}" style="{{ sigCentreValStyle }}">{{ r.value }}</a></sc-if><sc-if value="{{ r.noHref }}" hint-placeholder-val="{{ false }}"><span style="{{ sigCentreValStyle }}">{{ r.value }}</span></sc-if></div>
+                  </sc-for>
+                </div>
+              </sc-if>
               <div style="height:1px;background:#2a2a30;margin:20px 0 12px;max-width:340px;"></div>
               <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11px;line-height:1.6;color:#6c6c75;margin:0;max-width:360px;">{{ ct.legal }}<br><a href="#" style="color:#8a8a93;text-decoration:underline;">Se désabonner</a> · <a href="#" style="color:#8a8a93;text-decoration:underline;">Voir dans le navigateur</a></p>
             </div>
@@ -609,10 +619,12 @@
           <sc-if value="{{ headerSelected }}" hint-placeholder-val="{{ false }}">
             <div style="margin-top:14px;">
               <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.05em;color:#FC1D37;text-transform:uppercase;margin-bottom:10px;">En-tête</div>
+              <div class="pd-label" style="margin-bottom:6px;">Style</div>
               <div style="display:flex;gap:7px;margin-bottom:14px;">
+                <button onClick="{{ onHeaderPlain }}" style="{{ headerPlainBtnStyle }}">Barre simple</button>
+                <button onClick="{{ onHeaderArt }}" style="{{ headerArtBtnStyle }}">Graphique</button>
               </div>
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.05em;color:#FC1D37;text-transform:uppercase;margin-bottom:12px;">Titre du header</div>
-              <div class="pd-label" style="margin-bottom:6px;">Texte</div>
+              <div class="pd-label" style="margin-bottom:6px;">Titre affiché</div>
               <input value="{{ headerTitle }}" onChange="{{ onHeaderTitle }}" class="pd-input">
             </div>
           </sc-if>
@@ -1251,7 +1263,22 @@
 
           <details class="pd-section" open="true" style="background:#1d1d22;border-color:#34343c;">
             <summary class="pd-section-title" style="color:#e9e9ee;">Coordonnées — communes aux 3 signatures</summary>
-                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">Raison sociale</div><input class="pd-input" value="{{ ct.company }}" onChange="{{ onCtCompany }}"></div>                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">Accroche</div><input class="pd-input" value="{{ ct.tagline }}" onChange="{{ onCtTagline }}"></div>                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">Adresse</div><input class="pd-input" value="{{ ct.address }}" onChange="{{ onCtAddress }}"></div>                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">Téléphone</div><input class="pd-input" value="{{ ct.phone }}" onChange="{{ onCtPhone }}"></div>                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">WhatsApp</div><input class="pd-input" value="{{ ct.whatsapp }}" onChange="{{ onCtWhatsapp }}"></div>                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">E-mail</div><input class="pd-input" value="{{ ct.email }}" onChange="{{ onCtEmail }}"></div>                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">Site web</div><input class="pd-input" value="{{ ct.web }}" onChange="{{ onCtWeb }}"></div>                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">Mention légale</div>
+                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">Raison sociale</div><input class="pd-input" value="{{ ct.company }}" onChange="{{ onCtCompany }}"></div>                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">Accroche</div><input class="pd-input" value="{{ ct.tagline }}" onChange="{{ onCtTagline }}"></div>                <div class="pd-label" style="margin-top:12px;">Lignes de coordonnées — ordre, libellé, visibilité</div>
+                <div style="display:flex;flex-direction:column;gap:6px;margin-top:6px;">
+                  <sc-for list="{{ ctRowsEdit }}" as="r" hint-placeholder-count="0">
+                    <div style="border:1px solid #34343c;border-radius:9px;padding:7px;background:#141417;">
+                      <div style="display:flex;gap:5px;align-items:center;">
+                        <button onClick="{{ r.onUp }}" title="Monter" style="width:24px;height:24px;border:1px solid #34343c;background:#1d1d22;border-radius:6px;color:#e9e9ee;font-size:11px;line-height:1;cursor:pointer;flex:0 0 auto;">▲</button>
+                        <button onClick="{{ r.onDown }}" title="Descendre" style="width:24px;height:24px;border:1px solid #34343c;background:#1d1d22;border-radius:6px;color:#e9e9ee;font-size:11px;line-height:1;cursor:pointer;flex:0 0 auto;">▼</button>
+                        <input value="{{ r.label }}" onChange="{{ r.onLabel }}" placeholder="Libellé" style="flex:0 0 92px;box-sizing:border-box;border:1px solid #34343c;border-radius:6px;padding:6px 8px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.04em;color:#8e8e96;text-transform:uppercase;outline:none;">
+                        <button onClick="{{ r.onToggle }}" style="{{ r.toggleStyle }}">Afficher</button>
+                      </div>
+                      <input value="{{ r.value }}" onChange="{{ r.onValue }}" style="width:100%;margin-top:6px;box-sizing:border-box;border:1px solid #34343c;border-radius:6px;padding:7px 9px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
+                    </div>
+                  </sc-for>
+                </div>
+                <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:8px 0 0;">Chaque ligne est un bloc distinct : elle ne se coupe jamais au milieu. Pour couper l'adresse en deux, mettez la ville dans une ligne à part.</p>
+                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">Mention légale</div>
                 <textarea class="pd-textarea" rows="2" value="{{ ct.legal }}" onChange="{{ onCtLegal }}"></textarea></div>
                 <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:10px 0 0;">Modifiées ici, elles se répercutent sur la carte de visite, la newsletter et le flyer.</p>
           </details>
@@ -1272,7 +1299,26 @@
                 <button onClick="{{ onFlBgPoints }}" style="{{ flBgPointsStyle }}">Ronds carte</button>
                 <button onClick="{{ onFlBgUni }}" style="{{ flBgUniStyle }}">Uni</button>
               </div>
-              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:8px 0 0;">« Ronds carte » réutilise la trame de la signature carte de visite (réglable dans son onglet).</p>
+              <sc-if value="{{ flIsPoints }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:10px;">
+                  <div class="pd-grid-2">
+                    <div class="pd-slider">
+                      <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Ronds · taille</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flDotSize }}px</span></div>
+                      <input type="range" min="4" max="60" step="1" value="{{ flDotSize }}" onInput="{{ onFlDotSize }}">
+                    </div>
+                    <div class="pd-slider">
+                      <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Ronds · espacement</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flDotSpacing }}px</span></div>
+                      <input type="range" min="16" max="120" step="1" value="{{ flDotSpacing }}" onInput="{{ onFlDotSpacing }}">
+                    </div>
+                    <div class="pd-slider">
+                      <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Ronds · opacité</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flDotOpacity }}%</span></div>
+                      <input type="range" min="5" max="100" step="5" value="{{ flDotOpacity }}" onInput="{{ onFlDotOpacity }}">
+                    </div>
+                    <label style="display:flex;flex-direction:column;gap:5px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#8e8e96;text-transform:uppercase;">Ronds · couleur<input type="color" value="{{ flDotColor }}" onInput="{{ onFlDotColor }}" style="width:100%;height:30px;padding:2px;border:1px solid #34343c;border-radius:8px;background:#1d1d22;cursor:pointer;"></label>
+                  </div>
+                  <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:8px 0 0;">Réglages propres à cette signature — indépendants de ceux de la carte de visite.</p>
+                </div>
+              </sc-if>
 
               <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 8px;">Grille des cases</div>
               <div class="pd-grid-2">
@@ -1309,11 +1355,6 @@
                 <input value="{{ fl.year }}" onChange="{{ onFlYear }}" style="flex:0 0 76px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;color:#FC1D37;outline:none;">
               </div>
 
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:16px 0 7px;">Coordonnées</div>
-              <input value="{{ ct.phone }}" onChange="{{ onCtPhone }}" placeholder="Téléphone" style="width:100%;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
-              <input value="{{ ct.email }}" onChange="{{ onCtEmail }}" placeholder="E-mail" style="width:100%;margin-top:7px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
-              <input value="{{ ct.address }}" onChange="{{ onCtAddress }}" placeholder="Adresse" style="width:100%;margin-top:7px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
-              <input value="{{ ct.web }}" onChange="{{ onCtWeb }}" placeholder="Site web" style="width:100%;margin-top:7px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
 
               <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 7px;">Cases affichées</div>
               <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:0 0 8px;">Visuels fournis en SVG, libellés inclus. Coupez une case pour la retirer de la grille, ou donnez-lui un lien.</p>
@@ -1399,19 +1440,16 @@
           <!-- CARTE DE VISITE SIGNATURE -->
           <sc-if value="{{ sigIsCarte }}" hint-placeholder-val="{{ true }}">
           <div>
+          <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:20px 0 8px;">Présentation des coordonnées</div>
+          <div style="display:flex;gap:7px;">
+            <button onClick="{{ onSigCarteLabels }}" style="{{ sigCarteLabelsBtnStyle }}">Avec libellés</button>
+            <button onClick="{{ onSigCarteCentre }}" style="{{ sigCarteCentreBtnStyle }}">Centré, sans libellés</button>
+          </div>
+
           <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:20px 0 0;">
             <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;">Motif de fond</span>
             <button onClick="{{ onToggleHalftone }}" style="{{ halftoneBtnStyle }}">Points</button>
           </div>
-
-          <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 7px;">Image motif signature</div>
-          <input type="file" accept="image/png,image/jpeg,image/webp,image/avif" onChange="{{ onSigPatternFile }}" style="width:100%;box-sizing:border-box;border:1px dashed #34343c;border-radius:10px;padding:10px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;color:#e9e9ee;">
-          <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
-            <button onClick="{{ onSigPatternClear }}" style="border:none;border-radius:50px;padding:8px 12px;background:#2a2a30;color:#fff;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10.5px;cursor:pointer;">Retirer</button>
-            <span style="font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11px;color:#8e8e96;">{{ sigPatternLabel }}</span>
-          </div>
-          <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:14px 0 7px;">Motif - taille - {{ sigPatternSizeVal }}px</div>
-          <input type="range" min="24" max="260" step="2" value="{{ sigPatternSizeVal }}" onInput="{{ onSigPatternSize }}" style="width:100%;accent-color:#FC1D37;">
 
           <div class="pd-slider-head" style="margin:14px 0 7px;"><span class="pd-slider-name" style="color:#8e8e96;">Points · taille</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ dotSizeVal }}px</span></div>
           <input type="range" min="4" max="40" step="1" value="{{ dotSizeVal }}" onInput="{{ onDotSize }}" style="width:100%;accent-color:#FC1D37;">
@@ -1498,8 +1536,6 @@ class Component extends DCLogic {
     halftone: true,
     dotSize: 29, dotSpacing: 40, dotColor: '#474747',
     sigTextColor: '#ffffff',
-    sigPatternDataUrl: '',
-    sigPatternSize: 160,
     // One editable source of truth for the coordonnées. Every signature reads these,
     // so the address/phone/e-mail are changed once instead of three times (and the
     // carte-de-visite ones are no longer hardcoded in the markup).
@@ -1512,8 +1548,14 @@ class Component extends DCLogic {
       email: 'contact@positif.biz',
       web: 'positifdesign.fr',
       legal: 'Vous recevez cet e-mail en tant que client ou partenaire de Positif Design.',
+      // Ordered rows: each renders as its own line, so order, label and visibility
+      // are controllable and nothing has to rely on where a string happens to wrap.
+      order: ['address', 'phone', 'whatsapp', 'email', 'web'],
+      labels: { address: 'Adresse', phone: 'Téléphone', whatsapp: 'WhatsApp', email: 'Email', web: 'Web' },
+      hidden: {},
     },
     sigStyle: 'carte',
+    sigCarteLayout: 'labels',
     sigLegal: "*offre valable jusqu'au 31 juillet 2026. Non cumulable avec d'autres actions.\nRéduction non échangeable en espèces ni contre d'autres produits.\nPositif Design se réserve le droit d'interrompre cette offre à tout moment...",
     sigShowLegal: true,
     sigSenderNote: 'Cette newsletter a été écrite et envoyée de contact@positif.biz',
@@ -1529,6 +1571,7 @@ class Component extends DCLogic {
       kicker: 'PUBLICITÉ DEPUIS', year: '1983',
       bg: '#0B0B0D', accent: '#FC1D37', textColor: '#FFFFFF',
       bgMode: 'flyer', bgFile: 'sig-flyer-bg-clean.svg',
+      dotSize: 29, dotSpacing: 40, dotColor: '#5A1520', dotOpacity: 100,
       tileCols: 4, tileGap: 6,
       showWhatsapp: true,
       socialLine: true, socialLabel: 'Suivez-nous :',
@@ -1632,10 +1675,9 @@ class Component extends DCLogic {
       dotSpacing: this.state.dotSpacing,
       dotColor: this.state.dotColor,
       sigTextColor: this.state.sigTextColor,
-      sigPatternDataUrl: this.state.sigPatternDataUrl,
-      sigPatternSize: this.state.sigPatternSize,
       contact: this._clonePlain(this.state.contact),
       sigStyle: this.state.sigStyle,
+      sigCarteLayout: this.state.sigCarteLayout,
       sigLegal: this.state.sigLegal,
       sigShowLegal: this.state.sigShowLegal,
       sigSenderNote: this.state.sigSenderNote,
@@ -1699,10 +1741,9 @@ class Component extends DCLogic {
       dotSpacing: p.dotSpacing || 40,
       dotColor: p.dotColor || '#474747',
       sigTextColor: p.sigTextColor || '#ffffff',
-      sigPatternDataUrl: p.sigPatternDataUrl || '',
-      sigPatternSize: p.sigPatternSize || 160,
       contact: { ...this._clonePlain(this.state.contact), ...(p.contact ? this._clonePlain(p.contact) : {}) },
       sigStyle: ['newsletter', 'flyer'].indexOf(p.sigStyle) >= 0 ? p.sigStyle : 'carte',
+      sigCarteLayout: p.sigCarteLayout === 'centre' ? 'centre' : 'labels',
       sigLegal: p.sigLegal == null ? this.state.sigLegal : p.sigLegal,
       sigShowLegal: p.sigShowLegal !== false,
       sigSenderNote: p.sigSenderNote == null ? this.state.sigSenderNote : p.sigSenderNote,
@@ -1790,17 +1831,20 @@ class Component extends DCLogic {
   toggle(id, k) { this.setState(s => ({ blocks: s.blocks.map(b => b.id === id ? { ...b, [k]: !b[k] } : b) })); }
   setS(k, v) { this.setState({ [k]: v }); }
   setSocial(idx, k, v) { this.setState(s => ({ sigSocial: s.sigSocial.map((x, i) => i === idx ? { ...x, [k]: v } : x) })); }
+  moveContactRow(key, dir) {
+    this.setState(s => {
+      const order = (s.contact.order || []).slice();
+      const i = order.indexOf(key), j = i + dir;
+      if (i < 0 || j < 0 || j >= order.length) return null;
+      order[i] = order[j]; order[j] = key;
+      return { contact: { ...s.contact, order } };
+    });
+  }
+  setContactLabel(key, v) { this.setState(s => ({ contact: { ...s.contact, labels: { ...s.contact.labels, [key]: v } } })); }
+  toggleContactRow(key) { this.setState(s => ({ contact: { ...s.contact, hidden: { ...s.contact.hidden, [key]: !s.contact.hidden[key] } } })); }
   setContact(k, v) { this.setState(s => ({ contact: { ...s.contact, [k]: v } })); }
   setFlyer(k, v) { this.setState(s => ({ sigFlyer: { ...s.sigFlyer, [k]: v } })); }
   setFlyerTile(idx, k, v) { this.setState(s => ({ sigFlyer: { ...s.sigFlyer, tiles: s.sigFlyer.tiles.map((t, i) => i === idx ? { ...t, [k]: v } : t) } })); }
-  onSigPatternFile(e) {
-    const file = e && e.target && e.target.files && e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => this.setState({ sigPatternDataUrl: String(reader.result || '') });
-    reader.readAsDataURL(file);
-  }
-  onSigPatternClear() { this.setState({ sigPatternDataUrl: '' }); }
   _normHex(v) { v = (v || '').trim(); if (/^#?[0-9a-fA-F]{6}$/.test(v)) return v[0] === '#' ? v : '#' + v; if (/^#?[0-9a-fA-F]{3}$/.test(v)) { v = v.replace('#', ''); return '#' + v[0] + v[0] + v[1] + v[1] + v[2] + v[2]; } return null; }
 
   _esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
@@ -2202,11 +2246,6 @@ class Component extends DCLogic {
   }
 
   async _bakeSignaturePatternImage() {
-    if (this.state.sigPatternDataUrl) {
-      const mime = (this.state.sigPatternDataUrl.match(/^data:([^;]+);/) || [])[1] || 'image/png';
-      const ext = mime.indexOf('jpeg') >= 0 ? 'jpg' : mime.indexOf('webp') >= 0 ? 'webp' : mime.indexOf('avif') >= 0 ? 'avif' : 'png';
-      return { bytes: this._bytesFromDataUrl(this.state.sigPatternDataUrl), ext, size: this.state.sigPatternSize || 160 };
-    }
     const dotSize = this.state.dotSize || 29;
     const dotSpacing = Math.max(this.state.dotSpacing || 40, dotSize + 2);
     const S = 2;
@@ -2251,6 +2290,15 @@ class Component extends DCLogic {
     const files = [];
     let n = 0;
     const esc = (s) => this._esc(s);
+    const CT_ORDER = CT.order || ['address', 'phone', 'whatsapp', 'email', 'web'];
+    const ctHref = (key, val) => key === 'phone' ? 'tel:' + String(val || '').replace(/[^0-9+]/g, '')
+      : key === 'whatsapp' ? 'https://wa.me/' + String(val || '').replace(/[^0-9]/g, '')
+      : key === 'email' ? 'mailto:' + (val || '')
+      : key === 'web' ? (/^https?:/.test(val || '') ? val : 'https://' + (val || ''))
+      : '';
+    const ctRows = CT_ORDER
+      .filter((k) => !(CT.hidden || {})[k] && String(CT[k] || '').trim())
+      .map((k) => ({ key: k, label: (CT.labels || {})[k] || k, value: CT[k], href: ctHref(k, CT[k]) }));
     const ctWeb = esc(/^https?:/.test(CT.web || '') ? CT.web : 'https://' + (CT.web || ''));
     const href = (s) => esc((s || '').trim() || 'https://positifdesign.fr');
     const imgNameCounts = {};
@@ -2290,7 +2338,7 @@ class Component extends DCLogic {
         if (baked) { headerBg = 'images/en-tete-fond.png'; files.push({ name: headerBg, bytes: baked.bytes }); }
       } catch (e) {}
     }
-    rows += '<tr><td background="' + headerBg + '" bgcolor="#141417" style="' + (headerBg ? 'background-color:#141417;background-image:url(' + headerBg + ');background-repeat:no-repeat;background-size:100% 100%;' : 'background:#141417;') + 'padding:18px 28px 24px;">' +
+    rows += '<tr><td background="' + headerBg + '" bgcolor="#141417" style="' + (headerBg ? 'background-color:#141417;background-image:url(' + headerBg + ');background-repeat:no-repeat;background-size:100% 100%;' : 'background:#141417;') + 'padding:' + (headerBg ? '18px 28px 24px' : '16px 28px') + ';">' +
       '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>' +
       '<td align="left" valign="middle">' + (headerLogo ? '<img src="' + headerLogo + '" width="190" alt="Positif Design" style="display:block;width:190px;height:auto;">' : '') + '</td>' +
       '<td align="right" valign="middle" style="font-family:' + F + ';font-weight:800;font-size:11px;letter-spacing:2px;color:#ffffff;text-transform:uppercase;">' + esc(this.state.headerTitle || 'VOTRE E-MAIL') + '</td>' +
@@ -2427,9 +2475,12 @@ class Component extends DCLogic {
       } else if (flMode === 'points') {
         // same circle pattern as the carte-de-visite signature
         try {
-          const cell = Math.max(this.state.dotSpacing, this.state.dotSize + 2);
-          const r = this.state.dotSize / 2;
-          const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + cell + '" height="' + cell + '"><rect width="' + cell + '" height="' + cell + '" fill="' + S.bg + '"/><circle cx="' + (cell / 2) + '" cy="' + (cell / 2) + '" r="' + r + '" fill="' + this.state.dotColor + '"/></svg>';
+          const dS = S.dotSize == null ? 29 : S.dotSize;
+          const dSp = S.dotSpacing == null ? 40 : S.dotSpacing;
+          const dOp = (S.dotOpacity == null ? 100 : S.dotOpacity) / 100;
+          const cell = Math.max(dSp, dS + 2);
+          const r = dS / 2;
+          const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + cell + '" height="' + cell + '"><rect width="' + cell + '" height="' + cell + '" fill="' + S.bg + '"/><circle cx="' + (cell / 2) + '" cy="' + (cell / 2) + '" r="' + r + '" fill="' + (S.dotColor || '#5A1520') + '" fill-opacity="' + dOp + '"/></svg>';
           bgName = imgName('signature-flyer-points', 'png');
           files.push({ name: bgName, bytes: await this._rasterizeSvg(svg, cell) });
         } catch (e) {}
@@ -2444,16 +2495,17 @@ class Component extends DCLogic {
       let head = '<div style="font-family:' + F + ';font-weight:700;font-size:12px;letter-spacing:4px;color:' + TXT + ';text-transform:uppercase;">'
         + esc(S.kicker) + ' <span style="color:' + S.accent + ';font-weight:800;">' + esc(S.year) + '</span></div>';
       if (flLogo) head += '<div style="padding-top:18px;"><img src="' + flLogo + '" width="205" alt="Positif Design" style="display:inline-block;width:205px;max-width:60%;height:auto;border:0;"></div>';
-      head += '<div style="font-family:' + F + ';font-weight:800;font-size:18px;letter-spacing:2.4px;color:' + TXT + ';padding-top:16px;">' + esc(CT.phone) + '</div>';
-      head += '<div style="padding-top:6px;"><a href="mailto:' + esc(CT.email) + '" style="font-family:' + F + ';font-weight:700;font-size:14px;letter-spacing:1px;color:' + S.accent + ';text-decoration:none;">' + esc(CT.email) + '</a></div>';
-      head += '<div style="font-family:' + F + ';font-weight:600;font-size:11.5px;color:' + TXT + ';padding-top:10px;">' + esc(CT.address) + '</div>';
-      head += '<div style="font-family:' + F + ';font-weight:800;font-size:14px;letter-spacing:3px;color:' + TXT + ';padding-top:8px;">' + esc(CT.web) + '</div>';
-      if (S.showWhatsapp !== false && (CT.whatsapp || '').trim()) {
-        let waIcon = null;
-        try { waIcon = imgName('reseau-whatsapp', 'png'); files.push({ name: waIcon, bytes: await this._rasterizeSvg(this._socialSvg('whatsapp', '#ffffff', '#25D366'), 20) }); } catch (e) { waIcon = null; }
-        head += '<div style="padding-top:8px;"><a href="https://wa.me/' + esc(String(CT.whatsapp || '').replace(/[^0-9]/g, '')) + '" style="font-family:' + F + ';font-weight:700;font-size:12.5px;color:' + TXT + ';text-decoration:none;">'
-          + (waIcon ? '<img src="' + waIcon + '" width="20" height="20" alt="" style="display:inline-block;width:20px;height:20px;vertical-align:middle;margin-right:6px;">' : '')
-          + esc(CT.whatsapp) + '</a></div>';
+      let waIcon = null;
+      if (ctRows.some((r) => r.key === 'whatsapp')) {
+        try { waIcon = imgName('reseau-whatsapp', 'png'); files.push({ name: waIcon, bytes: await this._rasterizeSvg(this._socialSvg('whatsapp', '#ffffff', '#25D366'), 18) }); } catch (e) { waIcon = null; }
+      }
+      for (const r of ctRows) {
+        const st = r.key === 'phone' ? 'font-weight:800;font-size:18px;letter-spacing:2.4px;color:' + TXT + ';'
+          : r.key === 'email' ? 'font-weight:700;font-size:13px;letter-spacing:.8px;color:' + S.accent + ';'
+          : 'font-weight:700;font-size:13px;letter-spacing:.5px;color:' + TXT + ';';
+        const body = (r.key === 'whatsapp' && waIcon ? '<img src="' + waIcon + '" width="18" height="18" alt="" style="display:inline-block;width:18px;height:18px;vertical-align:-3px;margin-right:7px;">' : '') + esc(r.value);
+        head += '<div style="padding-top:' + (r.key === 'phone' ? 16 : 7) + 'px;font-family:' + F + ';' + st + '">'
+          + (r.href ? '<a href="' + esc(r.href) + '" style="font-family:' + F + ';' + st + 'text-decoration:none;">' + body + '</a>' : body) + '</div>';
       }
 
       // 3 columns inside a 548px content box, 9px gutters.
@@ -2567,9 +2619,18 @@ class Component extends DCLogic {
     sig = '<tr><td background="' + patternName + '" bgcolor="#141417" style="' + sigBg + 'padding:0;">' +
       '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>' +
       '<td class="px" valign="top" style="padding:34px 32px 26px 32px;vertical-align:top;">';
-    if (logoName) sig += '<img src="' + logoName + '" width="142" alt="Positif Design" style="display:block;width:142px;height:auto;">';
-    sig += '<div style="font-family:' + F + ';font-weight:700;font-size:11px;letter-spacing:1.5px;color:#8e8e96;text-transform:uppercase;padding:12px 0 4px;">' + esc(CT.tagline) + '</div>';
-    sig += '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:12px;">' + sigRow('Adresse', esc(CT.address)) + sigRow('T&eacute;l&eacute;phone', esc(CT.phone), 'tel:' + esc(String(CT.phone || '').replace(/[^0-9+]/g, ''))) + sigRow('WhatsApp', esc(CT.whatsapp), 'https://wa.me/' + esc(String(CT.whatsapp || '').replace(/[^0-9]/g, ''))) + sigRow('Email', esc(CT.email), 'mailto:' + esc(CT.email)) + sigRow('Web', esc(CT.web), ctWeb) + '</table>';
+    if (logoName) sig += '<div style="' + (this.state.sigCarteLayout === 'centre' ? 'text-align:center;' : '') + '"><img src="' + logoName + '" width="142" alt="Positif Design" style="display:inline-block;width:142px;height:auto;"></div>';
+    const carteCentre = this.state.sigCarteLayout === 'centre';
+    sig += '<div style="font-family:' + F + ';font-weight:700;font-size:11px;letter-spacing:1.5px;color:#8e8e96;text-transform:uppercase;padding:12px 0 4px;' + (carteCentre ? 'text-align:center;' : '') + '">' + esc(CT.tagline) + '</div>';
+    if (this.state.sigCarteLayout === 'centre') {
+      sig += '<div style="text-align:center;padding-top:14px;">' + ctRows.map((r) => {
+        const inner = '<span style="font-family:' + F + ';font-weight:600;font-size:13.5px;color:' + SC + ';">' + esc(r.value) + '</span>';
+        return '<div style="padding:3px 0;">' + (r.href ? '<a href="' + esc(r.href) + '" style="text-decoration:none;">' + inner + '</a>' : inner) + '</div>';
+      }).join('') + '</div>';
+    } else {
+      sig += '<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:12px;">'
+        + ctRows.map((r) => sigRow(esc(r.label), esc(r.value), r.href ? esc(r.href) : '')).join('') + '</table>';
+    }
     sig += '<div style="border-top:1px solid #2a2a30;margin-top:18px;padding-top:12px;font-family:' + F + ';font-weight:500;font-size:11px;line-height:1.6;color:#6c6c75;max-width:360px;">' + esc(CT.legal) + '<br><a href="' + href(this.state.unsubscribeUrl) + '" style="color:#8a8a93;text-decoration:underline;">Se d&eacute;sabonner</a> &middot; <a href="' + href(this.state.viewOnlineUrl) + '" style="color:#8a8a93;text-decoration:underline;">Voir dans le navigateur</a></div>';
     if (cornerName) {
       const cornerW = cornerMeta && cornerMeta.width ? cornerMeta.width : Math.max(160, Math.min(440, this.state.arrowSize || 316));
@@ -3072,6 +3133,23 @@ class Component extends DCLogic {
   }
 
   renderVals() {
+    const CT = this.state.contact;
+    const CT_ORDER = CT.order || ['address', 'phone', 'whatsapp', 'email', 'web'];
+    const ctHref = (key, val) => key === 'phone' ? 'tel:' + String(val || '').replace(/[^0-9+]/g, '')
+      : key === 'whatsapp' ? 'https://wa.me/' + String(val || '').replace(/[^0-9]/g, '')
+      : key === 'email' ? 'mailto:' + (val || '')
+      : key === 'web' ? (/^https?:/.test(val || '') ? val : 'https://' + (val || ''))
+      : '';
+    const ctRows = CT_ORDER.map((key) => ({
+      key,
+      label: (CT.labels || {})[key] || key,
+      value: CT[key] || '',
+      href: ctHref(key, CT[key]),
+      isWhatsapp: key === 'whatsapp',
+      hasHref: !!ctHref(key, CT[key]),
+      noHref: !ctHref(key, CT[key]),
+      on: !(CT.hidden || {})[key] && !!String(CT[key] || '').trim(),
+    }));
     const tab = this.state.tab;
     const _FL = this.state.sigFlyer;
     const flCols = Math.max(2, Math.min(5, _FL.tileCols || 4));
@@ -3079,11 +3157,20 @@ class Component extends DCLogic {
     const flShift = _FL.nfcShift == null ? -24 : _FL.nfcShift;
     const flMode = ['points', 'uni'].indexOf(_FL.bgMode) >= 0 ? _FL.bgMode : 'flyer';
     // 'points' reuses the carte-de-visite circle pattern so both styles can share a look.
-    const flDotCell = Math.max(this.state.dotSpacing, this.state.dotSize + 2);
+    const flDotSize = _FL.dotSize == null ? 29 : _FL.dotSize;
+    const flDotSpacing = _FL.dotSpacing == null ? 40 : _FL.dotSpacing;
+    const flDotColor = _FL.dotColor || '#5A1520';
+    const flDotOpacity = _FL.dotOpacity == null ? 100 : _FL.dotOpacity;
+    const flDotCell = Math.max(flDotSpacing, flDotSize + 2);
+    const flDotRGBA = (() => {
+      const h = String(flDotColor).replace('#', '');
+      const n = parseInt(h.length === 3 ? h.split('').map((c) => c + c).join('') : h, 16);
+      return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + (flDotOpacity / 100) + ')';
+    })();
     const flBg = flMode === 'flyer'
       ? "background-image:url('assets/" + (_FL.bgFile || 'sig-flyer-bg-clean.svg') + "');background-size:cover;background-repeat:no-repeat;background-position:center bottom;"
       : flMode === 'points'
-        ? 'background-image:radial-gradient(circle, ' + this.state.dotColor + ' ' + (this.state.dotSize / 2).toFixed(1) + 'px, transparent ' + (this.state.dotSize / 2 + 1).toFixed(1) + 'px);background-size:' + flDotCell + 'px ' + flDotCell + 'px;'
+        ? 'background-image:radial-gradient(circle, ' + flDotRGBA + ' ' + (flDotSize / 2).toFixed(1) + 'px, transparent ' + (flDotSize / 2 + 1).toFixed(1) + 'px);background-size:' + flDotCell + 'px ' + flDotCell + 'px;'
         : '';
     const tabBase = 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:.04em;padding:12px 22px;border-radius:50px;cursor:pointer;transition:all .15s;';
     const active = tabBase + 'background:#141417;color:#fff;border:1px solid #141417;';
@@ -3102,14 +3189,12 @@ class Component extends DCLogic {
 
     // builder signature decoration (in-app state)
     const bds = this.state.dotSize, bdp = this.state.dotSpacing, bdc = this.state.dotColor;
-    const sigPatternDataUrl = this.state.sigPatternDataUrl || '';
-    const sigPatternSize = this.state.sigPatternSize || 160;
     const bcell = Math.max(bdp, bds + 2), br = bds / 2, bhalf = (bcell / 2).toFixed(1);
     const stepBtn = 'width:36px;height:36px;border:1px solid #DADADE;background:#fff;border-radius:10px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:18px;line-height:1;color:#141417;cursor:pointer;flex:0 0 auto;';
 
     const sigStyle = ['newsletter', 'flyer'].indexOf(this.state.sigStyle) >= 0 ? this.state.sigStyle : 'carte';
     const sigSeg = (on) => 'flex:1;border:1px solid ' + (on ? '#fff' : '#34343c') + ';background:' + (on ? '#fff' : '#1d1d22') + ';border-radius:8px;padding:8px 4px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;cursor:pointer;color:' + (on ? '#141417' : '#8e8e96') + ';';
-    const CT = this.state.contact;
+    const segLight = (on) => 'flex:1;border:1px solid ' + (on ? '#141417' : '#DADADE') + ';background:' + (on ? '#141417' : '#fff') + ';border-radius:8px;padding:8px 4px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11px;cursor:pointer;color:' + (on ? '#fff' : '#56565e') + ';';
     const railTabStyle = (on) => 'flex:1;border:none;border-radius:9px;padding:9px 6px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.02em;cursor:pointer;transition:background .12s ease;'
       + (on ? 'background:#fff;color:#141417;box-shadow:0 1px 3px rgba(20,20,30,.16);' : 'background:transparent;color:#71717a;');
     const socialOn = (this.state.sigSocial || []).filter((s) => s.on !== false && (s.url || '').trim());
@@ -3159,17 +3244,41 @@ class Component extends DCLogic {
       // model signatures
 
       // builder signature (two-tone halftone)
-      sigPatternBgImage: sigPatternDataUrl ? 'url("' + sigPatternDataUrl + '")' : 'radial-gradient(circle, ' + bdc + ' ' + br.toFixed(1) + 'px, transparent ' + (br + 1).toFixed(1) + 'px)',
-      sigPatternBgSize: sigPatternDataUrl ? sigPatternSize + 'px ' + sigPatternSize + 'px' : bcell + 'px ' + bcell + 'px',
-      sigPatternOpacity: sigPatternDataUrl ? '1' : '.12',
+      sigPatternBgImage: 'radial-gradient(circle, ' + bdc + ' ' + br.toFixed(1) + 'px, transparent ' + (br + 1).toFixed(1) + 'px)',
+      sigPatternBgSize: bcell + 'px ' + bcell + 'px',
+      sigPatternOpacity: '.12',
       sigPos: '0 0',
       sigTextColor: this.state.sigTextColor,
+      sigCarteLabels: this.state.sigCarteLayout !== 'centre',
+      sigCarteCentre: this.state.sigCarteLayout === 'centre',
+      sigCarteLabelsBtnStyle: sigSeg(this.state.sigCarteLayout !== 'centre'),
+      sigCarteCentreBtnStyle: sigSeg(this.state.sigCarteLayout === 'centre'),
+      onSigCarteLabels: () => this.setS('sigCarteLayout', 'labels'),
+      onSigCarteCentre: () => this.setS('sigCarteLayout', 'centre'),
+      sigCarteLogoStyle: 'display:block;width:142px;height:auto;' + (this.state.sigCarteLayout === 'centre' ? 'margin:0 auto;' : ''),
+      sigCarteInnerStyle: 'position:relative;z-index:2;' + (this.state.sigCarteLayout === 'centre' ? 'text-align:center;' : ''),
+      sigRowValStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;color:' + this.state.sigTextColor + ';',
+      sigCentreWrapStyle: 'display:flex;flex-direction:column;gap:6px;margin:16px 0 0;align-items:center;',
+      sigCentreRowStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13.5px;letter-spacing:.02em;',
+      sigCentreValStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13.5px;color:' + this.state.sigTextColor + ';',
       sigDotsDisplay: tglOn ? 'block' : 'none',
       sigArrowRight: this.state.arrowX + 'px', sigArrowBottom: this.state.arrowY + 'px', sigArrowW: this.state.arrowSize + 'px',
       sigArrowTransform: 'rotate(' + this.state.arrowRot + 'deg)',
 
-      // shared coordonnées
+      // shared coordonnées — one ordered row per line
       ct: CT,
+      ctRows: ctRows,
+      ctRowsEdit: ctRows.map((r, i) => ({
+        ...r,
+        first: i === 0, last: i === ctRows.length - 1,
+        onUp: () => this.moveContactRow(r.key, -1),
+        onDown: () => this.moveContactRow(r.key, 1),
+        onLabel: (e) => this.setContactLabel(r.key, e.target.value),
+        onValue: (e) => this.setContact(r.key, e.target.value),
+        onToggle: () => this.toggleContactRow(r.key),
+        toggleStyle: 'border:none;border-radius:7px;padding:6px 8px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:9.5px;cursor:pointer;flex:0 0 auto;' + (r.on ? 'background:#FC1D37;color:#fff;' : 'background:#2a2a30;color:#8e8e96;'),
+      })),
+      ctRowsShown: ctRows.filter((r) => r.on),
       ctBarLines: String(CT.address||'').split(' · ').map((t,k)=>({id:k,text:t}))
         .concat([{id:90,text:'Tél: '+(CT.phone||'')},{id:91,text:CT.email||''}]),
       ctTelHref: 'tel:' + String(CT.phone||'').replace(/[^0-9+]/g,''),
@@ -3206,10 +3315,6 @@ class Component extends DCLogic {
       flWrapStyle: 'position:relative;overflow:hidden;background-color:' + FL.bg + ';padding:46px 34px 0;' + flBg,
       flKickerStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.34em;color:' + FL.textColor + ';text-transform:uppercase;',
       flYearStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10.5px;letter-spacing:.34em;color:' + FL.accent + ';',
-      flPhoneStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:18px;letter-spacing:.13em;color:' + FL.textColor + ';margin:16px 0 0;',
-      flEmailStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12.5px;letter-spacing:.06em;color:' + FL.accent + ';',
-      flAddressStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:10.5px;letter-spacing:.03em;color:' + FL.textColor + ';margin:9px 0 0;',
-      flWebStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12.5px;letter-spacing:.13em;color:' + FL.textColor + ';margin:7px 0 0;',
       flGridStyle: 'position:relative;z-index:2;display:flex;flex-wrap:wrap;align-items:flex-end;gap:' + flGap + 'px;margin:24px 0 0;',
       flTileStyle: 'flex:0 0 calc((100% - ' + (flGap * (flCols - 1)) + 'px) / ' + flCols + ');max-width:calc((100% - ' + (flGap * (flCols - 1)) + 'px) / ' + flCols + ');line-height:0;',
       flCols: flCols, flGap: flGap,
@@ -3227,6 +3332,18 @@ class Component extends DCLogic {
       flLinkedinIcon: this._socialDataUrl('linkedin', '#ffffff', '#0A66C2'),
       flInstagramIcon: this._socialDataUrl('instagram', '#ffffff', FL.accent),
       flWhatsappIcon: this._socialDataUrl('whatsapp', '#ffffff', '#25D366'),
+      flRowsWrapStyle: 'display:flex;flex-direction:column;align-items:center;gap:6px;margin:16px 0 0;',
+      flRows: ctRows.filter((r) => r.on).map((r) => ({
+        ...r,
+        // phone is the hero line; everything else shares one size so the WhatsApp
+        // row no longer looks shrunken next to its icon
+        style: 'font-family:Montserrat,Arial,sans-serif;text-decoration:none;'
+          + (r.key === 'phone'
+              ? 'font-weight:800;font-size:18px;letter-spacing:.13em;color:' + FL.textColor + ';'
+              : r.key === 'email'
+                ? 'font-weight:700;font-size:13px;letter-spacing:.05em;color:' + FL.accent + ';'
+                : 'font-weight:700;font-size:13px;letter-spacing:.03em;color:' + FL.textColor + ';'),
+      })),
       onFlSocialLabel: (e) => this.setFlyer('socialLabel', e.target.value),
       onFlLinkedin: (e) => this.setFlyer('linkedinUrl', e.target.value),
       onFlInstagram: (e) => this.setFlyer('instagramUrl', e.target.value),
@@ -3235,9 +3352,14 @@ class Component extends DCLogic {
       flWhatsappOn: FL.showWhatsapp !== false,
       flWhatsappBtnStyle: sigSeg(FL.showWhatsapp !== false),
       onToggleFlWhatsapp: () => this.setFlyer('showWhatsapp', FL.showWhatsapp === false),
-      flWaRowStyle: 'display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12.5px;color:' + FL.textColor + ';margin:8px 0 0;',
 
       // background source
+      flDotSize: flDotSize, flDotSpacing: flDotSpacing, flDotColor: flDotColor, flDotOpacity: flDotOpacity,
+      flIsPoints: flMode === 'points',
+      onFlDotSize: (e) => this.setFlyer('dotSize', +e.target.value),
+      onFlDotSpacing: (e) => this.setFlyer('dotSpacing', +e.target.value),
+      onFlDotColor: (e) => this.setFlyer('dotColor', e.target.value),
+      onFlDotOpacity: (e) => this.setFlyer('dotOpacity', +e.target.value),
       flBgFlyerStyle: sigSeg(flMode === 'flyer'),
       flBgPointsStyle: sigSeg(flMode === 'points'),
       flBgUniStyle: sigSeg(flMode === 'uni'),
@@ -3313,12 +3435,14 @@ class Component extends DCLogic {
       canvasRef: (el) => { if (el) this._canvasEl = el; },
       headerTitle: this.state.headerTitle,
       headerSelected: !!this.state.headerSelected,
-      headerWrapStyle: 'position:relative;background-color:#141417;padding:20px 28px 26px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;'
+      headerWrapStyle: 'position:relative;background-color:#141417;padding:' + (this.state.headerArt !== false ? '20px 28px 26px' : '17px 28px') + ';display:flex;align-items:center;justify-content:space-between;cursor:pointer;'
         + (this.state.headerArt !== false ? "background-image:url('assets/header-bg-clean.svg');background-size:100% 100%;background-repeat:no-repeat;background-position:center;" : '')
-        + (this.state.headerSelected ? 'outline:2px solid #FC1D37;outline-offset:-2px;' : ''),
+        + (this.state.headerSelected ? 'box-shadow:inset 0 0 0 2px rgba(252,29,55,.55);' : ''),
       headerArtOn: this.state.headerArt !== false,
-      headerArtBtnStyle: sigSeg(this.state.headerArt !== false),
-      onToggleHeaderArt: () => this.setS('headerArt', this.state.headerArt === false),
+      headerPlainBtnStyle: segLight(this.state.headerArt === false),
+      headerArtBtnStyle: segLight(this.state.headerArt !== false),
+      onHeaderPlain: () => this.setS('headerArt', false),
+      onHeaderArt: () => this.setS('headerArt', true),
       onHeaderSelect: () => this.selectHeader(),
       onHeaderTitle: (e) => this.setS('headerTitle', e.target.value),
       stickers: this.state.stickers.map((st) => {
@@ -3402,11 +3526,6 @@ class Component extends DCLogic {
       dotColorVal: bdc,
       onDotColorPick: (e) => this.setS('dotColor', e.target.value),
       onDotColorHex: (e) => { const v = this._normHex(e.target.value); if (v) this.setS('dotColor', v); },
-      sigPatternLabel: sigPatternDataUrl ? 'Image motif active' : 'Aucune image, points générés',
-      sigPatternSizeVal: sigPatternSize,
-      onSigPatternFile: (e) => this.onSigPatternFile(e),
-      onSigPatternClear: () => this.onSigPatternClear(),
-      onSigPatternSize: (e) => this.setS('sigPatternSize', +e.target.value),
       onSigTextPick: (e) => this.setS('sigTextColor', e.target.value),
       onSigTextHex: (e) => { const v = this._normHex(e.target.value); if (v) this.setS('sigTextColor', v); },
       arrowSizeVal: this.state.arrowSize, onArrowSize: (e) => this.setS('arrowSize', +e.target.value),
