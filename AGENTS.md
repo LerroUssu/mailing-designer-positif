@@ -74,7 +74,10 @@ Every block with an `image-slot` exposes `onReframe` (built by the shared `refra
 `_mapBlock` are the shared toggle-pill and segmented-button style helpers — use them, don't re-inline.
 
 ## Header + signatures
-`state.headerStyle`: `'barre'` (logo + editable title) or `'visuel'` (`assets/header.svg` full width, baked to PNG on export).
+Header is the black bar: `logo-long.svg` + an editable title. (A `header.svg` "visuel" style existed
+briefly and was removed — it baked the coordonnées into a picture, duplicating the signature.)
+**`state.contact`** is the single source for company/tagline/address/phone/whatsapp/email/web/legal.
+All three signatures read it, in the canvas *and* in `exportHtml()`. Never hardcode a coordinate again.
 
 ## Signatures — three styles (`state.sigStyle`)
 - **`'carte'`** (default) — the carte-de-visite footer: dark bg + dot/uploaded pattern, arrows corner
