@@ -79,6 +79,10 @@ red is the brand colour and read as part of the design rather than as UI state.
   black cap so the coordonnées never land on red. In the export that cap is a **separate solid
   black cell** — background images are the first thing an e-mail client drops. Both numbers
   render at the same size, each with its own picto (`phonesInline` puts them on one row).
+  `tileOpacity` fades the cells; it is **baked into the PNG** at export (`_rasterizeAsset`'s
+  `alpha` argument), never left to CSS `opacity`.
+  Both vertical sliders run the same way — **handle right = the boundary rises**. `Limite du
+  noir` gets `direction:rtl` for that; without it the two ran opposite each other.
 
 Social icons are **generated** (`_SOCIAL` / `_socialSvg()`), not asset files. Instagram and
 LinkedIn go through `_brandSvg()` instead — official rounded-square marks with the real brand
