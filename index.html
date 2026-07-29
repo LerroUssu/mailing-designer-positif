@@ -644,6 +644,10 @@
                 <button onClick="{{ onHeaderPlain }}" style="{{ headerPlainBtnStyle }}">Barre simple</button>
                 <button onClick="{{ onHeaderArt }}" style="{{ headerArtBtnStyle }}">Graphique</button>
               </div>
+              <div class="pd-slider" style="margin-bottom:14px;">
+                <div class="pd-slider-head"><span class="pd-slider-name">Hauteur</span><span class="pd-slider-val">{{ headerHeight }}px</span></div>
+                <input type="range" min="60" max="280" step="2" value="{{ headerHeight }}" onInput="{{ onHeaderHeight }}">
+              </div>
               <div class="pd-label" style="margin-bottom:6px;">Titre affiché</div>
               <input value="{{ headerTitle }}" onChange="{{ onHeaderTitle }}" class="pd-input">
             </div>
@@ -854,14 +858,18 @@
                         <div class="pd-slider-head"><span class="pd-slider-name">Hauteur</span><span class="pd-slider-val">{{ sel.imgH }}px</span></div>
                         <input type="range" min="120" max="460" step="2" value="{{ sel.imgH }}" onInput="{{ sel.onImgH }}">
                       </div>
-                      <div class="pd-slider">
-                        <div class="pd-slider-head"><span class="pd-slider-name">Arrondi image</span><span class="pd-slider-val">{{ sel.imgRadiusVal }}px</span></div>
-                        <input type="range" min="0" max="40" step="1" value="{{ sel.imgRadiusVal }}" onInput="{{ sel.onImgRadius }}">
-                      </div>
-                      <div class="pd-slider">
-                        <div class="pd-slider-head"><span class="pd-slider-name">Arrondi fond</span><span class="pd-slider-val">{{ sel.panelRadius }}px</span></div>
-                        <input type="range" min="0" max="60" step="1" value="{{ sel.panelRadius }}" onInput="{{ sel.onPanelRadius }}">
-                      </div>
+                      <sc-if value="{{ sel.pdIsRounded }}" hint-placeholder-val="{{ false }}">
+                        <div class="pd-slider">
+                          <div class="pd-slider-head"><span class="pd-slider-name">Arrondi image</span><span class="pd-slider-val">{{ sel.imgRadiusVal }}px</span></div>
+                          <input type="range" min="0" max="40" step="1" value="{{ sel.imgRadiusVal }}" onInput="{{ sel.onImgRadius }}">
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ sel.panel }}" hint-placeholder-val="{{ true }}">
+                        <div class="pd-slider">
+                          <div class="pd-slider-head"><span class="pd-slider-name">Arrondi fond</span><span class="pd-slider-val">{{ sel.panelRadius }}px</span></div>
+                          <input type="range" min="0" max="60" step="1" value="{{ sel.panelRadius }}" onInput="{{ sel.onPanelRadius }}">
+                        </div>
+                      </sc-if>
                     </div>
                     <button onClick="{{ sel.onReframe }}" style="width:100%;margin-top:12px;background:#141417;color:#fff;border:none;border-radius:50px;padding:11px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.03em;cursor:pointer;">Repositionner l'image</button>
                   <div class="pd-field" style="margin-top:12px;">
@@ -874,7 +882,7 @@
                   <details class="pd-section"><summary class="pd-section-title">Couleurs</summary>
                     <div class="pd-grid-3">
                       <div class="pd-field"><div class="pd-label">Fond bloc</div><input type="color" value="{{ sel.bg }}" onInput="{{ sel.onBg }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
-                      <div class="pd-field"><div class="pd-label">Fond visuel</div><input type="color" value="{{ sel.panelBg }}" onInput="{{ sel.onPanelBg }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
+                      <sc-if value="{{ sel.panel }}" hint-placeholder-val="{{ true }}"><div class="pd-field"><div class="pd-label">Fond visuel</div><input type="color" value="{{ sel.panelBg }}" onInput="{{ sel.onPanelBg }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div></sc-if>
                       <div class="pd-field"><div class="pd-label">Titre</div><input type="color" value="{{ sel.titleColor }}" onInput="{{ sel.onTitleColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
                       <div class="pd-field"><div class="pd-label">Texte</div><input type="color" value="{{ sel.textColor }}" onInput="{{ sel.onTextColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
                       <div class="pd-field"><div class="pd-label">Prix</div><input type="color" value="{{ sel.priceColor }}" onInput="{{ sel.onPriceColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
@@ -948,7 +956,7 @@
                     <label style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.04em;color:#9a9aa2;text-transform:uppercase;">Fond<input type="color" value="{{ sel.telBg }}" onInput="{{ sel.onTelBg }}" style="width:100%;height:30px;padding:1px;border:1px solid #E2E2E8;border-radius:7px;background:#fff;cursor:pointer;"></label>
                     <label style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.04em;color:#9a9aa2;text-transform:uppercase;">Texte<input type="color" value="{{ sel.telText }}" onInput="{{ sel.onTelText }}" style="width:100%;height:30px;padding:1px;border:1px solid #E2E2E8;border-radius:7px;background:#fff;cursor:pointer;"></label>
                     <label style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.04em;color:#9a9aa2;text-transform:uppercase;">Bord<input type="color" value="{{ sel.telBorder }}" onInput="{{ sel.onTelBorder }}" style="width:100%;height:30px;padding:1px;border:1px solid #E2E2E8;border-radius:7px;background:#fff;cursor:pointer;"></label>
-                    <label style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.04em;color:#9a9aa2;text-transform:uppercase;">Point<input type="color" value="{{ sel.telDotColor }}" onInput="{{ sel.onTelDotColor }}" style="width:100%;height:30px;padding:1px;border:1px solid #E2E2E8;border-radius:7px;background:#fff;cursor:pointer;"></label>
+                    <sc-if value="{{ sel.telDot }}" hint-placeholder-val="{{ true }}"><label style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.04em;color:#9a9aa2;text-transform:uppercase;">Point<input type="color" value="{{ sel.telDotColor }}" onInput="{{ sel.onTelDotColor }}" style="width:100%;height:30px;padding:1px;border:1px solid #E2E2E8;border-radius:7px;background:#fff;cursor:pointer;"></label></sc-if>
                   </div>
 
                   <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.06em;color:#141417;text-transform:uppercase;margin:18px 0 8px;">Bouton WhatsApp</div>
@@ -1042,7 +1050,7 @@
                       <div class="pd-field"><div class="pd-label">Ligne 2 fond</div><input type="color" value="{{ sel.line2Bg }}" onInput="{{ sel.onLine2Bg }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
                       <div class="pd-field"><div class="pd-label">Ligne 2 texte</div><input type="color" value="{{ sel.line2Color }}" onInput="{{ sel.onLine2Color }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
                       <div class="pd-field"><div class="pd-label">Sous-texte</div><input type="color" value="{{ sel.subColor }}" onInput="{{ sel.onSubColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
-                      <div class="pd-field"><div class="pd-label">Pois Ben-Day</div><input type="color" value="{{ sel.halftoneColor }}" onInput="{{ sel.onHalftoneColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div>
+                      <sc-if value="{{ sel.halftone }}" hint-placeholder-val="{{ true }}"><div class="pd-field"><div class="pd-label">Pois Ben-Day</div><input type="color" value="{{ sel.halftoneColor }}" onInput="{{ sel.onHalftoneColor }}" style="width:100%;height:32px;padding:1px;border:1px solid #E2E2E8;border-radius:8px;background:#fff;cursor:pointer;"></div></sc-if>
                     </div>
                   </details>
 
@@ -1204,21 +1212,26 @@
               <!-- bannière -->
               <sc-if value="{{ selIsBanner }}" hint-placeholder-val="{{ false }}">
                 <div>
-                  <div class="pd-label" style="margin-bottom:6px;">Titre</div>
-                  <input onChange="{{ sel.onTitle }}" value="{{ sel.title }}" class="pd-input">
-                  <div class="pd-label" style="margin:14px 0 6px;">Sous-titre</div>
-                  <textarea onChange="{{ sel.onSubtitle }}" value="{{ sel.subtitle }}" rows="2" class="pd-textarea"></textarea>
-                  <div class="pd-label" style="margin:14px 0 6px;">Texte du bouton</div>
-                  <input onChange="{{ sel.onBtnLabel }}" value="{{ sel.btnLabel }}" class="pd-input">
-                  <div class="pd-label" style="margin:14px 0 6px;">Lien du bouton</div>
-                  <input onChange="{{ sel.onBtnUrl }}" value="{{ sel.btnUrl }}" placeholder="https://positifdesign.fr" class="pd-input">
-                  <div style="display:flex;gap:10px;margin-top:14px;">
-                    <label style="flex:1;display:flex;flex-direction:column;gap:4px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#9a9aa2;text-transform:uppercase;">Fond bouton<input type="color" value="{{ sel.btnBg }}" onInput="{{ sel.onBnBg }}" style="width:100%;height:30px;padding:1px;border:1px solid #E2E2E8;border-radius:7px;background:#fff;cursor:pointer;"></label>
-                    <label style="flex:1;display:flex;flex-direction:column;gap:4px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#9a9aa2;text-transform:uppercase;">Texte bouton<input type="color" value="{{ sel.btnColor }}" onInput="{{ sel.onBnColor }}" style="width:100%;height:30px;padding:1px;border:1px solid #E2E2E8;border-radius:7px;background:#fff;cursor:pointer;"></label>
-                  </div>
+                  <div class="pd-label" style="margin-bottom:8px;">Bloc texte</div>
+                  <button onClick="{{ sel.onToggleText }}" style="{{ sel.bnTextBtnStyle }};width:100%;">Afficher le bloc texte</button>
+                  <sc-if value="{{ sel.showText }}" hint-placeholder-val="{{ true }}">
+                    <div>
+                      <div class="pd-label" style="margin:14px 0 6px;">Titre</div>
+                      <input onChange="{{ sel.onTitle }}" value="{{ sel.title }}" class="pd-input">
+                      <div class="pd-label" style="margin:14px 0 6px;">Sous-titre</div>
+                      <textarea onChange="{{ sel.onSubtitle }}" value="{{ sel.subtitle }}" rows="2" class="pd-textarea"></textarea>
+                      <div class="pd-label" style="margin:14px 0 6px;">Texte du bouton</div>
+                      <input onChange="{{ sel.onBtnLabel }}" value="{{ sel.btnLabel }}" class="pd-input">
+                      <div class="pd-label" style="margin:14px 0 6px;">Lien du bouton</div>
+                      <input onChange="{{ sel.onBtnUrl }}" value="{{ sel.btnUrl }}" placeholder="https://positifdesign.fr" class="pd-input">
+                      <div style="display:flex;gap:10px;margin-top:14px;">
+                        <label style="flex:1;display:flex;flex-direction:column;gap:4px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#9a9aa2;text-transform:uppercase;">Fond bouton<input type="color" value="{{ sel.btnBg }}" onInput="{{ sel.onBnBg }}" style="width:100%;height:30px;padding:1px;border:1px solid #E2E2E8;border-radius:7px;background:#fff;cursor:pointer;"></label>
+                        <label style="flex:1;display:flex;flex-direction:column;gap:4px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#9a9aa2;text-transform:uppercase;">Texte bouton<input type="color" value="{{ sel.btnColor }}" onInput="{{ sel.onBnColor }}" style="width:100%;height:30px;padding:1px;border:1px solid #E2E2E8;border-radius:7px;background:#fff;cursor:pointer;"></label>
+                      </div>
+                    </div>
+                  </sc-if>
                   <div style="height:1px;background:#EFEFF2;margin:16px 0 14px;"></div>
                   <div class="pd-label" style="margin-bottom:8px;">Visuel</div>
-                  <button onClick="{{ sel.onToggleText }}" style="{{ sel.bnTextBtnStyle }};width:100%;">Afficher le bloc texte</button>
                   <div class="pd-slider" style="margin-top:12px;">
                     <div class="pd-slider-head"><span class="pd-slider-name">Hauteur image</span><span class="pd-slider-val">{{ sel.imgH }}px</span></div>
                     <input type="range" min="120" max="620" step="2" value="{{ sel.imgH }}" onInput="{{ sel.onImgH }}">
@@ -1283,14 +1296,14 @@
 
           <details class="pd-section" open="true" style="background:#1d1d22;border-color:#34343c;">
             <summary class="pd-section-title" style="color:#e9e9ee;">Coordonnées — communes aux 3 signatures</summary>
-                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">Raison sociale</div><input class="pd-input" value="{{ ct.company }}" onChange="{{ onCtCompany }}"></div>                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">Accroche</div><input class="pd-input" value="{{ ct.tagline }}" onChange="{{ onCtTagline }}"></div>                <div class="pd-label" style="margin-top:12px;">Lignes de coordonnées — ordre, libellé, visibilité</div>
+                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">Raison sociale</div><input class="pd-input" value="{{ ct.company }}" onChange="{{ onCtCompany }}"></div>                <sc-if value="{{ sigIsCarte }}" hint-placeholder-val="{{ true }}"><div class="pd-field" style="margin-top:8px;"><div class="pd-label">Accroche</div><input class="pd-input" value="{{ ct.tagline }}" onChange="{{ onCtTagline }}"></div></sc-if>                <div class="pd-label" style="margin-top:12px;">Lignes de coordonnées — ordre, libellé, visibilité</div>
                 <div style="display:flex;flex-direction:column;gap:6px;margin-top:6px;">
                   <sc-for list="{{ ctRowsEdit }}" as="r" hint-placeholder-count="0">
                     <div style="border:1px solid #34343c;border-radius:9px;padding:7px;background:#141417;">
                       <div style="display:flex;gap:5px;align-items:center;">
                         <button onClick="{{ r.onUp }}" title="Monter" style="width:24px;height:24px;border:1px solid #34343c;background:#1d1d22;border-radius:6px;color:#e9e9ee;font-size:11px;line-height:1;cursor:pointer;flex:0 0 auto;">▲</button>
                         <button onClick="{{ r.onDown }}" title="Descendre" style="width:24px;height:24px;border:1px solid #34343c;background:#1d1d22;border-radius:6px;color:#e9e9ee;font-size:11px;line-height:1;cursor:pointer;flex:0 0 auto;">▼</button>
-                        <input value="{{ r.label }}" onChange="{{ r.onLabel }}" placeholder="Libellé" style="flex:0 0 92px;box-sizing:border-box;border:1px solid #34343c;border-radius:6px;padding:6px 8px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.04em;color:#8e8e96;text-transform:uppercase;outline:none;">
+                        <sc-if value="{{ ctLabelsUsed }}" hint-placeholder-val="{{ true }}"><input value="{{ r.label }}" onChange="{{ r.onLabel }}" placeholder="Libellé" style="flex:0 0 92px;box-sizing:border-box;border:1px solid #34343c;border-radius:6px;padding:6px 8px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:.04em;color:#8e8e96;text-transform:uppercase;outline:none;"></sc-if>
                         <button onClick="{{ r.onToggle }}" style="{{ r.toggleStyle }}">Afficher</button>
                       </div>
                       <input value="{{ r.value }}" onChange="{{ r.onValue }}" style="width:100%;margin-top:6px;box-sizing:border-box;border:1px solid #34343c;border-radius:6px;padding:7px 9px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
@@ -1298,8 +1311,8 @@
                   </sc-for>
                 </div>
                 <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:8px 0 0;">Chaque ligne est un bloc distinct : elle ne se coupe jamais au milieu. Pour couper l'adresse en deux, mettez la ville dans une ligne à part.</p>
-                <div class="pd-field" style="margin-top:8px;"><div class="pd-label">Mention légale</div>
-                <textarea class="pd-textarea" rows="2" value="{{ ct.legal }}" onChange="{{ onCtLegal }}"></textarea></div>
+                <sc-if value="{{ sigIsCarte }}" hint-placeholder-val="{{ true }}"><div><div class="pd-field" style="margin-top:8px;"><div class="pd-label">Mention légale</div>
+                <textarea class="pd-textarea" rows="2" value="{{ ct.legal }}" onChange="{{ onCtLegal }}"></textarea></div></div></sc-if>
                 <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:10px 0 0;">Modifiées ici, elles se répercutent sur la carte de visite, la newsletter et le flyer.</p>
           </details>
 
@@ -1319,7 +1332,7 @@
                 <button onClick="{{ onFlBgPoints }}" style="{{ flBgPointsStyle }}">Ronds carte</button>
                 <button onClick="{{ onFlBgUni }}" style="{{ flBgUniStyle }}">Uni</button>
               </div>
-              <label style="display:flex;flex-direction:column;gap:5px;margin-top:10px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#8e8e96;text-transform:uppercase;">Fond uni<input type="color" value="{{ fl.bg }}" onInput="{{ onFlBg }}" style="width:100%;height:30px;padding:2px;border:1px solid #34343c;border-radius:8px;background:#1d1d22;cursor:pointer;"></label>
+              <label style="display:flex;flex-direction:column;gap:5px;margin-top:10px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#8e8e96;text-transform:uppercase;">Couleur de fond<input type="color" value="{{ fl.bg }}" onInput="{{ onFlBg }}" style="width:100%;height:30px;padding:2px;border:1px solid #34343c;border-radius:8px;background:#1d1d22;cursor:pointer;"></label>
 
               <sc-if value="{{ flIsArtwork }}" hint-placeholder-val="{{ true }}">
                 <div style="margin-top:10px;">
@@ -1337,18 +1350,22 @@
                 </div>
               </sc-if>
 
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 8px;">Noir en haut</div>
-              <div class="pd-grid-2">
-                <div class="pd-slider">
-                  <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Hauteur</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flBlackTop }}px</span></div>
-                  <input type="range" min="0" max="420" step="5" value="{{ flBlackTop }}" onInput="{{ onFlBlackTop }}">
+              <sc-if value="{{ flIsArtwork }}" hint-placeholder-val="{{ true }}">
+                <div>
+                  <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 8px;">Noir en haut</div>
+                  <div class="pd-grid-2">
+                    <div class="pd-slider">
+                      <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Hauteur</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flBlackTop }}px</span></div>
+                      <input type="range" min="0" max="420" step="5" value="{{ flBlackTop }}" onInput="{{ onFlBlackTop }}">
+                    </div>
+                    <div class="pd-slider">
+                      <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Fondu</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flBlackFade }}px</span></div>
+                      <input type="range" min="0" max="320" step="5" value="{{ flBlackFade }}" onInput="{{ onFlBlackFade }}">
+                    </div>
+                  </div>
+                  <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:8px 0 0;">Prolonge le noir par-dessus le visuel pour que les coordonnées restent lisibles.</p>
                 </div>
-                <div class="pd-slider">
-                  <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Fondu</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flBlackFade }}px</span></div>
-                  <input type="range" min="0" max="320" step="5" value="{{ flBlackFade }}" onInput="{{ onFlBlackFade }}">
-                </div>
-              </div>
-              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:8px 0 0;">Prolonge le noir par-dessus le visuel pour que les coordonnées restent lisibles.</p>
+              </sc-if>
 
               <div class="pd-slider" style="margin-top:14px;">
                 <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Marge basse</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flPadBottom }}px</span></div>
@@ -1406,9 +1423,13 @@
               <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 8px;">Numéros</div>
               <div style="display:flex;gap:7px;">
                 <button onClick="{{ onToggleFlWhatsapp }}" style="{{ flWhatsappBtnStyle }}">WhatsApp</button>
-                <button onClick="{{ onToggleFlPhonesInline }}" style="{{ flPhonesInlineBtnStyle }}">Sur une ligne</button>
+                <sc-if value="{{ flWhatsappOn }}" hint-placeholder-val="{{ true }}">
+                  <button onClick="{{ onToggleFlPhonesInline }}" style="{{ flPhonesInlineBtnStyle }}">Sur une ligne</button>
+                </sc-if>
               </div>
-              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:8px 0 0;">Fixe et WhatsApp à la même taille, chacun avec son propre pictogramme.</p>
+              <sc-if value="{{ flWhatsappOn }}" hint-placeholder-val="{{ true }}">
+                <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:8px 0 0;">Fixe et WhatsApp à la même taille, chacun avec son propre pictogramme.</p>
+              </sc-if>
 
               <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 7px;">Accroche</div>
               <div style="display:flex;gap:8px;">
@@ -1510,15 +1531,19 @@
             <button onClick="{{ onToggleHalftone }}" style="{{ halftoneBtnStyle }}">Points</button>
           </div>
 
-          <div class="pd-slider-head" style="margin:14px 0 7px;"><span class="pd-slider-name" style="color:#8e8e96;">Points · taille</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ dotSizeVal }}px</span></div>
-          <input type="range" min="4" max="40" step="1" value="{{ dotSizeVal }}" onInput="{{ onDotSize }}" style="width:100%;accent-color:#FC1D37;">
-          <div class="pd-slider-head" style="margin:14px 0 7px;"><span class="pd-slider-name" style="color:#8e8e96;">Points · espacement</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ dotSpacingVal }}px</span></div>
-          <input type="range" min="16" max="90" step="1" value="{{ dotSpacingVal }}" onInput="{{ onDotSpacing }}" style="width:100%;accent-color:#FC1D37;">
-          <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:14px 0 8px;">Points · couleur</div>
-          <div style="display:flex;align-items:center;gap:10px;">
-            <input type="color" value="{{ dotColorVal }}" onInput="{{ onDotColorPick }}" style="width:46px;height:38px;padding:2px;border:1px solid #34343c;border-radius:10px;background:#1d1d22;cursor:pointer;flex:0 0 auto;">
-            <input value="{{ dotColorVal }}" onChange="{{ onDotColorHex }}" style="flex:1;min-width:0;box-sizing:border-box;border:1px solid #34343c;border-radius:10px;padding:10px 12px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12.5px;letter-spacing:.04em;color:#e9e9ee;text-transform:uppercase;outline:none;">
-          </div>
+          <sc-if value="{{ halftoneOn }}" hint-placeholder-val="{{ true }}">
+            <div>
+              <div class="pd-slider-head" style="margin:14px 0 7px;"><span class="pd-slider-name" style="color:#8e8e96;">Points · taille</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ dotSizeVal }}px</span></div>
+              <input type="range" min="4" max="40" step="1" value="{{ dotSizeVal }}" onInput="{{ onDotSize }}" style="width:100%;accent-color:#FC1D37;">
+              <div class="pd-slider-head" style="margin:14px 0 7px;"><span class="pd-slider-name" style="color:#8e8e96;">Points · espacement</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ dotSpacingVal }}px</span></div>
+              <input type="range" min="16" max="90" step="1" value="{{ dotSpacingVal }}" onInput="{{ onDotSpacing }}" style="width:100%;accent-color:#FC1D37;">
+              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:14px 0 8px;">Points · couleur</div>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <input type="color" value="{{ dotColorVal }}" onInput="{{ onDotColorPick }}" style="width:46px;height:38px;padding:2px;border:1px solid #34343c;border-radius:10px;background:#1d1d22;cursor:pointer;flex:0 0 auto;">
+                <input value="{{ dotColorVal }}" onChange="{{ onDotColorHex }}" style="flex:1;min-width:0;box-sizing:border-box;border:1px solid #34343c;border-radius:10px;padding:10px 12px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12.5px;letter-spacing:.04em;color:#e9e9ee;text-transform:uppercase;outline:none;">
+              </div>
+            </div>
+          </sc-if>
 
           <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:14px 0 8px;">Texte signature · couleur</div>
           <div style="display:flex;align-items:center;gap:10px;">
@@ -1623,6 +1648,7 @@ class Component extends DCLogic {
     headerSelected: false,
     headerTitle: 'VOTRE E-MAIL',
     headerArt: true,
+    headerHeight: 110,
     dragBlockId: null,
     dropBlockId: null,
     dropPos: null,
@@ -1764,6 +1790,7 @@ class Component extends DCLogic {
     return {
       headerTitle: this.state.headerTitle,
       headerArt: this.state.headerArt,
+      headerHeight: this.state.headerHeight,
       emailSubject: this.state.emailSubject,
       emailPreheader: this.state.emailPreheader,
       unsubscribeUrl: this.state.unsubscribeUrl,
@@ -1830,6 +1857,7 @@ class Component extends DCLogic {
     railTab: 'bloc',
       headerTitle: p.headerTitle || 'VOTRE E-MAIL',
       headerArt: p.headerArt !== false,
+      headerHeight: p.headerHeight == null ? 110 : p.headerHeight,
       emailSubject: p.emailSubject || 'Votre offre Positif Design',
       emailPreheader: p.emailPreheader || '',
       unsubscribeUrl: p.unsubscribeUrl || '{{ unsubscribe }}',
@@ -2439,13 +2467,16 @@ class Component extends DCLogic {
         if (baked) { headerSwoosh = 'images/en-tete-vague.png'; files.push({ name: headerSwoosh, bytes: baked.bytes }); }
       } catch (e) {}
     }
-    const headerBlack = headerSwoosh ? '#010202' : '#141417';
-    rows += '<tr><td bgcolor="' + headerBlack + '" style="background:' + headerBlack + ';padding:' + (headerSwoosh ? '18px 28px 14px' : '16px 28px') + ';">' +
+    // The swoosh row is 46px at 600 wide, so the bar cell takes the remainder of the
+    // chosen height and the strip stays flush with the bottom.
+    const headerH = Math.max(60, Math.min(280, this.state.headerHeight == null ? 110 : this.state.headerHeight));
+    const headerBarH = Math.max(28, headerH - (headerSwoosh ? 46 : 0));
+    rows += '<tr><td bgcolor="#141417" height="' + headerBarH + '" style="background:#141417;height:' + headerBarH + 'px;padding:0 28px;">' +
       '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>' +
       '<td align="left" valign="middle">' + (headerLogo ? '<img src="' + headerLogo + '" width="190" alt="Positif Design" style="display:block;width:190px;height:auto;">' : '') + '</td>' +
       '<td align="right" valign="middle" style="font-family:' + F + ';font-weight:800;font-size:11px;letter-spacing:2px;color:#ffffff;text-transform:uppercase;">' + esc(this.state.headerTitle || 'VOTRE E-MAIL') + '</td>' +
       '</tr></table></td></tr>';
-    if (headerSwoosh) rows += '<tr><td bgcolor="#010202" style="background:#010202;padding:0;font-size:0;line-height:0;">' +
+    if (headerSwoosh) rows += '<tr><td bgcolor="#141417" style="background:#141417;padding:0;font-size:0;line-height:0;">' +
       '<img src="' + headerSwoosh + '" width="600" alt="" style="display:block;width:100%;max-width:600px;height:auto;border:0;"></td></tr>';
     for (const b of this.state.blocks) {
       if (b.type === 'banner') {
@@ -3038,6 +3069,7 @@ class Component extends DCLogic {
       o.sideLeftStyle = SEG(side === 'left'); o.sideRightStyle = SEG(side === 'right');
       o.alignLeftStyle = SEG(al === 'left'); o.alignCenterStyle = SEG(al === 'center'); o.alignRightStyle = SEG(al === 'right');
       o.pdShapeRectStyle = SEG(shp === 'rect'); o.pdShapeRoundedStyle = SEG(shp === 'rounded'); o.pdShapeCircleStyle = SEG(shp === 'circle');
+      o.pdIsRounded = shp === 'rounded';
       o.panelBtnStyle = TGL(o.panel); o.imgShadowBtnStyle = TGL(b.imgShadow !== false); o.btnToggleStyle = TGL(o.showBtn);
       o.onTitle = (e) => this.setField(b.id, 'title', e.target.value);
       o.onDesc = (e) => this.setField(b.id, 'desc', e.target.value);
@@ -3399,6 +3431,8 @@ class Component extends DCLogic {
       return out;
     })();
 
+    const headerH = Math.max(60, Math.min(280, this.state.headerHeight == null ? 110 : this.state.headerHeight));
+
     const blocks = this.state.blocks.map((b, i) => this._mapBlock(b, i));
     const sel = this.state.selectedId != null ? blocks.find(x => x.id === this.state.selectedId) : null;
     const swatchStyle = (c, activeC) => 'width:24px;height:24px;border-radius:50%;background:' + c + ';cursor:pointer;border:2px solid ' + (c === activeC ? '#fff' : 'transparent') + ';box-shadow:0 0 0 1.5px ' + (c === activeC ? c : 'rgba(0,0,0,.16)') + ';';
@@ -3482,6 +3516,8 @@ class Component extends DCLogic {
 
       // alt signature ("newsletter")
       sigIsCarte: sigStyle === 'carte',
+      // the row label only reaches the page through the carte's labelled layout
+      ctLabelsUsed: sigStyle === 'carte' && this.state.sigCarteLayout !== 'centre',
       sigIsNewsletter: sigStyle === 'newsletter',
       sigIsFlyer: sigStyle === 'flyer',
       sigCarteDisplay: sigStyle === 'carte' ? 'block' : 'none',
@@ -3631,10 +3667,12 @@ class Component extends DCLogic {
       headerSelected: !!this.state.headerSelected,
       // The artwork style reserves room at the bottom for the swoosh strip instead of
       // stretching one picture over the whole bar.
-      // #010202 is the artwork's own black — anything lighter leaves a visible seam
-      // where the bar meets the top of the swoosh strip.
-      headerWrapStyle: 'position:relative;overflow:hidden;background-color:' + (this.state.headerArt !== false ? '#010202' : '#141417') + ';padding:' + (this.state.headerArt !== false ? '20px 28px 54px' : '17px 28px') + ';display:flex;align-items:center;justify-content:space-between;cursor:pointer;'
+      // The swoosh has its black knocked out, so the bar's own colour shows through and
+      // the strip stays pinned to the bottom whatever height the bar is set to.
+      headerWrapStyle: 'position:relative;overflow:hidden;box-sizing:border-box;background-color:#141417;height:' + headerH + 'px;padding:' + (this.state.headerArt !== false ? '14px 28px 44px' : '14px 28px') + ';display:flex;align-items:center;justify-content:space-between;cursor:pointer;'
         + (this.state.headerSelected ? 'box-shadow:inset 0 0 0 2px ' + SEL_RING + ';' : ''),
+      headerHeight: headerH,
+      onHeaderHeight: (e) => this.setS('headerHeight', +e.target.value),
       headerArtOn: this.state.headerArt !== false,
       headerPlainBtnStyle: segLight(this.state.headerArt === false),
       headerArtBtnStyle: segLight(this.state.headerArt !== false),
@@ -3716,6 +3754,7 @@ class Component extends DCLogic {
       onViewOnlineUrl: (e) => this.setS('viewOnlineUrl', e.target.value),
 
       // decoration controls
+      halftoneOn: !!tglOn,
       onToggleHalftone: () => this.setS('halftone', !this.state.halftone),
       halftoneBtnStyle: 'border:none;border-radius:50px;padding:7px 16px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (tglOn ? 'background:#141417;color:#fff;' : 'background:#ECECEF;color:#56565e;'),
       dotSizeVal: bds, onDotSize: (e) => this.setS('dotSize', +e.target.value),

@@ -149,13 +149,20 @@ Helpers: `setContact(k, v)`, `setContactLabel(key, v)`, `toggleContactRow(key)`,
 
 The black top bar. `state.headerArt` picks the style, and **both options must stay selectable**:
 
-- `true` (default) — black `#010202` bar with `assets/header-swoosh.svg` anchored at the bottom,
-  plus `logo-long.svg` and an editable title
-- `false` — plain `#141417` bar, no artwork
+- `true` (default) — `assets/header-swoosh.svg` anchored at the bottom of the bar, plus
+  `logo-long.svg` and an editable title
+- `false` — plain bar, no artwork
+
+`state.headerHeight` (60–280, default 110) drives the bar. The strip stays flush with the bottom
+at every value, because it is absolutely positioned rather than part of the flow.
 
 `header-swoosh.svg` is the bottom band of `header-bg-clean.svg`, cropped to its own viewBox
-(`0 53.56 623.21 47.71`) with the Avis Google lockup included. It is **not** a stretched
-background:
+(`0 53.56 623.21 47.71`) with the Avis Google lockup included. **The black is knocked out** with
+an SVG `<mask>` — the original artwork painted a black shape to carve the curve out of the red,
+which only duplicated the bar's own background and forced the two blacks to match. Masked, the
+strip is the red swoosh alone on transparency and the bar shows through.
+
+It is **not** a stretched background:
 
 - the bar's height follows its content, so `background-size:100% 100%` flattened the curve and
   squashed the lockup — visibly wrong
@@ -164,8 +171,8 @@ background:
   zero — the aspect-ratio is what gives it a height.
 - in the export it is its own full-width image row. Outlook ignores `background-size` entirely,
   so a background could never have held.
-- the bar's own black must be `#010202` (the artwork's black) when the strip is on, or a seam
-  shows where the two meet
+- in the export the bar cell takes `headerHeight - 46px`, so the strip lands where the canvas
+  puts it
 
 Selection ring is a soft inset box-shadow in `SEL_RING`, not a hard outline.
 
@@ -278,6 +285,30 @@ outstanding UI debt.
 
 Colour semantics again, because it is easy to get wrong: **red = active toggle**,
 **black = selected segmented option or primary action**.
+
+### Only relevant options, in relevant places
+
+**A control that does nothing in the current state must not render.** Gate it with `<sc-if>` on
+the flag that makes it meaningful — don't grey it out, don't leave it. Currently gated:
+
+| control | shown when |
+|---|---|
+| flyer `Noir en haut`, `Cadrage vertical`, `Échelle` | `flIsArtwork` (dégradé mode) |
+| flyer `Ronds · *` | `flIsPoints` |
+| flyer `Sur une ligne` | `flWhatsappOn` |
+| flyer réseaux inputs | `flSocialOn` |
+| flyer NFC `Décalage` | `flNfcOn` |
+| carte `Points · *` | `halftoneOn` |
+| shared `Accroche`, `Mention légale` | `sigIsCarte` (only the carte renders them) |
+| shared row `Libellé` | `ctLabelsUsed` (carte, labelled layout) |
+| banner text fields | `sel.showText` |
+| `produit` `Arrondi image` | `sel.pdIsRounded` |
+| `produit` `Arrondi fond`, `Fond visuel` | `sel.panel` |
+| `image` `Arrondi` | `sel.notFull` |
+| `contact` dot colour | `sel.telDot` |
+| `oneforone` band / déco / Ben-Day colour | `sel.band` / `sel.floatImg` / `sel.halftone` |
+
+When you add an option, add its gate in the same edit.
 
 **Selection is blue** — `SEL` (`#2F6BFF`) and `SEL_RING`, module-scope consts declared just
 above `class Component`. Block outline, sticker outline, header ring and the drag-drop insertion

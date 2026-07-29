@@ -55,11 +55,12 @@ canvas *and* in `exportHtml()`. **Never hardcode a coordinate.** Each entry rend
 row so line breaks are controlled, not accidental. Rows with no target (address) render as
 plain text — an `<a href="">` is a bug.
 
-**Header**: `state.headerArt` — `true` = `header-swoosh.svg` strip anchored at the bottom (its
-own natural ratio, black `#010202` above it) + `logo-long.svg` + editable title, `false` = plain
-black bar. Both must stay selectable. **Never stretch the swoosh to the bar's height** — the bar
-sizes to its content, so `background-size:100% 100%` flattened the curve and squashed the Avis
-Google lockup. The export ships it as its own full-width image row for the same reason.
+**Header**: `state.headerArt` — `true` = `header-swoosh.svg` strip anchored at the bottom +
+`logo-long.svg` + editable title, `false` = plain bar. Both must stay selectable.
+`state.headerHeight` sets the bar height; the strip stays flush with the bottom at any value.
+**Never stretch the swoosh** — its black is knocked out with a mask so only the red band paints,
+and `background-size:100% 100%` flattened the curve and squashed the Avis Google lockup. The
+export ships it as its own full-width image row, with the bar cell taking `height - 46px`.
 
 **Selection is blue** (`SEL` / `SEL_RING`, module-scope consts at the top of the logic half) —
 red is the brand colour and read as part of the design rather than as UI state.
@@ -122,6 +123,18 @@ The "Pop blast" red variant is the keeper; the dark "Black pop" one was deleted.
 The host Tweaks panel uses the prop KEY as its label, so keys are French: `Points · taille`,
 `Points · espacement`, `Points · couleur`, `Flèches · taille`, `Flèches · décalage droite`,
 `Flèches · décalage bas`. They control the dot pattern + arrows on the V1 model signatures.
+
+## Only relevant options, in relevant places
+
+A control that does nothing in the current state must not render. Gate it with `<sc-if>`, don't
+grey it out. Already enforced: the flyer's `Noir en haut` / `Cadrage` (artwork mode only),
+`Ronds · *` (points mode only), `Sur une ligne` (needs WhatsApp on); the carte's `Points · *`
+(needs the motif on) and its shared `Accroche` / `Mention légale` (carte-only fields) and row
+`Libellé` (labelled layout only); the banner's text fields (needs the text block on); `produit`'s
+`Arrondi image` (rounded shape) and `Arrondi fond` / `Fond visuel` (panel on); `contact`'s dot
+colour (dot on); `oneforone`'s Ben-Day colour (dots on).
+
+When adding an option, add its gate in the same edit.
 
 ## Known open items
 
