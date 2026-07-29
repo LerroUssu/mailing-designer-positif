@@ -149,12 +149,30 @@ Helpers: `setContact(k, v)`, `setContactLabel(key, v)`, `toggleContactRow(key)`,
 
 The black top bar. `state.headerArt` picks the style, and **both options must stay selectable**:
 
-- `true` (default) — `assets/header-bg-clean.svg` artwork (the swoosh + courbe layers of
-  `header.svg` with the coordonnées stripped out) + `logo-long.svg` + editable title
-- `false` — plain black bar, no artwork
+- `true` (default) — black `#010202` bar with `assets/header-swoosh.svg` anchored at the bottom,
+  plus `logo-long.svg` and an editable title
+- `false` — plain `#141417` bar, no artwork
 
-The selection ring is a soft `inset 0 0 0 2px rgba(252,29,55,.55)` box-shadow — the user
-rejected a hard red outline.
+`header-swoosh.svg` is the bottom band of `header-bg-clean.svg`, cropped to its own viewBox
+(`0 53.56 623.21 47.71`) with the Avis Google lockup included. It is **not** a stretched
+background:
+
+- the bar's height follows its content, so `background-size:100% 100%` flattened the curve and
+  squashed the lockup — visibly wrong
+- in the canvas it is an `<img>` pinned to the bottom with `aspect-ratio:623.21/47.71`. The SVG
+  has no intrinsic width/height, so `naturalWidth` is 0 and `height:auto` alone collapses it to
+  zero — the aspect-ratio is what gives it a height.
+- in the export it is its own full-width image row. Outlook ignores `background-size` entirely,
+  so a background could never have held.
+- the bar's own black must be `#010202` (the artwork's black) when the strip is on, or a seam
+  shows where the two meet
+
+Selection ring is a soft inset box-shadow in `SEL_RING`, not a hard outline.
+
+Deriving new artwork with `xml.etree.ElementTree`: pass the root attributes **without**
+`xmlns` — `register_namespace` already emits it, and passing it again produces a duplicate
+attribute that makes the file invalid XML. It still renders when injected as HTML, so this
+fails only in an `<img>`, where it shows as a broken-image icon.
 
 A `header.svg` "visuel" style existed briefly and was removed: it baked the coordonnées into a
 picture, duplicating the signature.
@@ -187,17 +205,48 @@ already carrying its own rounded panel *and* its label), `sig-nfc-band.svg`, `lo
   **The dot settings are per-signature** (`sigFlyer.dotSize/dotSpacing/dotColor/dotOpacity`),
   not shared with the carte — the user hit this as "rond carte isn't applying all the settings".
 - Réseaux are a **text line** (`Suivez-nous : LinkedIn | Instagram`), not a tile, each with its
-  own URL.
-- Contact rows get per-key typography so the WhatsApp number doesn't look shrunken next to its
-  icon (`flRows` in `renderVals`).
+  own URL, sitting **with the coordonnées** (above the grid). `socialColor` colours the label
+  independently of `accent`.
 - State is the nested `state.sigFlyer` object — **clone it whole** in
   `_templatePayload`/`loadTemplate`, which also drops pre-artwork tiles lacking a `file`.
+  `loadTemplate` merges `{ ...base, ...saved }`, so new keys default from current state.
+
+#### Background framing and the black cap
+
+The supplied artwork is 1600 × 2422.92 — black at the top, red at the bottom, and much taller
+than the panel. Anchored at `bottom` it showed almost nothing but red, which made red text
+(`contact@positif.biz`, the `Suivez-nous` label) unreadable.
+
+- `bgPosY` (0–100) and `bgZoom` (%) frame it: `background-position:center {bgPosY}%` and
+  `background-size:{bgZoom}% auto`
+- `blackTop` / `blackFade` paint a `linear-gradient` of `FL.bg` over the top, listed **first**
+  in `background-image` so it covers the artwork
+- `padBottom` gives the block breathing room under the NFC band
+
+**In the export the cap is a separate solid-black `<td>`**, not a gradient: the coordonnées and
+the réseaux line live in that cell, and the artwork only backs the tile grid. Background images
+are the first thing an e-mail client drops, so legibility must not depend on one loading.
+
+#### Coordonnées
+
+Both numbers render at the same size (17px/800). The landline used to be 18px against 13px for
+WhatsApp, which its icon made look shrunken. Each carries its own picto — a handset in `accent`
+for the fixe, the WhatsApp green — and `phonesInline` puts them side by side on one row.
+
+`flLines` (canvas) is a **flat** list: a pair entry carries `a`/`b` sub-objects rather than a
+nested array, because a nested `sc-for` is not worth relying on. Entries with no target
+(the address) render as `<span>`, never `<a href="">`.
 
 ### Social icons
 **Generated, not asset files.** `_SOCIAL` holds 24×24 monochrome paths (web, tiktok, whatsapp,
-instagram, facebook, linkedin), `_socialSvg()` wraps one in a light circle, `_socialDataUrl()`
-feeds the canvas preview, `_rasterizeSvg()` bakes each to a 2× PNG at export
+instagram, facebook, linkedin, phone), `_socialSvg()` wraps one in a tinted circle,
+`_socialDataUrl()` feeds the canvas preview, `_rasterizeSvg()` bakes each to a 2× PNG at export
 (`images/reseau-*.png`).
+
+**Brand marks go through `_brandSvg()` instead** — official rounded-square presentation with the
+real brand colours (LinkedIn `#0A66C2`, Instagram on its own radial gradient, Facebook
+`#1877F2`). A brand mark tinted with `FL.accent` is a recoloured logo, which is exactly what it
+must not be.
 
 ## 7. Assets and the SVG rule
 
@@ -229,6 +278,11 @@ outstanding UI debt.
 
 Colour semantics again, because it is easy to get wrong: **red = active toggle**,
 **black = selected segmented option or primary action**.
+
+**Selection is blue** — `SEL` (`#2F6BFF`) and `SEL_RING`, module-scope consts declared just
+above `class Component`. Block outline, sticker outline, header ring and the drag-drop insertion
+bar all use them. Red was the brand colour, so a red ring read as part of the design rather than
+as UI state.
 
 ## 9. Saved templates
 

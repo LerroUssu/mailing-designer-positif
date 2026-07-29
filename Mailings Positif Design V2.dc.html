@@ -283,6 +283,12 @@
             <div onClick="{{ onHeaderSelect }}" style="{{ headerWrapStyle }}">
               <img src="assets/logo-long.svg" width="190" alt="Positif Design" style="display:block;width:190px;height:auto;position:relative;z-index:2;">
               <span data-tools="1" style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.18em;color:#ffffff;position:relative;z-index:2;">{{ headerTitle }}</span>
+              <!-- The swoosh is its own bottom strip at its natural ratio, not a stretched
+                   background: the header's height follows its content, so scaling one image
+                   to the whole box flattened the curve and squashed the Avis Google lockup. -->
+              <sc-if value="{{ headerArtOn }}" hint-placeholder-val="{{ true }}">
+                <img src="assets/header-swoosh.svg" alt="" style="position:absolute;left:0;right:0;bottom:0;width:100%;height:auto;aspect-ratio:623.21/47.71;display:block;z-index:1;pointer-events:none;">
+              </sc-if>
             </div>
 
 
@@ -484,11 +490,34 @@
                 <div><span style="{{ flKickerStyle }}">{{ fl.kicker }}</span> <span style="{{ flYearStyle }}">{{ fl.year }}</span></div>
                 <img src="{{ flLogoSrc }}" width="205" alt="Positif Design" style="display:block;width:205px;max-width:60%;height:auto;margin:20px auto 0;">
                 <div style="{{ flRowsWrapStyle }}">
-                  <sc-for list="{{ flRows }}" as="r" hint-placeholder-count="0">
-                    <a href="{{ r.href }}" style="{{ r.style }}">
-                      <sc-if value="{{ r.isWhatsapp }}" hint-placeholder-val="{{ false }}"><img src="{{ flWhatsappIcon }}" width="18" height="18" alt="" style="display:inline-block;width:18px;height:18px;vertical-align:-3px;margin-right:7px;"></sc-if>{{ r.value }}</a>
+                  <sc-for list="{{ flLines }}" as="l" hint-placeholder-count="0">
+                    <div>
+                      <sc-if value="{{ l.isPair }}" hint-placeholder-val="{{ false }}">
+                        <div style="{{ flPairRowStyle }}">
+                          <a href="{{ l.a.href }}" style="{{ flNumStyle }}"><img src="{{ l.a.icon }}" width="20" height="20" alt="" style="{{ flIconStyle }}">{{ l.a.value }}</a>
+                          <span style="{{ flPairSepStyle }}"></span>
+                          <a href="{{ l.b.href }}" style="{{ flNumStyle }}"><img src="{{ l.b.icon }}" width="20" height="20" alt="" style="{{ flIconStyle }}">{{ l.b.value }}</a>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ l.isSingle }}" hint-placeholder-val="{{ true }}">
+                        <a href="{{ l.href }}" style="{{ l.style }}">
+                          <sc-if value="{{ l.hasIcon }}" hint-placeholder-val="{{ false }}"><img src="{{ l.icon }}" width="20" height="20" alt="" style="{{ flIconStyle }}"></sc-if>{{ l.value }}</a>
+                      </sc-if>
+                      <sc-if value="{{ l.isPlain }}" hint-placeholder-val="{{ false }}">
+                        <span style="{{ l.style }}">{{ l.value }}</span>
+                      </sc-if>
+                    </div>
                   </sc-for>
                 </div>
+
+                <sc-if value="{{ flSocialOn }}" hint-placeholder-val="{{ true }}">
+                  <div style="{{ flSocialRowStyle }}">
+                    <span style="{{ flSocialLabelStyle }}">{{ fl.socialLabel }}</span>
+                    <a href="{{ fl.linkedinUrl }}" style="{{ flSocialLinkStyle }}"><img src="{{ flLinkedinIcon }}" width="22" height="22" alt="" style="display:inline-block;width:22px;height:22px;">LinkedIn</a>
+                    <span style="{{ flSocialSepStyle }}">|</span>
+                    <a href="{{ fl.instagramUrl }}" style="{{ flSocialLinkStyle }}"><img src="{{ flInstagramIcon }}" width="22" height="22" alt="" style="display:inline-block;width:22px;height:22px;">Instagram</a>
+                  </div>
+                </sc-if>
               </div>
 
               <div style="{{ flGridStyle }}">
@@ -498,15 +527,6 @@
                   </div>
                 </sc-for>
               </div>
-
-              <sc-if value="{{ flSocialOn }}" hint-placeholder-val="{{ true }}">
-                <div style="{{ flSocialRowStyle }}">
-                  <span style="{{ flSocialLabelStyle }}">{{ fl.socialLabel }}</span>
-                  <a href="{{ fl.linkedinUrl }}" style="{{ flSocialLinkStyle }}"><img src="{{ flLinkedinIcon }}" width="22" height="22" alt="" style="display:inline-block;width:22px;height:22px;">LinkedIn</a>
-                  <span style="{{ flSocialSepStyle }}">|</span>
-                  <a href="{{ fl.instagramUrl }}" style="{{ flSocialLinkStyle }}"><img src="{{ flInstagramIcon }}" width="22" height="22" alt="" style="display:inline-block;width:22px;height:22px;">Instagram</a>
-                </div>
-              </sc-if>
 
               <sc-if value="{{ flNfcOn }}" hint-placeholder-val="{{ true }}">
                 <div style="{{ flNfcWrapStyle }}">
@@ -1299,6 +1319,42 @@
                 <button onClick="{{ onFlBgPoints }}" style="{{ flBgPointsStyle }}">Ronds carte</button>
                 <button onClick="{{ onFlBgUni }}" style="{{ flBgUniStyle }}">Uni</button>
               </div>
+              <label style="display:flex;flex-direction:column;gap:5px;margin-top:10px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#8e8e96;text-transform:uppercase;">Fond uni<input type="color" value="{{ fl.bg }}" onInput="{{ onFlBg }}" style="width:100%;height:30px;padding:2px;border:1px solid #34343c;border-radius:8px;background:#1d1d22;cursor:pointer;"></label>
+
+              <sc-if value="{{ flIsArtwork }}" hint-placeholder-val="{{ true }}">
+                <div style="margin-top:10px;">
+                  <div class="pd-grid-2">
+                    <div class="pd-slider">
+                      <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Cadrage vertical</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flBgPosY }}%</span></div>
+                      <input type="range" min="0" max="100" step="1" value="{{ flBgPosY }}" onInput="{{ onFlBgPosY }}">
+                    </div>
+                    <div class="pd-slider">
+                      <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Échelle</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flBgZoom }}%</span></div>
+                      <input type="range" min="60" max="260" step="2" value="{{ flBgZoom }}" onInput="{{ onFlBgZoom }}">
+                    </div>
+                  </div>
+                  <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:8px 0 0;">Le visuel va du noir en haut au rouge en bas. Le cadrage choisit la part de chaque couleur.</p>
+                </div>
+              </sc-if>
+
+              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 8px;">Noir en haut</div>
+              <div class="pd-grid-2">
+                <div class="pd-slider">
+                  <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Hauteur</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flBlackTop }}px</span></div>
+                  <input type="range" min="0" max="420" step="5" value="{{ flBlackTop }}" onInput="{{ onFlBlackTop }}">
+                </div>
+                <div class="pd-slider">
+                  <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Fondu</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flBlackFade }}px</span></div>
+                  <input type="range" min="0" max="320" step="5" value="{{ flBlackFade }}" onInput="{{ onFlBlackFade }}">
+                </div>
+              </div>
+              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:8px 0 0;">Prolonge le noir par-dessus le visuel pour que les coordonnées restent lisibles.</p>
+
+              <div class="pd-slider" style="margin-top:14px;">
+                <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Marge basse</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flPadBottom }}px</span></div>
+                <input type="range" min="0" max="80" step="2" value="{{ flPadBottom }}" onInput="{{ onFlPadBottom }}">
+              </div>
+
               <sc-if value="{{ flIsPoints }}" hint-placeholder-val="{{ false }}">
                 <div style="margin-top:10px;">
                   <div class="pd-grid-2">
@@ -1338,21 +1394,30 @@
               </div>
               <sc-if value="{{ flSocialOn }}" hint-placeholder-val="{{ true }}">
                 <div>
-                  <input value="{{ fl.socialLabel }}" onChange="{{ onFlSocialLabel }}" placeholder="Suivez-nous :" style="width:100%;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#141417;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
+                  <div style="display:flex;gap:8px;align-items:flex-end;">
+                    <input value="{{ fl.socialLabel }}" onChange="{{ onFlSocialLabel }}" placeholder="Suivez-nous :" style="flex:1;min-width:0;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#141417;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
+                    <label style="flex:0 0 74px;display:flex;flex-direction:column;gap:5px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#8e8e96;text-transform:uppercase;">Couleur<input type="color" value="{{ flSocialColor }}" onInput="{{ onFlSocialColor }}" style="width:100%;height:32px;padding:2px;border:1px solid #34343c;border-radius:8px;background:#1d1d22;cursor:pointer;"></label>
+                  </div>
                   <input value="{{ fl.linkedinUrl }}" onChange="{{ onFlLinkedin }}" placeholder="Lien LinkedIn" style="width:100%;margin-top:7px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#141417;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11px;color:#8e8e96;outline:none;">
                   <input value="{{ fl.instagramUrl }}" onChange="{{ onFlInstagram }}" placeholder="Lien Instagram" style="width:100%;margin-top:7px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#141417;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11px;color:#8e8e96;outline:none;">
                 </div>
               </sc-if>
 
-              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:18px 0 8px;">
-                <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;">Ligne WhatsApp</span>
-                <button onClick="{{ onToggleFlWhatsapp }}" style="{{ flWhatsappBtnStyle }};flex:0 0 96px;">Afficher</button>
+              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 8px;">Numéros</div>
+              <div style="display:flex;gap:7px;">
+                <button onClick="{{ onToggleFlWhatsapp }}" style="{{ flWhatsappBtnStyle }}">WhatsApp</button>
+                <button onClick="{{ onToggleFlPhonesInline }}" style="{{ flPhonesInlineBtnStyle }}">Sur une ligne</button>
               </div>
+              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:8px 0 0;">Fixe et WhatsApp à la même taille, chacun avec son propre pictogramme.</p>
 
               <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 7px;">Accroche</div>
               <div style="display:flex;gap:8px;">
                 <input value="{{ fl.kicker }}" onChange="{{ onFlKicker }}" style="flex:1;min-width:0;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
                 <input value="{{ fl.year }}" onChange="{{ onFlYear }}" style="flex:0 0 76px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;color:#FC1D37;outline:none;">
+              </div>
+              <div style="display:flex;gap:8px;margin-top:8px;">
+                <label style="flex:1;display:flex;flex-direction:column;gap:5px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#8e8e96;text-transform:uppercase;">Rouge<input type="color" value="{{ fl.accent }}" onInput="{{ onFlAccent }}" style="width:100%;height:30px;padding:2px;border:1px solid #34343c;border-radius:8px;background:#1d1d22;cursor:pointer;"></label>
+                <label style="flex:1;display:flex;flex-direction:column;gap:5px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#8e8e96;text-transform:uppercase;">Texte<input type="color" value="{{ fl.textColor }}" onInput="{{ onFlTextColor }}" style="width:100%;height:30px;padding:2px;border:1px solid #34343c;border-radius:8px;background:#1d1d22;cursor:pointer;"></label>
               </div>
 
 
@@ -1380,12 +1445,6 @@
                 <input value="{{ fl.nfcUrl }}" onChange="{{ onFlNfcUrl }}" placeholder="Lien du bandeau NFC (optionnel)" style="width:100%;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11px;color:#e9e9ee;outline:none;">
               </sc-if>
 
-              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 8px;">Couleurs</div>
-              <div style="display:flex;gap:8px;">
-                <label style="flex:1;display:flex;flex-direction:column;gap:5px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#8e8e96;text-transform:uppercase;">Fond<input type="color" value="{{ fl.bg }}" onInput="{{ onFlBg }}" style="width:100%;height:30px;padding:2px;border:1px solid #34343c;border-radius:8px;background:#1d1d22;cursor:pointer;"></label>
-                <label style="flex:1;display:flex;flex-direction:column;gap:5px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#8e8e96;text-transform:uppercase;">Rouge<input type="color" value="{{ fl.accent }}" onInput="{{ onFlAccent }}" style="width:100%;height:30px;padding:2px;border:1px solid #34343c;border-radius:8px;background:#1d1d22;cursor:pointer;"></label>
-                <label style="flex:1;display:flex;flex-direction:column;gap:5px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:.05em;color:#8e8e96;text-transform:uppercase;">Texte<input type="color" value="{{ fl.textColor }}" onInput="{{ onFlTextColor }}" style="width:100%;height:30px;padding:2px;border:1px solid #34343c;border-radius:8px;background:#1d1d22;cursor:pointer;"></label>
-              </div>
             </div>
           </sc-if>
 
@@ -1492,6 +1551,11 @@
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;Points · taille&quot;:{&quot;editor&quot;:&quot;float&quot;,&quot;default&quot;:29,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:4,&quot;max&quot;:40,&quot;step&quot;:1},&quot;Points · espacement&quot;:{&quot;editor&quot;:&quot;float&quot;,&quot;default&quot;:40,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:16,&quot;max&quot;:90,&quot;step&quot;:1},&quot;Points · couleur&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#474747&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;Flèches · taille&quot;:{&quot;editor&quot;:&quot;float&quot;,&quot;default&quot;:316,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:160,&quot;max&quot;:440,&quot;step&quot;:4},&quot;Flèches · décalage droite&quot;:{&quot;editor&quot;:&quot;float&quot;,&quot;default&quot;:-94,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:-180,&quot;max&quot;:40,&quot;step&quot;:2},&quot;Flèches · décalage bas&quot;:{&quot;editor&quot;:&quot;float&quot;,&quot;default&quot;:40,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:-180,&quot;max&quot;:40,&quot;step&quot;:2}}">
+// Selection is blue on purpose: red is the brand colour and reads as part of the design,
+// so a red ring around a block looked like something the block was doing, not a UI state.
+const SEL = '#2F6BFF';
+const SEL_RING = 'rgba(47,107,255,.75)';
+
 class Component extends DCLogic {
   _nextId = 1;
   // Slot ids are namespaced per page load. The .image-slots sidecar restores a
@@ -1512,6 +1576,8 @@ class Component extends DCLogic {
     instagram: { label: 'Instagram', path: 'M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.43.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23a3.7 3.7 0 0 1-.9 1.38c-.42.42-.82.68-1.38.9-.43.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.43-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.43-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.72-2.13 1.38C1.35 2.68.93 3.35.63 4.14.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13.67.67 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56a5.9 5.9 0 0 0 2.13-1.38 5.9 5.9 0 0 0 1.38-2.13c.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91a5.9 5.9 0 0 0-1.38-2.13A5.9 5.9 0 0 0 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0m0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8m7.85-10.41a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0' },
     facebook: { label: 'Facebook', path: 'M9.1 23.69v-7.98H6.63v-3.67H9.1v-1.58c0-4.08 1.85-5.98 5.86-5.98.4 0 .96.04 1.47.1.51.06.96.14 1.14.2v3.32a8.6 8.6 0 0 0-.65-.04c-.28-.01-.53-.01-.73-.01-.71 0-1.26.1-1.68.31a1.7 1.7 0 0 0-.68.62c-.26.42-.37 1-.37 1.75v1.3h3.92l-.39 2.1-.29 1.57h-3.25v8.24C19.4 23.24 24 18.18 24 12.04 24 5.42 18.63.04 12 .04S0 5.42 0 12.04c0 5.63 3.87 10.35 9.1 11.65' },
     linkedin: { label: 'LinkedIn', path: 'M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05a3.74 3.74 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13m1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0' },
+    // handset, so the landline gets its own mark next to the WhatsApp one
+    phone: { label: 'Téléphone', path: 'M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z' },
   };
   _socialSvg(key, glyph, bg) {
     const g = this._SOCIAL[key];
@@ -1521,6 +1587,33 @@ class Component extends DCLogic {
       + '<g transform="translate(14 14) scale(1.1667)"><path d="' + g.path + '" fill="' + (glyph || '#141417') + '"/></g></svg>';
   }
   _socialDataUrl(key, glyph, bg) { return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(this._socialSvg(key, glyph, bg)); }
+  // Instagram and LinkedIn as their official marks — rounded square, brand colours,
+  // Instagram on its real gradient. The generic "glyph on a tinted circle" treatment
+  // recoloured them, which is exactly what a brand mark must not do.
+  _brandSvg(key) {
+    const G = this._SOCIAL;
+    if (key === 'linkedin') {
+      // the path already carries the rounded square with the "in" knocked out
+      return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="56" height="56">'
+        + '<path d="' + G.linkedin.path + '" fill="#0A66C2"/></svg>';
+    }
+    if (key === 'instagram') {
+      return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="56" height="56">'
+        + '<defs><radialGradient id="ig" cx="0.28" cy="1.05" r="1.25">'
+        + '<stop offset="0" stop-color="#FFDD55"/><stop offset=".1" stop-color="#FFDD55"/>'
+        + '<stop offset=".28" stop-color="#FF543E"/><stop offset=".5" stop-color="#C837AB"/>'
+        + '<stop offset=".75" stop-color="#8A3AB9"/><stop offset="1" stop-color="#4C60D9"/>'
+        + '</radialGradient></defs>'
+        + '<rect x="0" y="0" width="24" height="24" rx="6.5" fill="url(#ig)"/>'
+        + '<g transform="translate(3.6 3.6) scale(.7)"><path d="' + G.instagram.path + '" fill="#ffffff"/></g></svg>';
+    }
+    if (key === 'facebook') {
+      return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="56" height="56">'
+        + '<path d="' + G.facebook.path + '" fill="#1877F2"/></svg>';
+    }
+    return this._socialSvg(key, '#ffffff', '#141417');
+  }
+  _brandDataUrl(key) { return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(this._brandSvg(key)); }
   state = {
     tab: 'builder',
     railTab: 'bloc',
@@ -1571,10 +1664,15 @@ class Component extends DCLogic {
       kicker: 'PUBLICITÉ DEPUIS', year: '1983',
       bg: '#0B0B0D', accent: '#FC1D37', textColor: '#FFFFFF',
       bgMode: 'flyer', bgFile: 'sig-flyer-bg-clean.svg',
+      // The artwork runs black at the top and red at the bottom, and it is taller than
+      // the panel: bgPosY slides which part shows, bgZoom scales it, and blackTop paints
+      // a solid black band over the top so the coordonnées always sit on black.
+      bgPosY: 30, bgZoom: 100, blackTop: 200, blackFade: 150,
       dotSize: 29, dotSpacing: 40, dotColor: '#5A1520', dotOpacity: 100,
       tileCols: 4, tileGap: 6,
-      showWhatsapp: true,
-      socialLine: true, socialLabel: 'Suivez-nous :',
+      showWhatsapp: true, phonesInline: true,
+      padBottom: 26,
+      socialLine: true, socialLabel: 'Suivez-nous :', socialColor: '#FFFFFF',
       linkedinUrl: 'https://www.linkedin.com/company/positifdesign',
       instagramUrl: 'https://www.instagram.com/positifdesign',
       nfcShift: -24,
@@ -2331,18 +2429,24 @@ class Component extends DCLogic {
       if (baked) { headerLogo = 'images/logo-positif-long.png'; files.push({ name: headerLogo, bytes: baked.bytes }); }
     } catch (e) {}
     let rows = '';
-    let headerBg = '';
+    // The swoosh ships as its own full-width image row at its natural ratio. As a stretched
+    // <td background> it was flattened to the bar's height — and Outlook ignores
+    // background-size entirely, so it was never going to hold there.
+    let headerSwoosh = '';
     if (this.state.headerArt !== false) {
       try {
-        const baked = await this._rasterizeAsset('assets/header-bg-clean.svg', 600);
-        if (baked) { headerBg = 'images/en-tete-fond.png'; files.push({ name: headerBg, bytes: baked.bytes }); }
+        const baked = await this._rasterizeAsset('assets/header-swoosh.svg', 600);
+        if (baked) { headerSwoosh = 'images/en-tete-vague.png'; files.push({ name: headerSwoosh, bytes: baked.bytes }); }
       } catch (e) {}
     }
-    rows += '<tr><td background="' + headerBg + '" bgcolor="#141417" style="' + (headerBg ? 'background-color:#141417;background-image:url(' + headerBg + ');background-repeat:no-repeat;background-size:100% 100%;' : 'background:#141417;') + 'padding:' + (headerBg ? '18px 28px 24px' : '16px 28px') + ';">' +
+    const headerBlack = headerSwoosh ? '#010202' : '#141417';
+    rows += '<tr><td bgcolor="' + headerBlack + '" style="background:' + headerBlack + ';padding:' + (headerSwoosh ? '18px 28px 14px' : '16px 28px') + ';">' +
       '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>' +
       '<td align="left" valign="middle">' + (headerLogo ? '<img src="' + headerLogo + '" width="190" alt="Positif Design" style="display:block;width:190px;height:auto;">' : '') + '</td>' +
       '<td align="right" valign="middle" style="font-family:' + F + ';font-weight:800;font-size:11px;letter-spacing:2px;color:#ffffff;text-transform:uppercase;">' + esc(this.state.headerTitle || 'VOTRE E-MAIL') + '</td>' +
       '</tr></table></td></tr>';
+    if (headerSwoosh) rows += '<tr><td bgcolor="#010202" style="background:#010202;padding:0;font-size:0;line-height:0;">' +
+      '<img src="' + headerSwoosh + '" width="600" alt="" style="display:block;width:100%;max-width:600px;height:auto;border:0;"></td></tr>';
     for (const b of this.state.blocks) {
       if (b.type === 'banner') {
         const im = pushImg(this._slot('slot-' + b.id + '-a'), 600, 'banniere-hero');
@@ -2488,24 +2592,61 @@ class Component extends DCLogic {
       const panelBg = bgName
         ? (flMode === 'points'
             ? 'background-color:' + S.bg + ';background-image:url(' + bgName + ');background-repeat:repeat;'
-            : 'background-color:' + S.bg + ';background-image:url(' + bgName + ');background-repeat:no-repeat;background-position:bottom center;background-size:cover;')
+            : 'background-color:' + S.bg + ';background-image:url(' + bgName + ');background-repeat:no-repeat;background-position:center ' + (S.bgPosY == null ? 30 : S.bgPosY) + '%;background-size:' + (S.bgZoom == null ? 100 : S.bgZoom) + '% auto;')
         : 'background:' + S.bg + ';';
 
       const flLogo = logoName;
       let head = '<div style="font-family:' + F + ';font-weight:700;font-size:12px;letter-spacing:4px;color:' + TXT + ';text-transform:uppercase;">'
         + esc(S.kicker) + ' <span style="color:' + S.accent + ';font-weight:800;">' + esc(S.year) + '</span></div>';
       if (flLogo) head += '<div style="padding-top:18px;"><img src="' + flLogo + '" width="205" alt="Positif Design" style="display:inline-block;width:205px;max-width:60%;height:auto;border:0;"></div>';
-      let waIcon = null;
-      if (ctRows.some((r) => r.key === 'whatsapp')) {
-        try { waIcon = imgName('reseau-whatsapp', 'png'); files.push({ name: waIcon, bytes: await this._rasterizeSvg(this._socialSvg('whatsapp', '#ffffff', '#25D366'), 18) }); } catch (e) { waIcon = null; }
-      }
-      for (const r of ctRows) {
-        const st = r.key === 'phone' ? 'font-weight:800;font-size:18px;letter-spacing:2.4px;color:' + TXT + ';'
-          : r.key === 'email' ? 'font-weight:700;font-size:13px;letter-spacing:.8px;color:' + S.accent + ';'
+      // Both numbers at the same size, each with its own mark. The landline used to be
+      // 18px against 13px for WhatsApp, which its icon made look shrunken.
+      let waIcon = null, telIcon = null;
+      try { waIcon = imgName('reseau-whatsapp', 'png'); files.push({ name: waIcon, bytes: await this._rasterizeSvg(this._socialSvg('whatsapp', '#ffffff', '#25D366'), 20) }); } catch (e) { waIcon = null; }
+      try { telIcon = imgName('picto-telephone', 'png'); files.push({ name: telIcon, bytes: await this._rasterizeSvg(this._socialSvg('phone', '#ffffff', S.accent), 20) }); } catch (e) { telIcon = null; }
+      const numSt = 'font-weight:800;font-size:17px;letter-spacing:1.1px;color:' + TXT + ';';
+      const pic = (n) => n ? '<img src="' + n + '" width="20" height="20" alt="" style="display:inline-block;width:20px;height:20px;vertical-align:-4px;margin-right:8px;">' : '';
+      const numHtml = (r) => '<a href="' + esc(r.href) + '" style="font-family:' + F + ';' + numSt + 'text-decoration:none;white-space:nowrap;">'
+        + pic(r.key === 'whatsapp' ? waIcon : telIcon) + esc(r.value) + '</a>';
+      // ctRows is already filtered to the visible entries here — unlike renderVals, where
+      // rows carry an `on` flag instead.
+      const onRows = ctRows.filter((r) => !(r.key === 'whatsapp' && S.showWhatsapp === false));
+      const flPhone = onRows.find((r) => r.key === 'phone');
+      const flWa = onRows.find((r) => r.key === 'whatsapp');
+      const flInline = S.phonesInline !== false && flPhone && flWa;
+      let paired = false;
+      for (const r of onRows) {
+        if (flInline && (r.key === 'phone' || r.key === 'whatsapp')) {
+          if (paired) continue;
+          paired = true;
+          head += '<div style="padding-top:16px;">' + numHtml(flPhone)
+            + '<span style="font-family:' + F + ';font-size:17px;color:' + TXT + ';opacity:.35;">&nbsp;&nbsp;&#124;&nbsp;&nbsp;</span>'
+            + numHtml(flWa) + '</div>';
+          continue;
+        }
+        if (r.key === 'phone' || r.key === 'whatsapp') {
+          head += '<div style="padding-top:' + (r.key === 'phone' ? 16 : 8) + 'px;">' + numHtml(r) + '</div>';
+          continue;
+        }
+        const st = r.key === 'email' ? 'font-weight:700;font-size:13px;letter-spacing:.8px;color:' + S.accent + ';'
           : 'font-weight:700;font-size:13px;letter-spacing:.5px;color:' + TXT + ';';
-        const body = (r.key === 'whatsapp' && waIcon ? '<img src="' + waIcon + '" width="18" height="18" alt="" style="display:inline-block;width:18px;height:18px;vertical-align:-3px;margin-right:7px;">' : '') + esc(r.value);
-        head += '<div style="padding-top:' + (r.key === 'phone' ? 16 : 7) + 'px;font-family:' + F + ';' + st + '">'
-          + (r.href ? '<a href="' + esc(r.href) + '" style="font-family:' + F + ';' + st + 'text-decoration:none;">' + body + '</a>' : body) + '</div>';
+        head += '<div style="padding-top:8px;font-family:' + F + ';' + st + '">'
+          + (r.href ? '<a href="' + esc(r.href) + '" style="font-family:' + F + ';' + st + 'text-decoration:none;">' + esc(r.value) + '</a>' : esc(r.value)) + '</div>';
+      }
+
+      // The réseaux line belongs with the coordonnées, not below the grid.
+      if (S.socialLine !== false) {
+        let li = null, ig = null;
+        try { li = imgName('reseau-linkedin', 'png'); files.push({ name: li, bytes: await this._rasterizeSvg(this._brandSvg('linkedin'), 22) }); } catch (e) { li = null; }
+        try { ig = imgName('reseau-instagram', 'png'); files.push({ name: ig, bytes: await this._rasterizeSvg(this._brandSvg('instagram'), 22) }); } catch (e) { ig = null; }
+        const icon = (n) => n ? '<img src="' + n + '" width="22" height="22" alt="" style="display:inline-block;width:22px;height:22px;vertical-align:middle;margin-right:6px;">' : '';
+        const link = (url, n, label) => '<a href="' + href(url) + '" style="font-family:' + F + ';font-weight:800;font-size:12.5px;letter-spacing:.5px;color:' + TXT + ';text-decoration:none;white-space:nowrap;">' + icon(n) + label + '</a>';
+        head += '<div style="padding-top:16px;">'
+          + '<span style="font-family:' + F + ';font-weight:700;font-style:italic;font-size:14px;color:' + (S.socialColor || S.accent) + ';">' + esc(S.socialLabel) + '</span>&nbsp;&nbsp;'
+          + link(S.linkedinUrl, li, 'LinkedIn')
+          + '<span style="font-family:' + F + ';font-weight:700;font-size:13px;color:' + TXT + ';">&nbsp;&nbsp;|&nbsp;&nbsp;</span>'
+          + link(S.instagramUrl, ig, 'Instagram')
+          + '</div>';
       }
 
       // 3 columns inside a 548px content box, 9px gutters.
@@ -2528,23 +2669,15 @@ class Component extends DCLogic {
       }
       const gridHtml = grid ? '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:18px;">' + grid + '</table>' : '';
 
-      sig = '<tr><td background="' + bgName + '" bgcolor="' + S.bg + '" class="px" style="' + panelBg + 'padding:46px 34px 30px;text-align:center;">'
-        + head + gridHtml + '</td></tr>';
-
-      if (S.socialLine !== false) {
-        let li = null, ig = null;
-        try { li = imgName('reseau-linkedin', 'png'); files.push({ name: li, bytes: await this._rasterizeSvg(this._socialSvg('linkedin', '#ffffff', '#0A66C2'), 22) }); } catch (e) { li = null; }
-        try { ig = imgName('reseau-instagram', 'png'); files.push({ name: ig, bytes: await this._rasterizeSvg(this._socialSvg('instagram', '#ffffff', S.accent), 22) }); } catch (e) { ig = null; }
-        const icon = (n) => n ? '<img src="' + n + '" width="22" height="22" alt="" style="display:inline-block;width:22px;height:22px;vertical-align:middle;margin-right:6px;">' : '';
-        const link = (url, n, label) => '<a href="' + href(url) + '" style="font-family:' + F + ';font-weight:800;font-size:12.5px;letter-spacing:.5px;color:' + TXT + ';text-decoration:none;">' + icon(n) + label + '</a>';
-        sig += '<tr><td bgcolor="' + S.bg + '" class="px" style="' + panelBg + 'padding:0 22px 22px;text-align:center;">'
-          + '<span style="font-family:' + F + ';font-weight:700;font-style:italic;font-size:14px;color:' + S.accent + ';">' + esc(S.socialLabel) + '</span>&nbsp;&nbsp;'
-          + link(S.linkedinUrl, li, 'LinkedIn')
-          + '<span style="font-family:' + F + ';font-weight:700;font-size:13px;color:' + TXT + ';">&nbsp;&nbsp;|&nbsp;&nbsp;</span>'
-          + link(S.instagramUrl, ig, 'Instagram')
-          + '</td></tr>';
+      // Two cells, not one: the coordonnées sit on solid black so nothing depends on a
+      // background image loading, and the artwork only backs the tile grid — which is
+      // what made « contact@positif.biz » unreadable on the red half.
+      sig = '<tr><td bgcolor="' + S.bg + '" class="px" style="background:' + S.bg + ';padding:46px 34px 24px;text-align:center;">' + head + '</td></tr>';
+      if (gridHtml) {
+        sig += '<tr><td background="' + bgName + '" bgcolor="' + S.bg + '" class="px" style="' + panelBg + 'padding:6px 34px 24px;text-align:center;">' + gridHtml + '</td></tr>';
       }
 
+      const flPad = S.padBottom == null ? 26 : S.padBottom;
       if (S.nfc !== false) {
         const nfcIm = await asset(S.nfcFile || 'sig-nfc-band.svg', 600, 'signature-nfc');
         if (nfcIm) {
@@ -2553,6 +2686,7 @@ class Component extends DCLogic {
           sig += '<tr><td bgcolor="' + S.bg + '" style="background:' + S.bg + ';padding:0;font-size:0;line-height:0;text-align:' + (shift < 0 ? 'left' : shift > 0 ? 'right' : 'center') + ';">' + linked(S.nfcUrl, tag) + '</td></tr>';
         }
       }
+      if (flPad > 0) sig += '<tr><td bgcolor="' + S.bg + '" style="background:' + S.bg + ';padding:0;font-size:0;line-height:0;height:' + flPad + 'px;">&nbsp;</td></tr>';
     } else if (this.state.sigStyle === 'newsletter') {
       const S = this.state;
       let inner = '';
@@ -2784,7 +2918,7 @@ class Component extends DCLogic {
       slotA: this._slot('slot-' + b.id + '-a'), slotB: this._slot('slot-' + b.id + '-b'), slotC: this._slot('slot-' + b.id + '-c'),
       slotFloat: this._slot('slot-' + b.id + '-float'),
       selected: sel, selFlag: sel ? '1' : '0',
-      wrapStyle: 'position:relative;border-bottom:1px solid #F0F0F2;cursor:pointer;transition:box-shadow .12s ease,outline .12s ease;' + (sel ? 'outline:2px solid #FC1D37;outline-offset:-2px;' : '') + (dropBefore ? 'box-shadow:inset 0 5px 0 #FC1D37;' : '') + (dropAfter ? 'box-shadow:inset 0 -5px 0 #FC1D37;' : ''),
+      wrapStyle: 'position:relative;border-bottom:1px solid #F0F0F2;cursor:pointer;transition:box-shadow .12s ease,outline .12s ease;' + (sel ? 'outline:2px solid ' + SEL + ';outline-offset:-2px;' : '') + (dropBefore ? 'box-shadow:inset 0 5px 0 ' + SEL + ';' : '') + (dropAfter ? 'box-shadow:inset 0 -5px 0 ' + SEL + ';' : ''),
       onSelect: () => this.select(b.id),
       onUp: () => this.move(i, -1), onDown: () => this.move(i, 1), onDup: () => this.dup(i), onRemove: () => this.remove(i),
       onDragStart: (e) => this.blockDragStart(b.id, e),
@@ -3167,11 +3301,29 @@ class Component extends DCLogic {
       const n = parseInt(h.length === 3 ? h.split('').map((c) => c + c).join('') : h, 16);
       return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + (flDotOpacity / 100) + ')';
     })();
+    const flPosY = _FL.bgPosY == null ? 30 : _FL.bgPosY;
+    const flZoom = _FL.bgZoom == null ? 100 : _FL.bgZoom;
+    const flBlackTop = _FL.blackTop == null ? 200 : _FL.blackTop;
+    const flBlackFade = _FL.blackFade == null ? 150 : _FL.blackFade;
+    const flPadBottom = _FL.padBottom == null ? 26 : _FL.padBottom;
+    // Layer order matters: the black cap is listed first so it paints over the artwork.
+    const flCap = flBlackTop > 0
+      ? 'linear-gradient(to bottom, ' + _FL.bg + ' 0px, ' + _FL.bg + ' ' + flBlackTop + 'px, transparent ' + (flBlackTop + flBlackFade) + 'px)'
+      : '';
+    const flArt = "url('assets/" + (_FL.bgFile || 'sig-flyer-bg-clean.svg') + "')";
+    const flDots = 'radial-gradient(circle, ' + flDotRGBA + ' ' + (flDotSize / 2).toFixed(1) + 'px, transparent ' + (flDotSize / 2 + 1).toFixed(1) + 'px)';
     const flBg = flMode === 'flyer'
-      ? "background-image:url('assets/" + (_FL.bgFile || 'sig-flyer-bg-clean.svg') + "');background-size:cover;background-repeat:no-repeat;background-position:center bottom;"
+      ? 'background-image:' + (flCap ? flCap + ',' : '') + flArt + ';'
+        + 'background-size:' + (flCap ? 'auto,' : '') + flZoom + '% auto;'
+        + 'background-repeat:' + (flCap ? 'no-repeat,' : '') + 'no-repeat;'
+        + 'background-position:' + (flCap ? 'center top,' : '') + 'center ' + flPosY + '%;'
       : flMode === 'points'
-        ? 'background-image:radial-gradient(circle, ' + flDotRGBA + ' ' + (flDotSize / 2).toFixed(1) + 'px, transparent ' + (flDotSize / 2 + 1).toFixed(1) + 'px);background-size:' + flDotCell + 'px ' + flDotCell + 'px;'
-        : '';
+        ? 'background-image:' + (flCap ? flCap + ',' : '') + flDots + ';'
+          + 'background-size:' + (flCap ? 'auto,' : '') + flDotCell + 'px ' + flDotCell + 'px;'
+          + (flCap ? 'background-repeat:no-repeat,repeat;background-position:center top,center center;' : '')
+        : flCap
+          ? 'background-image:' + flCap + ';background-repeat:no-repeat;background-position:center top;'
+          : '';
     const tabBase = 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:.04em;padding:12px 22px;border-radius:50px;cursor:pointer;transition:all .15s;';
     const active = tabBase + 'background:#141417;color:#fff;border:1px solid #141417;';
     const idle = tabBase + 'background:#fff;color:#56565e;border:1px solid #DADADE;';
@@ -3212,6 +3364,40 @@ class Component extends DCLogic {
       btnStyle: 'border:none;border-radius:50px;padding:7px 10px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;cursor:pointer;flex:0 0 auto;' + (t.on !== false ? 'background:#fff;color:#141417;' : 'background:#2a2a30;color:#8e8e96;'),
     }));
     const flyerCells = flyerTiles.filter((t) => t.on);
+    const flSocialColor = FL.socialColor || FL.accent || '#FFFFFF';
+    // Coordonnées for the flyer. Both numbers are the same size — the WhatsApp row used
+    // to be five points smaller, so its icon made it look shrunken next to the landline.
+    // `phonesInline` puts them side by side, each with its own mark.
+    const flPhoneIconUrl = this._socialDataUrl('phone', '#ffffff', FL.accent);
+    const flWaIconUrl = this._socialDataUrl('whatsapp', '#ffffff', '#25D366');
+    const flNumStyle = 'font-family:Montserrat,Arial,sans-serif;text-decoration:none;font-weight:800;font-size:17px;letter-spacing:.06em;color:' + FL.textColor + ';display:inline-flex;align-items:center;';
+    const flTextStyle = (key) => 'font-family:Montserrat,Arial,sans-serif;text-decoration:none;font-weight:700;font-size:13px;letter-spacing:'
+      + (key === 'email' ? '.05em' : '.03em') + ';color:' + (key === 'email' ? FL.accent : FL.textColor) + ';';
+    const flLines = (() => {
+      const on = ctRows.filter((r) => r.on);
+      const num = (r) => ({ href: r.href, value: r.value, icon: r.key === 'whatsapp' ? flWaIconUrl : flPhoneIconUrl });
+      const phone = on.find((r) => r.key === 'phone');
+      const wa = FL.showWhatsapp === false ? null : on.find((r) => r.key === 'whatsapp');
+      const inline = FL.phonesInline !== false && phone && wa;
+      const out = [];
+      let paired = false;
+      for (const r of on) {
+        if (r.key === 'whatsapp' && FL.showWhatsapp === false) continue;
+        if (inline && (r.key === 'phone' || r.key === 'whatsapp')) {
+          if (paired) continue;
+          paired = true;
+          out.push({ isPair: true, isSingle: false, isPlain: false, a: num(phone), b: num(wa) });
+          continue;
+        }
+        if (r.key === 'phone' || r.key === 'whatsapp') {
+          out.push({ isPair: false, isSingle: true, isPlain: false, href: r.href, value: r.value, hasIcon: true, noIcon: false, icon: r.key === 'whatsapp' ? flWaIconUrl : flPhoneIconUrl, style: flNumStyle });
+          continue;
+        }
+        // the address has no target — an <a href=""> there is a bug, not a link
+        out.push({ isPair: false, isSingle: !!r.href, isPlain: !r.href, href: r.href, value: r.value, hasIcon: false, noIcon: true, icon: '', style: flTextStyle(r.key) });
+      }
+      return out;
+    })();
 
     const blocks = this.state.blocks.map((b, i) => this._mapBlock(b, i));
     const sel = this.state.selectedId != null ? blocks.find(x => x.id === this.state.selectedId) : null;
@@ -3312,7 +3498,7 @@ class Component extends DCLogic {
       flTiles: flyerTiles,
       flLogoSrc: 'assets/' + (FL.logoFile || 'logo.svg'),
       flNfcSrc: 'assets/' + (FL.nfcFile || 'sig-nfc-band.svg'),
-      flWrapStyle: 'position:relative;overflow:hidden;background-color:' + FL.bg + ';padding:46px 34px 0;' + flBg,
+      flWrapStyle: 'position:relative;overflow:hidden;background-color:' + FL.bg + ';padding:46px 34px ' + flPadBottom + 'px;' + flBg,
       flKickerStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.34em;color:' + FL.textColor + ';text-transform:uppercase;',
       flYearStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10.5px;letter-spacing:.34em;color:' + FL.accent + ';',
       flGridStyle: 'position:relative;z-index:2;display:flex;flex-wrap:wrap;align-items:flex-end;gap:' + flGap + 'px;margin:24px 0 0;',
@@ -3325,25 +3511,26 @@ class Component extends DCLogic {
       flSocialOn: FL.socialLine !== false,
       flSocialBtnStyle: sigSeg(FL.socialLine !== false),
       onToggleFlSocial: () => this.setFlyer('socialLine', FL.socialLine === false),
-      flSocialRowStyle: 'position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:9px;margin:20px 0 0;flex-wrap:wrap;',
-      flSocialLabelStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:700;font-style:italic;font-size:14px;color:' + FL.accent + ';',
-      flSocialLinkStyle: 'display:inline-flex;align-items:center;gap:6px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12.5px;letter-spacing:.04em;color:' + FL.textColor + ';',
+      flSocialRowStyle: 'position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 0;flex-wrap:wrap;',
+      flSocialLabelStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:700;font-style:italic;font-size:14px;color:' + flSocialColor + ';',
+      flSocialLinkStyle: 'display:inline-flex;align-items:center;gap:6px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12.5px;letter-spacing:.04em;text-decoration:none;color:' + FL.textColor + ';',
       flSocialSepStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:13px;color:' + FL.textColor + '66;',
-      flLinkedinIcon: this._socialDataUrl('linkedin', '#ffffff', '#0A66C2'),
-      flInstagramIcon: this._socialDataUrl('instagram', '#ffffff', FL.accent),
+      // official marks, not the glyph-on-a-tinted-circle treatment
+      flLinkedinIcon: this._brandDataUrl('linkedin'),
+      flInstagramIcon: this._brandDataUrl('instagram'),
       flWhatsappIcon: this._socialDataUrl('whatsapp', '#ffffff', '#25D366'),
-      flRowsWrapStyle: 'display:flex;flex-direction:column;align-items:center;gap:6px;margin:16px 0 0;',
-      flRows: ctRows.filter((r) => r.on).map((r) => ({
-        ...r,
-        // phone is the hero line; everything else shares one size so the WhatsApp
-        // row no longer looks shrunken next to its icon
-        style: 'font-family:Montserrat,Arial,sans-serif;text-decoration:none;'
-          + (r.key === 'phone'
-              ? 'font-weight:800;font-size:18px;letter-spacing:.13em;color:' + FL.textColor + ';'
-              : r.key === 'email'
-                ? 'font-weight:700;font-size:13px;letter-spacing:.05em;color:' + FL.accent + ';'
-                : 'font-weight:700;font-size:13px;letter-spacing:.03em;color:' + FL.textColor + ';'),
-      })),
+      flPhoneIcon: this._socialDataUrl('phone', '#ffffff', FL.accent),
+      flRowsWrapStyle: 'display:flex;flex-direction:column;align-items:center;gap:7px;margin:16px 0 0;',
+      flIconStyle: 'display:inline-block;width:20px;height:20px;vertical-align:-4px;margin-right:8px;',
+      flNumStyle: flNumStyle,
+      flPairRowStyle: 'display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;',
+      flPairSepStyle: 'display:inline-block;width:1px;height:18px;background:' + FL.textColor + '4d;',
+      flLines: flLines,
+      flPhonesInline: FL.phonesInline !== false,
+      flPhonesInlineBtnStyle: sigSeg(FL.phonesInline !== false),
+      onToggleFlPhonesInline: () => this.setFlyer('phonesInline', FL.phonesInline === false),
+      flSocialColor: flSocialColor,
+      onFlSocialColor: (e) => this.setFlyer('socialColor', e.target.value),
       onFlSocialLabel: (e) => this.setFlyer('socialLabel', e.target.value),
       onFlLinkedin: (e) => this.setFlyer('linkedinUrl', e.target.value),
       onFlInstagram: (e) => this.setFlyer('instagramUrl', e.target.value),
@@ -3360,6 +3547,13 @@ class Component extends DCLogic {
       onFlDotSpacing: (e) => this.setFlyer('dotSpacing', +e.target.value),
       onFlDotColor: (e) => this.setFlyer('dotColor', e.target.value),
       onFlDotOpacity: (e) => this.setFlyer('dotOpacity', +e.target.value),
+      flIsArtwork: flMode === 'flyer',
+      flBgPosY: flPosY, flBgZoom: flZoom, flBlackTop: flBlackTop, flBlackFade: flBlackFade, flPadBottom: flPadBottom,
+      onFlBgPosY: (e) => this.setFlyer('bgPosY', +e.target.value),
+      onFlBgZoom: (e) => this.setFlyer('bgZoom', +e.target.value),
+      onFlBlackTop: (e) => this.setFlyer('blackTop', +e.target.value),
+      onFlBlackFade: (e) => this.setFlyer('blackFade', +e.target.value),
+      onFlPadBottom: (e) => this.setFlyer('padBottom', +e.target.value),
       flBgFlyerStyle: sigSeg(flMode === 'flyer'),
       flBgPointsStyle: sigSeg(flMode === 'points'),
       flBgUniStyle: sigSeg(flMode === 'uni'),
@@ -3435,9 +3629,12 @@ class Component extends DCLogic {
       canvasRef: (el) => { if (el) this._canvasEl = el; },
       headerTitle: this.state.headerTitle,
       headerSelected: !!this.state.headerSelected,
-      headerWrapStyle: 'position:relative;background-color:#141417;padding:' + (this.state.headerArt !== false ? '20px 28px 26px' : '17px 28px') + ';display:flex;align-items:center;justify-content:space-between;cursor:pointer;'
-        + (this.state.headerArt !== false ? "background-image:url('assets/header-bg-clean.svg');background-size:100% 100%;background-repeat:no-repeat;background-position:center;" : '')
-        + (this.state.headerSelected ? 'box-shadow:inset 0 0 0 2px rgba(252,29,55,.55);' : ''),
+      // The artwork style reserves room at the bottom for the swoosh strip instead of
+      // stretching one picture over the whole bar.
+      // #010202 is the artwork's own black — anything lighter leaves a visible seam
+      // where the bar meets the top of the swoosh strip.
+      headerWrapStyle: 'position:relative;overflow:hidden;background-color:' + (this.state.headerArt !== false ? '#010202' : '#141417') + ';padding:' + (this.state.headerArt !== false ? '20px 28px 54px' : '17px 28px') + ';display:flex;align-items:center;justify-content:space-between;cursor:pointer;'
+        + (this.state.headerSelected ? 'box-shadow:inset 0 0 0 2px ' + SEL_RING + ';' : ''),
       headerArtOn: this.state.headerArt !== false,
       headerPlainBtnStyle: segLight(this.state.headerArt === false),
       headerArtBtnStyle: segLight(this.state.headerArt !== false),
@@ -3451,7 +3648,7 @@ class Component extends DCLogic {
           slot: this._slot('sticker-' + st.id), shape: st.shape, radius: st.shape === 'rounded' ? String(st.radius) : '0',
           framed: st.frame === 'polaroid' || st.frame === 'tape',
           isTape: st.frame === 'tape',
-          wrapStyle: 'position:absolute;left:' + st.x + 'px;top:' + st.y + 'px;z-index:30;cursor:pointer;' + (ssel ? 'outline:2px dashed #FC1D37;outline-offset:4px;' : ''),
+          wrapStyle: 'position:absolute;left:' + st.x + 'px;top:' + st.y + 'px;z-index:30;cursor:pointer;' + (ssel ? 'outline:2px dashed ' + SEL + ';outline-offset:4px;' : ''),
           frameStyle: 'position:relative;display:inline-block;line-height:0;transform:rotate(' + st.rot + 'deg);'
             + ((st.frame === 'polaroid' || st.frame === 'tape') ? 'background:#fff;padding:9px 9px 30px;' + (st.shadow ? 'box-shadow:0 16px 32px -12px rgba(0,0,0,.4);' : '') : ''),
           imgStyle: 'width:' + st.size + 'px;height:' + st.size + 'px;display:block;'
