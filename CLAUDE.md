@@ -57,7 +57,9 @@ plain text — an `<a href="">` is a bug.
 
 **Header**: `state.headerArt` — `true` = `header-swoosh.svg` strip anchored at the bottom +
 `logo-long.svg` + editable title, `false` = plain bar. Both must stay selectable.
-`state.headerHeight` sets the bar height; the strip stays flush with the bottom at any value.
+`state.headerHeight` sets the bar height. Nothing in the bar flows: the logo/title row is
+absolutely placed at `top:20px`, the swoosh overlays the bottom edge — so the height only adds
+black between them and the lockup never drifts.
 **Never stretch the swoosh** — its black is knocked out with a mask so only the red band paints,
 and `background-size:100% 100%` flattened the curve and squashed the Avis Google lockup. The
 export ships it as its own full-width image row, with the bar cell taking `height - 46px`.

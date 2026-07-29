@@ -281,11 +281,15 @@
 
           <!-- canvas header -->
             <div onClick="{{ onHeaderSelect }}" style="{{ headerWrapStyle }}">
-              <img src="assets/logo-long.svg" width="190" alt="Positif Design" style="display:block;width:190px;height:auto;position:relative;z-index:2;">
-              <span data-tools="1" style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.18em;color:#ffffff;position:relative;z-index:2;">{{ headerTitle }}</span>
-              <!-- The swoosh is its own bottom strip at its natural ratio, not a stretched
-                   background: the header's height follows its content, so scaling one image
-                   to the whole box flattened the curve and squashed the Avis Google lockup. -->
+              <!-- Logo and title are pinned to the top, not centred in the box: centring
+                   made them drift every time the bar height changed. -->
+              <div style="position:absolute;top:20px;left:28px;right:28px;display:flex;align-items:center;justify-content:space-between;gap:16px;z-index:2;">
+                <img src="assets/logo-long.svg" width="190" alt="Positif Design" style="display:block;width:190px;height:auto;">
+                <span data-tools="1" style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.18em;color:#ffffff;">{{ headerTitle }}</span>
+              </div>
+              <!-- The swoosh overlays the bottom of the bar at its natural ratio. It reserves
+                   no space, so the height slider only adds black above it, and scaling one
+                   image to the whole box would flatten the curve anyway. -->
               <sc-if value="{{ headerArtOn }}" hint-placeholder-val="{{ true }}">
                 <img src="assets/header-swoosh.svg" alt="" style="position:absolute;left:0;right:0;bottom:0;width:100%;height:auto;aspect-ratio:623.21/47.71;display:block;z-index:1;pointer-events:none;">
               </sc-if>
@@ -2471,7 +2475,9 @@ class Component extends DCLogic {
     // chosen height and the strip stays flush with the bottom.
     const headerH = Math.max(60, Math.min(280, this.state.headerHeight == null ? 110 : this.state.headerHeight));
     const headerBarH = Math.max(28, headerH - (headerSwoosh ? 46 : 0));
-    rows += '<tr><td bgcolor="#141417" height="' + headerBarH + '" style="background:#141417;height:' + headerBarH + 'px;padding:0 28px;">' +
+    // valign top + a 20px pad mirrors the canvas, where the lockup is pinned to the top
+    // rather than centred, so it lands in the same place at any height.
+    rows += '<tr><td bgcolor="#141417" height="' + headerBarH + '" valign="top" style="background:#141417;height:' + headerBarH + 'px;padding:20px 28px 0;vertical-align:top;">' +
       '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>' +
       '<td align="left" valign="middle">' + (headerLogo ? '<img src="' + headerLogo + '" width="190" alt="Positif Design" style="display:block;width:190px;height:auto;">' : '') + '</td>' +
       '<td align="right" valign="middle" style="font-family:' + F + ';font-weight:800;font-size:11px;letter-spacing:2px;color:#ffffff;text-transform:uppercase;">' + esc(this.state.headerTitle || 'VOTRE E-MAIL') + '</td>' +
@@ -3667,9 +3673,9 @@ class Component extends DCLogic {
       headerSelected: !!this.state.headerSelected,
       // The artwork style reserves room at the bottom for the swoosh strip instead of
       // stretching one picture over the whole bar.
-      // The swoosh has its black knocked out, so the bar's own colour shows through and
-      // the strip stays pinned to the bottom whatever height the bar is set to.
-      headerWrapStyle: 'position:relative;overflow:hidden;box-sizing:border-box;background-color:#141417;height:' + headerH + 'px;padding:' + (this.state.headerArt !== false ? '14px 28px 44px' : '14px 28px') + ';display:flex;align-items:center;justify-content:space-between;cursor:pointer;'
+      // No padding reserved for the swoosh — it overlays the bottom, and the content is
+      // absolutely placed, so neither moves when the height changes.
+      headerWrapStyle: 'position:relative;overflow:hidden;box-sizing:border-box;background-color:#141417;height:' + headerH + 'px;cursor:pointer;'
         + (this.state.headerSelected ? 'box-shadow:inset 0 0 0 2px ' + SEL_RING + ';' : ''),
       headerHeight: headerH,
       onHeaderHeight: (e) => this.setS('headerHeight', +e.target.value),

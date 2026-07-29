@@ -153,8 +153,13 @@ The black top bar. `state.headerArt` picks the style, and **both options must st
   `logo-long.svg` and an editable title
 - `false` — plain bar, no artwork
 
-`state.headerHeight` (60–280, default 110) drives the bar. The strip stays flush with the bottom
-at every value, because it is absolutely positioned rather than part of the flow.
+`state.headerHeight` (60–280, default 110) drives the bar. **Nothing in the bar is laid out by
+flow**: the logo/title row is absolutely placed at `top:20px; left/right:28px`, and the swoosh is
+absolutely placed at the bottom. So the height slider only adds black between them — the lockup
+does not drift and the red bar never leaves the bottom edge.
+
+The swoosh reserves no space; it **overlays** the bottom of the bar. Centring the content in a
+padded box was the earlier approach and it moved the logo on every height change.
 
 `header-swoosh.svg` is the bottom band of `header-bg-clean.svg`, cropped to its own viewBox
 (`0 53.56 623.21 47.71`) with the Avis Google lockup included. **The black is knocked out** with
@@ -171,8 +176,8 @@ It is **not** a stretched background:
   zero — the aspect-ratio is what gives it a height.
 - in the export it is its own full-width image row. Outlook ignores `background-size` entirely,
   so a background could never have held.
-- in the export the bar cell takes `headerHeight - 46px`, so the strip lands where the canvas
-  puts it
+- in the export the bar cell takes `headerHeight - 46px` with `valign="top"` and a 20px top pad,
+  mirroring the canvas anchor, and the strip keeps its own row
 
 Selection ring is a soft inset box-shadow in `SEL_RING`, not a hard outline.
 
