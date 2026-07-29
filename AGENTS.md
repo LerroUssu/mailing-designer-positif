@@ -84,19 +84,22 @@ red is the brand colour and read as part of the design rather than as UI state.
   black cap so the coordonnées never land on red. In the export that cap is a **separate solid
   black cell** — background images are the first thing an e-mail client drops. Both numbers
   render at the same size, each with its own picto (`phonesInline` puts them on one row).
-  `panelOpacity` fades **the dark panel inside each tile**, not the cell: every `tile-*.svg`
-  carries one `<rect fill:#343333;mix-blend-mode:multiply>` behind its photo and label (repainted
-  black), and that
-  rect is what the slider rewrites (`_patchTilePanel`). `#343333` occurs exactly once per file,
-  so the match cannot stray into the artwork. Canvas serves a patched data URL
-  (`_tileDataUrl`, cached, re-renders once fetched); the export passes the same patch to
-  `_rasterizeAsset`. Never dim the whole `<img>` — that would fade the photo and label too.
+  `panelOpacity` fades **the dark panel inside the artwork**, not the cell: every `tile-*.svg`
+  and `sig-nfc-band.svg` carries a `<rect fill:#343333;mix-blend-mode:multiply>` behind its
+  photo and label, and that rect is what the slider rewrites and repaints black
+  (`_patchTilePanel`, first match only — the NFC band has two more further down, inside its
+  artwork). Canvas serves a patched data URL (`_tileDataUrl`, cached, re-renders once fetched);
+  the export passes the same patch to `_rasterizeAsset`. Never dim the whole `<img>` — that
+  would fade the photo and label too.
+  `rowGap` sets the spacing between coordonnée lines, in the canvas and in the export.
   Both vertical sliders run the same way — **handle right = the boundary rises**. `Limite du
   noir` gets `direction:rtl` for that; without it the two ran opposite each other.
 
 Social icons are **generated** (`_SOCIAL` / `_socialSvg()`), not asset files. Instagram and
 LinkedIn go through `_brandSvg()` instead — official rounded-square marks with the real brand
 colours, including Instagram's gradient. Do not tint a brand mark with `FL.accent`.
+The LinkedIn and Facebook paths are the **square/circle with the glyph knocked out**, so they
+need a white shape behind or the letters show the background through.
 
 Use the user's supplied artwork. Do not reimplement it in CSS — that has been rejected before.
 

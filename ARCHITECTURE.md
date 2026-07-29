@@ -236,7 +236,9 @@ than the panel. Anchored at `bottom` it showed almost nothing but red, which mad
 - `padBottom` gives the block breathing room under the NFC band
 - `panelOpacity` fades **the dark panel inside each tile — not the cell.** Every `tile-*.svg`
   has one `<rect fill:#343333; mix-blend-mode:multiply; opacity:.5>` sitting behind its photo
-  and label; `_patchTilePanel(svg, pct)` rewrites that rect's opacity **and repaints it black**. `#343333`
+  and label — and so does `sig-nfc-band.svg`. `_patchTilePanel(svg, pct)` rewrites that rect's
+  opacity **and repaints it black**, on the **first match only**: the NFC band carries two more
+  `#343333` multiply shapes further down, a polygon and a circle inside its own artwork. `#343333`
   occurs exactly once per file, so the regex cannot reach the artwork (several tiles use
   `mix-blend-mode:multiply` inside their photos too — match on the fill, not the blend mode).
   The canvas serves a patched data URL through `_tileDataUrl(file, pct)`, which caches the
@@ -245,6 +247,9 @@ than the panel. Anchored at `bottom` it showed almost nothing but red, which mad
   `_rasterizeAsset(path, outW, slice, patch)`.
   **Do not dim the whole `<img>`** — that fades the photo and the label with it, which is not
   what the control is for.
+- `rowGap` sets the spacing between coordonnée lines. The canvas uses a flex `gap`; the export
+  mirrors it as `padding-top` on every row but the first, which keeps its fixed lead-in under
+  the logo.
 
 Both vertical controls must read the same way: **handle to the right = the boundary rises.**
 `Cadrage vertical` already did (`background-position:center {Y}%` slides the artwork up as Y
@@ -270,6 +275,12 @@ nested array, because a nested `sc-for` is not worth relying on. Entries with no
 instagram, facebook, linkedin, phone), `_socialSvg()` wraps one in a tinted circle,
 `_socialDataUrl()` feeds the canvas preview, `_rasterizeSvg()` bakes each to a 2× PNG at export
 (`images/reseau-*.png`).
+
+**Watch the knocked-out marks.** The LinkedIn and Facebook paths are the rounded square /
+circle with the glyph *cut out of them*, not drawn on top. Filled flat they leave the letters
+transparent, so on a coloured panel the background shows through where the white should be.
+Both put a white shape behind the path, inset enough that the brand colour still covers the
+corners.
 
 **Brand marks go through `_brandSvg()` instead** — official rounded-square presentation with the
 real brand colours (LinkedIn `#0A66C2`, Instagram on its own radial gradient, Facebook
