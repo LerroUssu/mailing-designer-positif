@@ -79,8 +79,12 @@ red is the brand colour and read as part of the design rather than as UI state.
   black cap so the coordonnées never land on red. In the export that cap is a **separate solid
   black cell** — background images are the first thing an e-mail client drops. Both numbers
   render at the same size, each with its own picto (`phonesInline` puts them on one row).
-  `tileOpacity` fades the cells; it is **baked into the PNG** at export (`_rasterizeAsset`'s
-  `alpha` argument), never left to CSS `opacity`.
+  `panelOpacity` fades **the dark panel inside each tile**, not the cell: every `tile-*.svg`
+  carries one `<rect fill:#343333;mix-blend-mode:multiply>` behind its photo and label, and that
+  rect is what the slider rewrites (`_patchTilePanel`). `#343333` occurs exactly once per file,
+  so the match cannot stray into the artwork. Canvas serves a patched data URL
+  (`_tileDataUrl`, cached, re-renders once fetched); the export passes the same patch to
+  `_rasterizeAsset`. Never dim the whole `<img>` — that would fade the photo and label too.
   Both vertical sliders run the same way — **handle right = the boundary rises**. `Limite du
   noir` gets `direction:rtl` for that; without it the two ran opposite each other.
 

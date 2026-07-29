@@ -1411,8 +1411,8 @@
                   <input type="range" min="0" max="20" step="1" value="{{ flGap }}" onInput="{{ onFlGap }}">
                 </div>
                 <div class="pd-slider">
-                  <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Opacité des cases</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flTileOpacity }}%</span></div>
-                  <input type="range" min="20" max="100" step="5" value="{{ flTileOpacity }}" onInput="{{ onFlTileOpacity }}">
+                  <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Opacité du fond des cases</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flPanelOpacity }}%</span></div>
+                  <input type="range" min="0" max="100" step="5" value="{{ flPanelOpacity }}" onInput="{{ onFlPanelOpacity }}">
                 </div>
               </div>
 
@@ -1622,6 +1622,31 @@ class Component extends DCLogic {
       + '<circle cx="28" cy="28" r="28" fill="' + (bg || '#E7ECEF') + '"/>'
       + '<g transform="translate(14 14) scale(1.1667)"><path d="' + g.path + '" fill="' + (glyph || '#141417') + '"/></g></svg>';
   }
+  // Each tile-*.svg carries one dark panel behind its photo and label: a <rect> filled
+  // #343333 with mix-blend-mode:multiply and its own opacity. That rect is what the user
+  // adjusts — not the whole cell, whose photo and label must stay at full strength.
+  // #343333 appears exactly once per file, so the match cannot stray into the artwork.
+  _patchTilePanel(svg, pct) {
+    return String(svg).replace(
+      /(fill:\s*#343333;\s*mix-blend-mode:\s*multiply;\s*opacity:\s*)[\d.]+/,
+      (m, head) => head + (Math.max(0, Math.min(100, pct)) / 100));
+  }
+  _tileSvgCache = {};
+  // renderVals is synchronous, so a tile that is not cached yet keeps its plain file URL
+  // (which paints at the artwork's own 50%) and triggers a re-render once fetched.
+  _tileDataUrl(file, pct) {
+    const raw = this._tileSvgCache[file];
+    if (raw === undefined) {
+      this._tileSvgCache[file] = null;
+      fetch('assets/' + file).then((r) => r.ok ? r.text() : null).then((t) => {
+        this._tileSvgCache[file] = t || '';
+        this.setState({ tileRev: (this.state.tileRev || 0) + 1 });
+      }).catch(() => { this._tileSvgCache[file] = ''; });
+      return 'assets/' + file;
+    }
+    if (!raw) return 'assets/' + file;
+    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(this._patchTilePanel(raw, pct));
+  }
   _socialDataUrl(key, glyph, bg) { return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(this._socialSvg(key, glyph, bg)); }
   // Instagram and LinkedIn as their official marks — rounded square, brand colours,
   // Instagram on its real gradient. The generic "glyph on a tinted circle" treatment
@@ -1706,7 +1731,7 @@ class Component extends DCLogic {
       // a solid black band over the top so the coordonnées always sit on black.
       bgPosY: 30, bgZoom: 100, blackTop: 200, blackFade: 150,
       dotSize: 29, dotSpacing: 40, dotColor: '#5A1520', dotOpacity: 100,
-      tileCols: 4, tileGap: 6, tileOpacity: 100,
+      tileCols: 4, tileGap: 6, panelOpacity: 50,
       showWhatsapp: true, phonesInline: true,
       padBottom: 26,
       socialLine: true, socialLabel: 'Suivez-nous :', socialColor: '#FFFFFF',
@@ -2043,10 +2068,11 @@ class Component extends DCLogic {
   }
 
   // Email clients strip SVG, so supplied artwork is rasterised to 2x PNG at export.
-  async _rasterizeAsset(path, outW, slice, alpha) {
+  async _rasterizeAsset(path, outW, slice, patch) {
     const r = await fetch(path);
     if (!r.ok) return null;
     let svg = await r.text();
+    if (typeof patch === 'function') svg = patch(svg);
     const vb = svg.match(/viewBox=["']([-\d.\s]+)["']/);
     let ratio = 1;
     if (vb) {
@@ -2063,12 +2089,7 @@ class Component extends DCLogic {
     await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = url; });
     const canvas = document.createElement('canvas');
     canvas.width = W; canvas.height = H;
-    const ctx2d = canvas.getContext('2d');
-    // Baked-in opacity: e-mail clients that drop CSS opacity would otherwise show the
-    // tiles at full strength.
-    if (alpha != null && alpha < 1) ctx2d.globalAlpha = Math.max(0, alpha);
-    ctx2d.drawImage(img, 0, 0, W, H);
-    ctx2d.globalAlpha = 1;
+    canvas.getContext('2d').drawImage(img, 0, 0, W, H);
     if (slice) {
       const sx = Math.round(W * slice[0]);
       const sw = Math.max(1, Math.round(W * (slice[1] - slice[0])));
@@ -2607,10 +2628,11 @@ class Component extends DCLogic {
     if (this.state.sigStyle === 'flyer') {
       const S = this.state.sigFlyer;
       const TXT = S.textColor || '#FFFFFF';
-      const tileAlpha = (S.tileOpacity == null ? 100 : S.tileOpacity) / 100;
-      const asset = async (file, outW, label, alpha) => {
+      const panelPct = S.panelOpacity == null ? 50 : S.panelOpacity;
+      const tilePatch = (svg) => this._patchTilePanel(svg, panelPct);
+      const asset = async (file, outW, label, patch) => {
         try {
-          const baked = await this._rasterizeAsset('assets/' + file, outW, null, alpha);
+          const baked = await this._rasterizeAsset('assets/' + file, outW, null, patch);
           if (!baked) return null;
           const name = imgName(label, 'png');
           files.push({ name, bytes: baked.bytes });
@@ -2706,7 +2728,7 @@ class Component extends DCLogic {
       const cellsHtml = [];
       for (const t of shown) {
         const base = 'signature-' + t.file.replace(/\.svg$/, '');
-        const im = await asset(t.file, cellW, base, tileAlpha);
+        const im = await asset(t.file, cellW, base, tilePatch);
         const tag = im ? '<img src="' + im + '" width="' + cellW + '" alt="' + esc(t.alt) + '" style="display:block;width:100%;height:auto;border:0;">' : '&nbsp;';
         cellsHtml.push('<td width="' + Math.floor(100 / cols) + '%" valign="bottom" style="vertical-align:bottom;padding:4px;">' + linked(t.url, tag) + '</td>');
       }
@@ -3357,7 +3379,7 @@ class Component extends DCLogic {
     const flBlackTop = _FL.blackTop == null ? 200 : _FL.blackTop;
     const flBlackFade = _FL.blackFade == null ? 150 : _FL.blackFade;
     const flPadBottom = _FL.padBottom == null ? 26 : _FL.padBottom;
-    const flTileOpacity = _FL.tileOpacity == null ? 100 : _FL.tileOpacity;
+    const flPanelOpacity = _FL.panelOpacity == null ? 50 : _FL.panelOpacity;
     // Layer order matters: the black cap is listed first so it paints over the artwork.
     const flCap = flBlackTop > 0
       ? 'linear-gradient(to bottom, ' + _FL.bg + ' 0px, ' + _FL.bg + ' ' + flBlackTop + 'px, transparent ' + (flBlackTop + flBlackFade) + 'px)'
@@ -3408,7 +3430,7 @@ class Component extends DCLogic {
     const FL = this.state.sigFlyer;
     const flyerTiles = (FL.tiles || []).map((t, idx) => ({
       idx, file: t.file, alt: t.alt, url: t.url || '',
-      src: 'assets/' + t.file,
+      src: this._tileDataUrl(t.file, flPanelOpacity),
       on: t.on !== false,
       hasUrl: !!(t.url || '').trim(),
       onToggle: () => this.setFlyerTile(idx, 'on', t.on === false),
@@ -3620,9 +3642,9 @@ class Component extends DCLogic {
       // NFC band horizontal nudge
       flNfcShift: flShift,
       onFlNfcShift: (e) => this.setFlyer('nfcShift', +e.target.value),
-      flTileImgStyle: 'width:100%;height:auto;display:block;opacity:' + (flTileOpacity / 100) + ';',
-      flTileOpacity: flTileOpacity,
-      onFlTileOpacity: (e) => this.setFlyer('tileOpacity', +e.target.value),
+      flTileImgStyle: 'width:100%;height:auto;display:block;',
+      flPanelOpacity: flPanelOpacity,
+      onFlPanelOpacity: (e) => this.setFlyer('panelOpacity', +e.target.value),
       flNfcWrapStyle: 'position:relative;z-index:2;margin:24px ' + (-34 - flShift) + 'px 0 ' + (-34 + flShift) + 'px;line-height:0;',
       flNfcImgStyle: 'width:100%;height:auto;display:block;',
       onFlKicker: (e) => this.setFlyer('kicker', e.target.value),

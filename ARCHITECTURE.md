@@ -234,9 +234,17 @@ than the panel. Anchored at `bottom` it showed almost nothing but red, which mad
 - `blackTop` / `blackFade` paint a `linear-gradient` of `FL.bg` over the top, listed **first**
   in `background-image` so it covers the artwork
 - `padBottom` gives the block breathing room under the NFC band
-- `tileOpacity` fades the service cells. It is **baked into the PNG** at export via
-  `_rasterizeAsset(path, outW, slice, alpha)`, not left to CSS `opacity`, which plenty of
-  clients drop.
+- `panelOpacity` fades **the dark panel inside each tile — not the cell.** Every `tile-*.svg`
+  has one `<rect fill:#343333; mix-blend-mode:multiply; opacity:.5>` sitting behind its photo
+  and label; the slider rewrites that rect's opacity via `_patchTilePanel(svg, pct)`. `#343333`
+  occurs exactly once per file, so the regex cannot reach the artwork (several tiles use
+  `mix-blend-mode:multiply` inside their photos too — match on the fill, not the blend mode).
+  The canvas serves a patched data URL through `_tileDataUrl(file, pct)`, which caches the
+  fetched text and bumps `state.tileRev` to re-render once it arrives; until then the cell keeps
+  its plain file URL and paints at the artwork's own 50%. The export passes the same patch as
+  `_rasterizeAsset(path, outW, slice, patch)`.
+  **Do not dim the whole `<img>`** — that fades the photo and the label with it, which is not
+  what the control is for.
 
 Both vertical controls must read the same way: **handle to the right = the boundary rises.**
 `Cadrage vertical` already did (`background-position:center {Y}%` slides the artwork up as Y
