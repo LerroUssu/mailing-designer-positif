@@ -280,17 +280,11 @@
         <div ref="{{ canvasRef }}" style="position:relative;width:600px;max-width:100%;background-color:#fff;background-image:radial-gradient(rgba(20,20,28,.045) 1px, transparent 1.6px);background-size:16px 16px;border-radius:10px;overflow:hidden;box-shadow:0 26px 60px -22px rgba(20,20,30,.36);border:1px solid #E2E2E8;">
 
           <!-- canvas header -->
-          <sc-if value="{{ headerIsBarre }}" hint-placeholder-val="{{ true }}">
             <div onClick="{{ onHeaderSelect }}" style="{{ headerWrapStyle }}">
-              <img src="assets/logo.svg" width="150" alt="Positif Design" style="display:block;width:150px;height:auto;">
+              <img src="assets/logo-long.svg" width="190" alt="Positif Design" style="display:block;width:190px;height:auto;">
               <span data-tools="1" style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.18em;color:#9a9aa2;">{{ headerTitle }}</span>
             </div>
-          </sc-if>
-          <sc-if value="{{ headerIsVisuel }}" hint-placeholder-val="{{ false }}">
-            <div onClick="{{ onHeaderSelect }}" style="{{ headerVisuelWrapStyle }}">
-              <img src="{{ headerSrc }}" alt="Positif Design" style="display:block;width:100%;height:auto;">
-            </div>
-          </sc-if>
+
 
           <!-- drop zone -->
           <div onDragOver="{{ onDragOver }}" onDrop="{{ onDrop }}" style="min-height:160px;">
@@ -612,17 +606,10 @@
             <div style="margin-top:14px;">
               <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.05em;color:#FC1D37;text-transform:uppercase;margin-bottom:10px;">En-tête</div>
               <div style="display:flex;gap:7px;margin-bottom:14px;">
-                <button onClick="{{ onHeaderStyleBarre }}" style="{{ headerBarreBtnStyle }}">Barre + titre</button>
-                <button onClick="{{ onHeaderStyleVisuel }}" style="{{ headerVisuelBtnStyle }}">Visuel fourni</button>
               </div>
-              <sc-if value="{{ headerIsBarre }}" hint-placeholder-val="{{ true }}">
               <div style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.05em;color:#FC1D37;text-transform:uppercase;margin-bottom:12px;">Titre du header</div>
               <div class="pd-label" style="margin-bottom:6px;">Texte</div>
               <input value="{{ headerTitle }}" onChange="{{ onHeaderTitle }}" class="pd-input">
-              </sc-if>
-              <sc-if value="{{ headerIsVisuel }}" hint-placeholder-val="{{ false }}">
-                <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:12px;line-height:1.5;color:#9a9aa2;margin:0;">Utilise <code>header.svg</code> : logo, téléphone, e-mail, adresse et site en un seul visuel pleine largeur.</p>
-              </sc-if>
             </div>
           </sc-if>
 
@@ -1471,13 +1458,11 @@ class Component extends DCLogic {
     selStickerId: null,
     headerSelected: false,
     headerTitle: 'VOTRE E-MAIL',
-    headerStyle: 'barre',
-    headerFile: 'header.svg',
     dragBlockId: null,
     dropBlockId: null,
     dropPos: null,
     halftone: true,
-    dotSize: 29, dotSpacing: 40, dotColor: '#474747', dotColor2: '#FC1D37',
+    dotSize: 29, dotSpacing: 40, dotColor: '#474747',
     sigTextColor: '#ffffff',
     sigPatternDataUrl: '',
     sigPatternSize: 160,
@@ -1510,10 +1495,6 @@ class Component extends DCLogic {
       kicker: 'PUBLICITÉ DEPUIS', year: '1983',
       bg: '#0B0B0D', accent: '#FC1D37', textColor: '#FFFFFF',
       bgArt: true, bgFile: 'sig-flyer-bg-clean.svg',
-      phone: '01.48.29.15.51',
-      email: 'contact@positif.biz',
-      address: '48bis, Boulevard Foch · 93800 EPINAY SUR SEINE',
-      web: 'www.positifdesign.fr',
       logoFile: 'logo.svg',
       // Artwork supplied as SVG; each tile already carries its own rounded panel
       // and its label, so the grid renders them as plain images.
@@ -1603,8 +1584,6 @@ class Component extends DCLogic {
   _templatePayload() {
     return {
       headerTitle: this.state.headerTitle,
-      headerStyle: this.state.headerStyle,
-      headerFile: this.state.headerFile,
       emailSubject: this.state.emailSubject,
       emailPreheader: this.state.emailPreheader,
       unsubscribeUrl: this.state.unsubscribeUrl,
@@ -1671,8 +1650,6 @@ class Component extends DCLogic {
       tab: 'builder',
     railTab: 'bloc',
       headerTitle: p.headerTitle || 'VOTRE E-MAIL',
-      headerStyle: p.headerStyle === 'visuel' ? 'visuel' : 'barre',
-      headerFile: p.headerFile || 'header.svg',
       emailSubject: p.emailSubject || 'Votre offre Positif Design',
       emailPreheader: p.emailPreheader || '',
       unsubscribeUrl: p.unsubscribeUrl || '{{ unsubscribe }}',
@@ -2230,11 +2207,11 @@ class Component extends DCLogic {
   // Build email-safe (table-based, inline-styled, light-locked) HTML + image files, zipped for ESP import.
   async exportHtml() {
     const CT = this.state.contact;
-    const ctWeb = /^https?:/.test(CT.web || '') ? CT.web : 'https://' + (CT.web || '');
     const F = "'Montserrat',Arial,Helvetica,sans-serif";
     const files = [];
     let n = 0;
     const esc = (s) => this._esc(s);
+    const ctWeb = esc(/^https?:/.test(CT.web || '') ? CT.web : 'https://' + (CT.web || ''));
     const href = (s) => esc((s || '').trim() || 'https://positifdesign.fr');
     const imgNameCounts = {};
     const imgName = (label, ext) => {
@@ -2259,22 +2236,16 @@ class Component extends DCLogic {
       if (baked) { logoName = 'images/logo-positif.png'; files.push({ name: logoName, bytes: baked.bytes }); }
     } catch (e) {}
 
+    // Header uses the long lockup, signatures use the stacked one.
+    let headerLogo = null;
+    try {
+      const baked = await this._rasterizeAsset('assets/logo-long.svg', 190);
+      if (baked) { headerLogo = 'images/logo-positif-long.png'; files.push({ name: headerLogo, bytes: baked.bytes }); }
+    } catch (e) {}
     let rows = '';
-    if (this.state.headerStyle === 'visuel') {
-      const hdr = await (async () => {
-        try {
-          const baked = await this._rasterizeAsset('assets/' + (this.state.headerFile || 'header.svg'), 600);
-          if (!baked) return null;
-          const name = imgName('en-tete-positif', 'png');
-          files.push({ name, bytes: baked.bytes });
-          return name;
-        } catch (e) { return null; }
-      })();
-      if (hdr) rows += '<tr><td bgcolor="#141417" style="background:#141417;padding:0;font-size:0;line-height:0;"><img src="' + hdr + '" width="600" alt="Positif Design" style="display:block;width:100%;max-width:600px;height:auto;border:0;"></td></tr>';
-    } else
     rows += '<tr><td bgcolor="#141417" style="background:#141417;padding:16px 28px;">' +
       '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>' +
-      '<td align="left" valign="middle">' + (logoName ? '<img src="' + logoName + '" width="150" alt="Positif Design" style="display:block;width:150px;height:auto;">' : '') + '</td>' +
+      '<td align="left" valign="middle">' + (headerLogo ? '<img src="' + headerLogo + '" width="190" alt="Positif Design" style="display:block;width:190px;height:auto;">' : '') + '</td>' +
       '<td align="right" valign="middle" style="font-family:' + F + ';font-weight:800;font-size:11px;letter-spacing:2px;color:#9a9aa2;text-transform:uppercase;">' + esc(this.state.headerTitle || 'VOTRE E-MAIL') + '</td>' +
       '</tr></table></td></tr>';
     for (const b of this.state.blocks) {
@@ -2496,7 +2467,9 @@ class Component extends DCLogic {
       if ((S.sigBottomNote || '').trim()) inner += '<div style="padding-top:22px;font-family:' + F + ';font-weight:800;font-size:13px;line-height:1.5;color:#141417;">' + esc(S.sigBottomNote) + '</div>';
 
       const barBg = S.sigBarBg || '#141417';
-      const addr = String(S.sigAddr || '').split('\n').map((t) => esc(t)).join('<br>');
+      // Same derived lines the canvas shows (ctBarLines): address parts, then tel + e-mail.
+      const addr = String(CT.address || '').split(' · ').concat(['Tél: ' + (CT.phone || ''), CT.email || ''])
+        .filter((t) => String(t).trim()).map((t) => esc(t)).join('<br>');
       let bar = '<tr><td bgcolor="' + barBg + '" class="px" style="background:' + barBg + ';padding:26px 32px;">'
         + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>'
         + '<td class="stack" valign="middle" style="vertical-align:middle;font-family:' + F + ';font-weight:500;font-size:14px;line-height:1.5;color:#ffffff;">'
@@ -3051,7 +3024,7 @@ class Component extends DCLogic {
     const aW = this.state.arrowSize ?? 276;
 
     // builder signature decoration (in-app state)
-    const bds = this.state.dotSize, bdp = this.state.dotSpacing, bdc = this.state.dotColor, bdc2 = this.state.dotColor2;
+    const bds = this.state.dotSize, bdp = this.state.dotSpacing, bdc = this.state.dotColor;
     const sigPatternDataUrl = this.state.sigPatternDataUrl || '';
     const sigPatternSize = this.state.sigPatternSize || 160;
     const bcell = Math.max(bdp, bds + 2), br = bds / 2, bhalf = (bcell / 2).toFixed(1);
@@ -3196,8 +3169,6 @@ class Component extends DCLogic {
       sigPrefsUrl: this.state.sigPrefsUrl,
       sigUnsubLabel: this.state.sigUnsubLabel,
       sigBottomNote: this.state.sigBottomNote,
-      sigCompany: this.state.sigCompany,
-      sigAddr: this.state.sigAddr,
       sigBarBg: this.state.sigBarBg,
       sigBarStyle: 'background:' + (this.state.sigBarBg || '#141417') + ';padding:26px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;',
       sigLinkColor: this.state.sigLinkColor,
@@ -3241,14 +3212,6 @@ class Component extends DCLogic {
       canvasRef: (el) => { if (el) this._canvasEl = el; },
       headerTitle: this.state.headerTitle,
       headerSelected: !!this.state.headerSelected,
-      headerIsBarre: this.state.headerStyle !== 'visuel',
-      headerIsVisuel: this.state.headerStyle === 'visuel',
-      headerSrc: 'assets/' + (this.state.headerFile || 'header.svg'),
-      headerVisuelWrapStyle: 'position:relative;cursor:pointer;line-height:0;font-size:0;' + (this.state.headerSelected ? 'outline:2px solid #FC1D37;outline-offset:-2px;' : ''),
-      headerBarreBtnStyle: sigSeg(this.state.headerStyle !== 'visuel'),
-      headerVisuelBtnStyle: sigSeg(this.state.headerStyle === 'visuel'),
-      onHeaderStyleBarre: () => this.setS('headerStyle', 'barre'),
-      onHeaderStyleVisuel: () => this.setS('headerStyle', 'visuel'),
       headerWrapStyle: 'background:#141417;padding:17px 28px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;' + (this.state.headerSelected ? 'outline:2px solid #FC1D37;outline-offset:-2px;' : ''),
       onHeaderSelect: () => this.selectHeader(),
       onHeaderTitle: (e) => this.setS('headerTitle', e.target.value),
