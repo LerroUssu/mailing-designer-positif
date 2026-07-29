@@ -1,125 +1,119 @@
-# Positif Design — Mailing Templates Kit
+# Positif Design — Mailing Designer
 
-## Project
-HTML/CSS email templates for **Positif Design** (Armony Positif), an advertising & print
-agency in Épinay-sur-Seine, France. Single Design Component: **`Mailings Positif Design.dc.html`**.
-Output goal: "beau ET prêt à envoyer" — visually strong AND paste-ready into Sarbacane/Brevo/Mailchimp.
-User communicates in French; keep all UI copy and emails in French.
+Builder app that assembles marketing e-mails from blocks and exports paste-ready HTML for
+Brevo / Sarbacane / Mailchimp. Goal: "beau ET prêt à envoyer".
+**User writes French — answer in French, keep all UI copy and e-mail content French. Be concise
+and direct. No emojis in the actual e-mail designs.**
+
+**`ARCHITECTURE.md` is the full reference — read it before any non-trivial change.**
+What follows is the minimum needed to not break things.
+
+## The five rules
+
+1. **`Mailings Positif Design V2.dc.html` is the live app.** After every edit:
+   `cp "Mailings Positif Design V2.dc.html" index.html` (Vercel serves the root from `index.html`).
+   `Mailings Positif Design.dc.html`, `*-print.dc.html`, `versions/` are archives — do not edit.
+2. **A block lives in four places**: `_mk()` defaults → `_mapBlock()` styles/handlers →
+   `<sc-if b.isX>` canvas markup → `else if (b.type === 'x')` in `exportHtml()`.
+   Miss the last one and the block vanishes from the export.
+3. **`renderVals()` and `exportHtml()` share identical lines.** A single-occurrence replace hits
+   `exportHtml()` first (it is earlier in the file) and your code lands in the wrong method.
+   Anchor on a string unique to the target method, then grep to confirm.
+4. **E-mail strips SVG** — never reference a `.svg` from `exportHtml()`. Bake with
+   `_rasterizeAsset(path, outW, slice?)` or `_rasterizeSvg(svg, size)`.
+5. **New state must be added to BOTH `_templatePayload()` and `loadTemplate()`**, or it won't
+   survive a save. Clone nested objects (`contact`, `sigFlyer`) whole.
+
+## DC constraints
+
+Inline styles only. Template holes are **dotted paths, no expressions** — compute in
+`renderVals()`. Avoid holes for static text/styles (they don't paint while streaming); live
+values are fine. React drops valueless booleans: write `open="true"`, not bare `open`.
+
+Slot ids always go through `_slot()` — hand-written ids collide with the persisted
+`.image-slots.state.json` and resurrect ghost images.
+
+## Blocks (11)
+
+`banner` · `texte` · `image` (`full` = pleine largeur) · `produit` (image + big price) ·
+`cards` · `oneforone` (promo, exported as a baked PNG) · `flash` · `cta` · `contact` ·
+`services` · `sticker`.
+
+Use the shared `TGL()` / `SEG()` helpers at the top of `_mapBlock`. **Red = active on/off
+toggle. Black = selected segmented option or primary action.** Every block with an
+`image-slot` gets `onReframe` from the shared `reframe(slotId)` helper.
+
+The `oneforone` black band is a **flow element that sizes to its own text**; `bandLeft` /
+`bandRight` slope the two top corners independently. It used to be an absolute clip-path wedge
+with three interacting sliders — do not go back. Keep `_bakeOneforoneImage` in sync.
+
+## Contact + header + signatures
+
+**`state.contact`** is the single source for company / tagline / address / phone / whatsapp /
+email / web / legal, plus `order`, `labels`, `hidden`. All three signatures read it, in the
+canvas *and* in `exportHtml()`. **Never hardcode a coordinate.** Each entry renders as its own
+row so line breaks are controlled, not accidental. Rows with no target (address) render as
+plain text — an `<a href="">` is a bug.
+
+**Header**: `state.headerArt` — `true` = `header-bg-clean.svg` artwork + `logo-long.svg` +
+editable title, `false` = plain black bar. Both must stay selectable. Selection ring is a soft
+inset shadow, not a hard red outline.
+
+**Signatures** (`state.sigStyle`):
+- `'carte'` — carte-de-visite footer. `sigCarteLayout`: `'labels'` or `'centre'` (no-label
+  centred display).
+- `'newsletter'` — mentions légales + social icons + prefs/désinscription links + black bar.
+- `'flyer'` — carte-de-visite verso from supplied SVG artwork (`sig-flyer-bg-clean.svg`,
+  `tile-*.svg`, `sig-nfc-band.svg`). Labels are baked into the artwork, so tiles are plain
+  `<img>` that only toggle + take a link. State is the nested `state.sigFlyer`.
+  **Dot settings are per-signature, not shared.**
+
+Social icons are **generated** (`_SOCIAL` / `_socialSvg()`), not asset files.
+
+Use the user's supplied artwork. Do not reimplement it in CSS — that has been rejected before.
+
+## Verifying
+
+`node preview-server.js 8025`, drive `http://127.0.0.1:8025/index.html` with the global
+Playwright (`/opt/node22/lib/node_modules/playwright`, `PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers`).
+**Intercept `**://unpkg.com/**`** and serve locally-curled react/react-dom 18.3.1 — the sandbox
+can't reach the CDN and the DC never mounts otherwise.
+Exports land in `outputs/brevo-export/` via the server's `/__save-export` endpoint; grep them
+for unresolved `{{`, `.svg`, and `href=""`.
+
+Vercel auto-deploys `main`. The project is **invisible to the Vercel MCP** — that is not an
+outage. Verify by curling the live URL and grepping for a marker you just shipped.
 
 ## Client facts (verified)
-- Agence de publicité & imprimerie, Épinay-sur-Seine. **"PUBLICITÉ DEPUIS 1983" is now approved copy** (user reversed the earlier ban on it in July 2026); it headlines the flyer signature.
-- Address: 48 bis Boulevard Foch · 93800 Épinay-sur-Seine
-- Tel: 01 48 29 15 51 · WhatsApp: 06 18 70 11 18 (wa.me/33618701118)
-- Email: contact@positif.biz · Web: positifdesign.fr
-- Services ("Positif, c'est aussi"): Enseignes & façades, Signalétique, Marquage véhicule,
-  Covering, Panneaux & bâches, Stickers & adhésifs, Impression grand format, Marquage textile,
-  Objets publicitaires, Flyers & dépliants, Cartes de visite, PLV & stands, Décoration vitrine.
 
-## Brand system
-- **Red `#FC1D37`** (sampled from logo) + near-black `#141417` + white.
-- Font: **Montserrat ONLY** (800/900 for big headlines). **Anton/Impact was REMOVED** — user dislikes it. Do not reintroduce.
-- Art direction: **pop-art / commercial / "in your face"** (AWWWARDS-worthy, bold hierarchy).
-  - **Ben-Day dots** (big halftone circles, masked gradient) on hero backgrounds — NOT tiny fine-dot grids (user called those "ugly").
-  - **Coupon/ticket shapes** (notch circles + dashed divider) instead of plain black rectangles.
-  - **Round Disque A** with big red "A" + "VOTRE LOGO" pill (real product is round). User LOVES the big A.
-  - Pill buttons (border-radius:50px). Caution-tape diagonal stripes for urgency bars.
-  - Black bars behind hero text should be **tilted** (skewX/rotate).
-- Assets in `assets/`: `logo-positif.png`, `logo-positif-white.png`, `arrows.png`
-  (official colorful arrows graphic from carte de visite), `dot-pattern.png` (relief-varnish dot pattern).
-- **Signature = mini carte de visite**: black bg + relief dot pattern + colorful arrows graphic
-  bottom-right corner + reorganized contact rows (red dots w/ glow) + "Positif c'est aussi" service band above it.
+Agence de publicité & imprimerie, Épinay-sur-Seine. "PUBLICITÉ DEPUIS 1983" is approved copy
+(the earlier ban was reversed) and headlines the flyer signature.
 
-## Disque A flash offer
-"50 achetés = 50 offerts" / "1 ACHETÉ = 1 OFFERT" / "100 disques A pour le prix de 50".
-Cible: auto-écoles. Variante "Pop blast" (red bg) is the keeper — the dark "Black pop" variant was DELETED (user disliked it).
-## File structure — the live app is `Mailings Positif Design V2.dc.html`
-`index.html` is a **byte-identical copy** of the V2 file (Vercel serves the site root from it).
-**Any edit to the V2 file must be mirrored with `cp "Mailings Positif Design V2.dc.html" index.html`.**
-Older files are archives, do not edit: `Mailings Positif Design.dc.html` (V1, the 7 showcase models),
-`Mailings Positif Design-print.dc.html` (stale, still references Anton), `versions/`.
+- 48 bis Boulevard Foch · 93800 Épinay-sur-Seine
+- Tél 01 48 29 15 51 · WhatsApp 06 18 70 11 18 (wa.me/33618701118)
+- contact@positif.biz · positifdesign.fr
+- Services: Enseignes & façades, Signalétique, Marquage véhicule, Covering, Panneaux & bâches,
+  Stickers & adhésifs, Impression grand format, Marquage textile, Objets publicitaires,
+  Flyers & dépliants, Cartes de visite, PLV & stands, Décoration vitrine.
 
-V2 is **builder-first**, two tabs (`state.tab`: 'modeles' | 'builder'):
-1. **Builder** (default) — 3 columns: palette (left, 11 blocks), canvas (center, 600px email), right rail
-   (inspector + export settings + signature panel). The rail is **tabbed** (`state.railTab`:
-   'bloc' | 'export' | 'signature') and scrolls independently (`max-height:calc(100vh - 48px)`) —
-   stacked, the three cards ran to ~2400px and `position:sticky` never engaged.
-   Button colour is semantic: **red = an active on/off toggle** (`TGL()`), black = the selected
-   option of a segmented choice (`SEG()`) or a primary action. Don't mix them up.
-2. **Modèles** — saved templates, persisted to `localStorage` under `positif-mailing-builder-templates-v1`
-   via `saveTemplate()` / `loadTemplate()` / `_templatePayload()`. **When you add new state that must survive
-   a save, add it to BOTH `_templatePayload()` and `loadTemplate()`.**
+## Brand
 
-## Blocks (`_mk(type)` → `_mapBlock(b, i)` → canvas markup → `exportHtml()` branch)
-Adding or changing a block means touching **four** places, in this order:
-`_mk()` defaults → `_mapBlock()` computed styles + handlers → the `<sc-if b.isX>` canvas markup →
-the matching `else if (b.type === 'x')` branch in `exportHtml()`. Miss the last one and the block
-silently vanishes from the Brevo export.
+Red `#FC1D37` + near-black `#141417` + white. **Montserrat only** (800/900 for headlines) —
+Anton/Impact was removed, the user dislikes it, do not reintroduce.
+Pop-art / commercial / "in your face": big Ben-Day halftone dots (not fine grids — "ugly"),
+coupon/ticket shapes, pill buttons (`border-radius:50px`), tilted black bars behind hero text.
 
-| type | label | notable options |
-|---|---|---|
-| `banner` | Bannière | image height, `showText` toggle (image-only banner), title/subtitle/button + colors |
-| `texte` | Texte | align, title/text sizes, title/text/bg colors, optional button |
-| `image` | Image | **`full` = pleine largeur** (edge-to-edge, no padding/radius), height, radius, shadow |
-| `produit` | Produit + prix | image left/right, colored panel behind the visual, multi-line desc, **big price** + mention, text align, 3 font sizes, 5 colors, optional button |
-| `cards` | Cartes images | 1–6 cards, per-card reframe, photo height + radius |
-| `oneforone` | Message promo spécial | Ben-Day halftone, bottom black band, floating deco image, all colours/sizes editable; **exported as a baked PNG** via `_bakeOneforoneImage` |
-| `flash` | Bandeau offre flash | band color, text color, text size |
-| `cta` | Bouton « J'en profite » | text, url, bg/text color, size (padding scales with it) |
-| `contact` | Téléphone + WhatsApp | per-button colors, red-dot toggle |
-| `services` | Positif, c'est aussi | editable chips, per-chip dot/bg/text/border colors |
-| `sticker` | Image encadree | frame (aucun/photo/scotch), shape, align, size, shadow |
+Disque A flash offer: "50 achetés = 50 offerts" / "1 ACHETÉ = 1 OFFERT", cible auto-écoles.
+The "Pop blast" red variant is the keeper; the dark "Black pop" one was deleted.
 
-Every block with an `image-slot` exposes `onReframe` (built by the shared `reframe(slotId)` helper in
-`_mapBlock`) so the user can double-click-recadrer from the inspector. `TGL()` / `SEG()` at the top of
-`_mapBlock` are the shared toggle-pill and segmented-button style helpers — use them, don't re-inline.
+## Tweaks props (root DC)
 
-## Header + signatures
-Header is the black bar: `header-bg-clean.svg` (the swoosh + courbe layers of `header.svg`, its coordonnées stripped) + `logo-long.svg` + an editable title; `state.headerArt` toggles the artwork. (A `header.svg` "visuel" style existed
-briefly and was removed — it baked the coordonnées into a picture, duplicating the signature.)
-**`state.contact`** is the single source for company/tagline/address/phone/whatsapp/email/web/legal.
-All three signatures read it, in the canvas *and* in `exportHtml()`. Never hardcode a coordinate again.
+The host Tweaks panel uses the prop KEY as its label, so keys are French: `Points · taille`,
+`Points · espacement`, `Points · couleur`, `Flèches · taille`, `Flèches · décalage droite`,
+`Flèches · décalage bas`. They control the dot pattern + arrows on the V1 model signatures.
 
-## Signatures — three styles (`state.sigStyle`)
-- **`'carte'`** (default) — the carte-de-visite footer: dark bg + dot/uploaded pattern, arrows corner
-  visual, labelled contact rows. Controlled by the dot/pattern/arrow sliders (all gated behind
-  `<sc-if sigIsCarte>` in the right-rail SIGNATURE card). Exported with a baked pattern PNG +
-  `_signatureCornerImage()`; text stays HTML so links remain clickable.
-- **`'newsletter'`** — the alternate style: bold centered mentions légales, a row of round social icons,
-  sender note, « Mettre à jour vos préférences | Se désinscrire » links, closing note, then a black bar
-  with the raison sociale + coordonnées on the left and the logo on the right. All strings editable.
-- **`'flyer'`** — the carte-de-visite verso, built from **supplied SVG artwork** in `assets/`:
-  `sig-flyer-bg-clean.svg` (the dégradé + trame layers pulled out of `sig-flyer-bg.svg`, whose other layers are the header text and would double it), `tile-*.svg` (9 cells — 8 services + « Suivez-nous », each already carrying its
-  own rounded panel *and its label*), `sig-nfc-band.svg`, `logo.svg` / `logo-long.svg`, `header.svg`. Grid is `sigFlyer.tileCols` wide (default 4 -> 2 rows of 8 tiles); `bgMode` picks dégradé / carte-de-visite ronds / uni; the réseaux are a text line, not a tile.
-  Because the labels are baked into the artwork the grid renders plain `<img>`, not image-slots, and
-  there are no text labels to edit — each cell just toggles on/off and takes an optional link.
-  Kicker, coordonnées and colours stay editable HTML above the grid, so phone/e-mail remain live links.
-  **Email strips SVG**, so `_rasterizeAsset(path, outW)` bakes each asset to a 2× PNG at export time;
-  never reference a `.svg` from `exportHtml()`. State is the nested `state.sigFlyer` object — clone it
-  whole in `_templatePayload`/`loadTemplate`, which also drops pre-artwork tiles lacking a `file`.
-- Social icons are **generated, not asset files**: `_SOCIAL` holds 24×24 monochrome paths (web, tiktok,
-  whatsapp, instagram, facebook, linkedin), `_socialSvg()` wraps one in a light circle, `_socialDataUrl()` feeds the
-  canvas preview, and `_rasterizeSvg()` bakes each to a 2× PNG at export time (`images/reseau-*.png`).
+## Known open items
 
-## Tweaks props (root DC, French key-names ARE the labels shown in panel)
-The host Tweaks panel uses the prop KEY as its label (ignores a `label` field), so keys are French:
-`Points · taille`, `Points · espacement`, `Points · couleur`, `Flèches · taille`,
-`Flèches · décalage droite`, `Flèches · décalage bas`. These control the dot pattern + arrows
-on the 7 MODEL signatures (read via `this.props['Points · taille']` etc).
-
-## Notes / gotchas
-- DC rules: inline styles only; template holes are dotted-paths only (no expressions); compute in renderVals.
-  Avoid `{{ }}` holes for static style/text (won't paint while streaming) — but live runtime values are fine.
-- image-slot persists dropped images by `id`. Slot ids go through `_slot()`, which prefixes a
-  per-page-load namespace — `_nextId` restarts at 1 each load, so without it a new block would
-  re-attach the photo an earlier session left on the same id. Never build a slot id by hand.
-- The promo band is a **flow element that sizes to its own text**; `bandTilt` only slopes its top
-  edge and the text padding compensates, so the text can never fall outside the black. It used to be
-  an absolute wedge with separately-positioned text and three interacting sliders — do not go back.
-  `_bakeOneforoneImage` has a canvas fallback that mirrors this; keep the two in sync.
-- Verifying locally: `node preview-server.js 8025` then drive http://127.0.0.1:8025/index.html with the globally
-  installed Playwright (`/opt/node22/lib/node_modules/playwright`, PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers).
-  React is loaded from unpkg and the sandbox browser cannot reach it — intercept `**://unpkg.com/**` with
-  `page.route()` and serve locally-curled copies of react/react-dom 18.3.1, otherwise the DC never mounts.
-- Export writes to `outputs/brevo-export/` (gitignored) via the preview server's `/__save-export` endpoint —
-  read the HTML there to verify an export instead of unzipping the download.
-- User preferences: concise, direct. French responses. No emojis in the actual email designs.
+- 8 of 11 block inspectors are flat control runs (only `image`, `produit`, `oneforone` use
+  collapsible sections)
+- the `services` block heading and the `contact` block's "WhatsApp" prefix are hardcoded
