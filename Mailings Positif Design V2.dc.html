@@ -1359,15 +1359,18 @@
                   <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 8px;">Noir en haut</div>
                   <div class="pd-grid-2">
                     <div class="pd-slider">
-                      <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Hauteur</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flBlackTop }}px</span></div>
-                      <input type="range" min="0" max="420" step="5" value="{{ flBlackTop }}" onInput="{{ onFlBlackTop }}">
+                      <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Limite du noir</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flBlackTop }}px</span></div>
+                      <!-- direction:rtl — pousser vers la droite fait remonter la limite, comme
+                           le cadrage juste au-dessus. Sans ça les deux curseurs verticaux
+                           allaient en sens inverse l'un de l'autre. -->
+                      <input type="range" min="0" max="420" step="5" value="{{ flBlackTop }}" onInput="{{ onFlBlackTop }}" style="direction:rtl;">
                     </div>
                     <div class="pd-slider">
                       <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Fondu</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flBlackFade }}px</span></div>
                       <input type="range" min="0" max="320" step="5" value="{{ flBlackFade }}" onInput="{{ onFlBlackFade }}">
                     </div>
                   </div>
-                  <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:8px 0 0;">Prolonge le noir par-dessus le visuel pour que les coordonnées restent lisibles.</p>
+                  <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:8px 0 0;">Prolonge le noir par-dessus le visuel pour que les coordonnées restent lisibles. Vers la droite, la limite remonte.</p>
                 </div>
               </sc-if>
 
@@ -1406,6 +1409,10 @@
                 <div class="pd-slider">
                   <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Écart</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flGap }}px</span></div>
                   <input type="range" min="0" max="20" step="1" value="{{ flGap }}" onInput="{{ onFlGap }}">
+                </div>
+                <div class="pd-slider">
+                  <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Opacité des cases</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flTileOpacity }}%</span></div>
+                  <input type="range" min="20" max="100" step="5" value="{{ flTileOpacity }}" onInput="{{ onFlTileOpacity }}">
                 </div>
               </div>
 
@@ -1699,7 +1706,7 @@ class Component extends DCLogic {
       // a solid black band over the top so the coordonnées always sit on black.
       bgPosY: 30, bgZoom: 100, blackTop: 200, blackFade: 150,
       dotSize: 29, dotSpacing: 40, dotColor: '#5A1520', dotOpacity: 100,
-      tileCols: 4, tileGap: 6,
+      tileCols: 4, tileGap: 6, tileOpacity: 100,
       showWhatsapp: true, phonesInline: true,
       padBottom: 26,
       socialLine: true, socialLabel: 'Suivez-nous :', socialColor: '#FFFFFF',
@@ -2036,7 +2043,7 @@ class Component extends DCLogic {
   }
 
   // Email clients strip SVG, so supplied artwork is rasterised to 2x PNG at export.
-  async _rasterizeAsset(path, outW, slice) {
+  async _rasterizeAsset(path, outW, slice, alpha) {
     const r = await fetch(path);
     if (!r.ok) return null;
     let svg = await r.text();
@@ -2056,7 +2063,12 @@ class Component extends DCLogic {
     await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = url; });
     const canvas = document.createElement('canvas');
     canvas.width = W; canvas.height = H;
-    canvas.getContext('2d').drawImage(img, 0, 0, W, H);
+    const ctx2d = canvas.getContext('2d');
+    // Baked-in opacity: e-mail clients that drop CSS opacity would otherwise show the
+    // tiles at full strength.
+    if (alpha != null && alpha < 1) ctx2d.globalAlpha = Math.max(0, alpha);
+    ctx2d.drawImage(img, 0, 0, W, H);
+    ctx2d.globalAlpha = 1;
     if (slice) {
       const sx = Math.round(W * slice[0]);
       const sw = Math.max(1, Math.round(W * (slice[1] - slice[0])));
@@ -2595,9 +2607,10 @@ class Component extends DCLogic {
     if (this.state.sigStyle === 'flyer') {
       const S = this.state.sigFlyer;
       const TXT = S.textColor || '#FFFFFF';
-      const asset = async (file, outW, label) => {
+      const tileAlpha = (S.tileOpacity == null ? 100 : S.tileOpacity) / 100;
+      const asset = async (file, outW, label, alpha) => {
         try {
-          const baked = await this._rasterizeAsset('assets/' + file, outW);
+          const baked = await this._rasterizeAsset('assets/' + file, outW, null, alpha);
           if (!baked) return null;
           const name = imgName(label, 'png');
           files.push({ name, bytes: baked.bytes });
@@ -2693,7 +2706,7 @@ class Component extends DCLogic {
       const cellsHtml = [];
       for (const t of shown) {
         const base = 'signature-' + t.file.replace(/\.svg$/, '');
-        const im = await asset(t.file, cellW, base);
+        const im = await asset(t.file, cellW, base, tileAlpha);
         const tag = im ? '<img src="' + im + '" width="' + cellW + '" alt="' + esc(t.alt) + '" style="display:block;width:100%;height:auto;border:0;">' : '&nbsp;';
         cellsHtml.push('<td width="' + Math.floor(100 / cols) + '%" valign="bottom" style="vertical-align:bottom;padding:4px;">' + linked(t.url, tag) + '</td>');
       }
@@ -3344,6 +3357,7 @@ class Component extends DCLogic {
     const flBlackTop = _FL.blackTop == null ? 200 : _FL.blackTop;
     const flBlackFade = _FL.blackFade == null ? 150 : _FL.blackFade;
     const flPadBottom = _FL.padBottom == null ? 26 : _FL.padBottom;
+    const flTileOpacity = _FL.tileOpacity == null ? 100 : _FL.tileOpacity;
     // Layer order matters: the black cap is listed first so it paints over the artwork.
     const flCap = flBlackTop > 0
       ? 'linear-gradient(to bottom, ' + _FL.bg + ' 0px, ' + _FL.bg + ' ' + flBlackTop + 'px, transparent ' + (flBlackTop + flBlackFade) + 'px)'
@@ -3606,7 +3620,9 @@ class Component extends DCLogic {
       // NFC band horizontal nudge
       flNfcShift: flShift,
       onFlNfcShift: (e) => this.setFlyer('nfcShift', +e.target.value),
-      flTileImgStyle: 'width:100%;height:auto;display:block;',
+      flTileImgStyle: 'width:100%;height:auto;display:block;opacity:' + (flTileOpacity / 100) + ';',
+      flTileOpacity: flTileOpacity,
+      onFlTileOpacity: (e) => this.setFlyer('tileOpacity', +e.target.value),
       flNfcWrapStyle: 'position:relative;z-index:2;margin:24px ' + (-34 - flShift) + 'px 0 ' + (-34 + flShift) + 'px;line-height:0;',
       flNfcImgStyle: 'width:100%;height:auto;display:block;',
       onFlKicker: (e) => this.setFlyer('kicker', e.target.value),

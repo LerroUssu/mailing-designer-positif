@@ -234,6 +234,14 @@ than the panel. Anchored at `bottom` it showed almost nothing but red, which mad
 - `blackTop` / `blackFade` paint a `linear-gradient` of `FL.bg` over the top, listed **first**
   in `background-image` so it covers the artwork
 - `padBottom` gives the block breathing room under the NFC band
+- `tileOpacity` fades the service cells. It is **baked into the PNG** at export via
+  `_rasterizeAsset(path, outW, slice, alpha)`, not left to CSS `opacity`, which plenty of
+  clients drop.
+
+Both vertical controls must read the same way: **handle to the right = the boundary rises.**
+`Cadrage vertical` already did (`background-position:center {Y}%` slides the artwork up as Y
+grows); `Limite du noir` did the opposite, so it carries `direction:rtl` on the input. Keep any
+new vertical slider on that convention.
 
 **In the export the cap is a separate solid-black `<td>`**, not a gradient: the coordonnées and
 the réseaux line live in that cell, and the artwork only backs the tile grid. Background images
