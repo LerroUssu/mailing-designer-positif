@@ -281,8 +281,8 @@
 
           <!-- canvas header -->
             <div onClick="{{ onHeaderSelect }}" style="{{ headerWrapStyle }}">
-              <img src="assets/logo-long.svg" width="190" alt="Positif Design" style="display:block;width:190px;height:auto;">
-              <span data-tools="1" style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.18em;color:#9a9aa2;">{{ headerTitle }}</span>
+              <img src="assets/logo-long.svg" width="190" alt="Positif Design" style="display:block;width:190px;height:auto;position:relative;z-index:2;">
+              <span data-tools="1" style="font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:.18em;color:#ffffff;position:relative;z-index:2;">{{ headerTitle }}</span>
             </div>
 
 
@@ -487,23 +487,27 @@
                 <a href="{{ ctMailHref }}" style="{{ flEmailStyle }}">{{ ct.email }}</a>
                 <div style="{{ flAddressStyle }}">{{ ct.address }}</div>
                 <div style="{{ flWebStyle }}">{{ ct.web }}</div>
+                <sc-if value="{{ flWhatsappOn }}" hint-placeholder-val="{{ true }}">
+                  <a href="{{ ctWaHref }}" style="{{ flWaRowStyle }}"><img src="{{ flWhatsappIcon }}" width="20" height="20" alt="WhatsApp" style="display:inline-block;width:20px;height:20px;">{{ ct.whatsapp }}</a>
+                </sc-if>
               </div>
 
               <div style="{{ flGridStyle }}">
                 <sc-for list="{{ flCells }}" as="c" hint-placeholder-count="0">
                   <div style="{{ flTileStyle }}">
-                    <sc-if value="{{ c.notSplit }}" hint-placeholder-val="{{ true }}">
-                      <img src="{{ c.src }}" alt="{{ c.alt }}" style="{{ flTileImgStyle }}">
-                    </sc-if>
-                    <sc-if value="{{ c.split }}" hint-placeholder-val="{{ false }}">
-                      <div style="display:flex;align-items:flex-start;">
-                        <a href="{{ c.urlLeft }}" title="Instagram" style="{{ c.halfWrapStyle }}"><img src="{{ c.src }}" alt="Instagram" style="{{ c.halfImgLeftStyle }}"></a>
-                        <a href="{{ c.urlRight }}" title="LinkedIn" style="{{ c.halfWrapStyle }}"><img src="{{ c.src }}" alt="LinkedIn" style="{{ c.halfImgRightStyle }}"></a>
-                      </div>
-                    </sc-if>
+                    <img src="{{ c.src }}" alt="{{ c.alt }}" style="{{ flTileImgStyle }}">
                   </div>
                 </sc-for>
               </div>
+
+              <sc-if value="{{ flSocialOn }}" hint-placeholder-val="{{ true }}">
+                <div style="{{ flSocialRowStyle }}">
+                  <span style="{{ flSocialLabelStyle }}">{{ fl.socialLabel }}</span>
+                  <a href="{{ fl.linkedinUrl }}" style="{{ flSocialLinkStyle }}"><img src="{{ flLinkedinIcon }}" width="22" height="22" alt="" style="display:inline-block;width:22px;height:22px;">LinkedIn</a>
+                  <span style="{{ flSocialSepStyle }}">|</span>
+                  <a href="{{ fl.instagramUrl }}" style="{{ flSocialLinkStyle }}"><img src="{{ flInstagramIcon }}" width="22" height="22" alt="" style="display:inline-block;width:22px;height:22px;">Instagram</a>
+                </div>
+              </sc-if>
 
               <sc-if value="{{ flNfcOn }}" hint-placeholder-val="{{ true }}">
                 <div style="{{ flNfcWrapStyle }}">
@@ -1263,8 +1267,41 @@
           <sc-if value="{{ sigIsFlyer }}" hint-placeholder-val="{{ false }}">
             <div>
               <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:20px 0 8px;">Décor</div>
-              <button onClick="{{ onToggleFlBgArt }}" style="{{ flBgArtBtnStyle }};width:100%;">Fond graphique fourni</button>
-              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:8px 0 0;">Utilise <code>sig-flyer-bg-clean.svg</code>. Coupez-le pour retomber sur la couleur de fond unie.</p>
+              <div style="display:flex;gap:6px;">
+                <button onClick="{{ onFlBgFlyer }}" style="{{ flBgFlyerStyle }}">Dégradé flyer</button>
+                <button onClick="{{ onFlBgPoints }}" style="{{ flBgPointsStyle }}">Ronds carte</button>
+                <button onClick="{{ onFlBgUni }}" style="{{ flBgUniStyle }}">Uni</button>
+              </div>
+              <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:10.5px;line-height:1.4;color:#6c6c75;margin:8px 0 0;">« Ronds carte » réutilise la trame de la signature carte de visite (réglable dans son onglet).</p>
+
+              <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 8px;">Grille des cases</div>
+              <div class="pd-grid-2">
+                <div class="pd-slider">
+                  <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Colonnes</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flCols }}</span></div>
+                  <input type="range" min="2" max="5" step="1" value="{{ flCols }}" onInput="{{ onFlCols }}">
+                </div>
+                <div class="pd-slider">
+                  <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Écart</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flGap }}px</span></div>
+                  <input type="range" min="0" max="20" step="1" value="{{ flGap }}" onInput="{{ onFlGap }}">
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:18px 0 8px;">
+                <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;">Ligne réseaux</span>
+                <button onClick="{{ onToggleFlSocial }}" style="{{ flSocialBtnStyle }};flex:0 0 96px;">Afficher</button>
+              </div>
+              <sc-if value="{{ flSocialOn }}" hint-placeholder-val="{{ true }}">
+                <div>
+                  <input value="{{ fl.socialLabel }}" onChange="{{ onFlSocialLabel }}" placeholder="Suivez-nous :" style="width:100%;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#141417;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11.5px;color:#e9e9ee;outline:none;">
+                  <input value="{{ fl.linkedinUrl }}" onChange="{{ onFlLinkedin }}" placeholder="Lien LinkedIn" style="width:100%;margin-top:7px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#141417;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11px;color:#8e8e96;outline:none;">
+                  <input value="{{ fl.instagramUrl }}" onChange="{{ onFlInstagram }}" placeholder="Lien Instagram" style="width:100%;margin-top:7px;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#141417;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11px;color:#8e8e96;outline:none;">
+                </div>
+              </sc-if>
+
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin:18px 0 8px;">
+                <span style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;">Ligne WhatsApp</span>
+                <button onClick="{{ onToggleFlWhatsapp }}" style="{{ flWhatsappBtnStyle }};flex:0 0 96px;">Afficher</button>
+              </div>
 
               <div style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;color:#8e8e96;text-transform:uppercase;margin:18px 0 7px;">Accroche</div>
               <div style="display:flex;gap:8px;">
@@ -1284,15 +1321,7 @@
                 <sc-for list="{{ flTiles }}" as="t" hint-placeholder-count="0">
                   <div style="display:flex;gap:7px;align-items:center;">
                     <img src="{{ t.src }}" alt="" style="flex:0 0 44px;width:44px;height:32px;object-fit:contain;background:#1d1d22;border-radius:6px;">
-                    <sc-if value="{{ t.notSplit }}" hint-placeholder-val="{{ true }}">
                       <input value="{{ t.url }}" onChange="{{ t.onUrl }}" placeholder="Lien (optionnel)" style="flex:1;min-width:0;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:8px 10px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:10.5px;color:#e9e9ee;outline:none;">
-                    </sc-if>
-                    <sc-if value="{{ t.split }}" hint-placeholder-val="{{ false }}">
-                      <span style="flex:1;min-width:0;display:flex;gap:5px;">
-                        <input value="{{ t.urlLeft }}" onChange="{{ t.onUrlLeft }}" placeholder="Lien Instagram" style="flex:1;min-width:0;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:8px 10px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:10.5px;color:#e9e9ee;outline:none;">
-                        <input value="{{ t.urlRight }}" onChange="{{ t.onUrlRight }}" placeholder="Lien LinkedIn" style="flex:1;min-width:0;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:8px 10px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:10.5px;color:#e9e9ee;outline:none;">
-                      </span>
-                    </sc-if>
                     <button onClick="{{ t.onToggle }}" style="{{ t.btnStyle }}">{{ t.alt }}</button>
                   </div>
                 </sc-for>
@@ -1303,6 +1332,10 @@
                 <button onClick="{{ onToggleFlNfc }}" style="{{ flNfcBtnStyle }};flex:0 0 96px;">Afficher</button>
               </div>
               <sc-if value="{{ flNfcOn }}" hint-placeholder-val="{{ true }}">
+                <div class="pd-slider" style="margin-bottom:8px;">
+                  <div class="pd-slider-head"><span class="pd-slider-name" style="color:#8e8e96;">Décalage horizontal</span><span class="pd-slider-val" style="color:#e9e9ee;">{{ flNfcShift }}px</span></div>
+                  <input type="range" min="-60" max="60" step="2" value="{{ flNfcShift }}" onInput="{{ onFlNfcShift }}">
+                </div>
                 <input value="{{ fl.nfcUrl }}" onChange="{{ onFlNfcUrl }}" placeholder="Lien du bandeau NFC (optionnel)" style="width:100%;box-sizing:border-box;border:1px solid #34343c;border-radius:9px;padding:9px 11px;background:#1d1d22;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:11px;color:#e9e9ee;outline:none;">
               </sc-if>
 
@@ -1458,6 +1491,7 @@ class Component extends DCLogic {
     selStickerId: null,
     headerSelected: false,
     headerTitle: 'VOTRE E-MAIL',
+    headerArt: true,
     dragBlockId: null,
     dropBlockId: null,
     dropPos: null,
@@ -1494,14 +1528,18 @@ class Component extends DCLogic {
     sigFlyer: {
       kicker: 'PUBLICITÉ DEPUIS', year: '1983',
       bg: '#0B0B0D', accent: '#FC1D37', textColor: '#FFFFFF',
-      bgArt: true, bgFile: 'sig-flyer-bg-clean.svg',
+      bgMode: 'flyer', bgFile: 'sig-flyer-bg-clean.svg',
+      tileCols: 4, tileGap: 6,
+      showWhatsapp: true,
+      socialLine: true, socialLabel: 'Suivez-nous :',
+      linkedinUrl: 'https://www.linkedin.com/company/positifdesign',
+      instagramUrl: 'https://www.instagram.com/positifdesign',
+      nfcShift: -24,
       logoFile: 'logo.svg',
       // Artwork supplied as SVG; each tile already carries its own rounded panel
       // and its label, so the grid renders them as plain images.
       tiles: [
         { file: 'tile-conception-graphique.svg', alt: 'Conception graphique', on: true, url: '' },
-        { file: 'tile-suivez-nous.svg', alt: 'Suivez-nous sur Instagram et LinkedIn', on: true, url: '',
-          split: true, urlLeft: 'https://www.instagram.com/positifdesign', urlRight: 'https://www.linkedin.com/company/positifdesign' },
         { file: 'tile-marquage-textile.svg', alt: 'Marquage textile', on: true, url: '' },
         { file: 'tile-marquage-vehicules.svg', alt: 'Marquage véhicules', on: true, url: '' },
         { file: 'tile-deco-vitrine.svg', alt: 'Déco vitrine & enseigne', on: true, url: '' },
@@ -1584,6 +1622,7 @@ class Component extends DCLogic {
   _templatePayload() {
     return {
       headerTitle: this.state.headerTitle,
+      headerArt: this.state.headerArt,
       emailSubject: this.state.emailSubject,
       emailPreheader: this.state.emailPreheader,
       unsubscribeUrl: this.state.unsubscribeUrl,
@@ -1650,6 +1689,7 @@ class Component extends DCLogic {
       tab: 'builder',
     railTab: 'bloc',
       headerTitle: p.headerTitle || 'VOTRE E-MAIL',
+      headerArt: p.headerArt !== false,
       emailSubject: p.emailSubject || 'Votre offre Positif Design',
       emailPreheader: p.emailPreheader || '',
       unsubscribeUrl: p.unsubscribeUrl || '{{ unsubscribe }}',
@@ -2243,10 +2283,17 @@ class Component extends DCLogic {
       if (baked) { headerLogo = 'images/logo-positif-long.png'; files.push({ name: headerLogo, bytes: baked.bytes }); }
     } catch (e) {}
     let rows = '';
-    rows += '<tr><td bgcolor="#141417" style="background:#141417;padding:16px 28px;">' +
+    let headerBg = '';
+    if (this.state.headerArt !== false) {
+      try {
+        const baked = await this._rasterizeAsset('assets/header-bg-clean.svg', 600);
+        if (baked) { headerBg = 'images/en-tete-fond.png'; files.push({ name: headerBg, bytes: baked.bytes }); }
+      } catch (e) {}
+    }
+    rows += '<tr><td background="' + headerBg + '" bgcolor="#141417" style="' + (headerBg ? 'background-color:#141417;background-image:url(' + headerBg + ');background-repeat:no-repeat;background-size:100% 100%;' : 'background:#141417;') + 'padding:18px 28px 24px;">' +
       '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>' +
       '<td align="left" valign="middle">' + (headerLogo ? '<img src="' + headerLogo + '" width="190" alt="Positif Design" style="display:block;width:190px;height:auto;">' : '') + '</td>' +
-      '<td align="right" valign="middle" style="font-family:' + F + ';font-weight:800;font-size:11px;letter-spacing:2px;color:#9a9aa2;text-transform:uppercase;">' + esc(this.state.headerTitle || 'VOTRE E-MAIL') + '</td>' +
+      '<td align="right" valign="middle" style="font-family:' + F + ';font-weight:800;font-size:11px;letter-spacing:2px;color:#ffffff;text-transform:uppercase;">' + esc(this.state.headerTitle || 'VOTRE E-MAIL') + '</td>' +
       '</tr></table></td></tr>';
     for (const b of this.state.blocks) {
       if (b.type === 'banner') {
@@ -2370,17 +2417,27 @@ class Component extends DCLogic {
       };
       // The supplied background artwork, baked to PNG. Clients that drop background
       // images fall back to bgcolor, which is why the solid colour stays on the cell.
+      const flMode = ['points', 'uni'].indexOf(S.bgMode) >= 0 ? S.bgMode : 'flyer';
       let bgName = '';
-      if (S.bgArt !== false) {
-        // The artwork is inset inside its own viewBox; trim that margin so the
-        // background reaches both edges the way `cover` does in the builder.
+      if (flMode === 'flyer') {
         try {
           const baked = await this._rasterizeAsset('assets/' + (S.bgFile || 'sig-flyer-bg-clean.svg'), 600, [0.03, 0.97]);
           if (baked) { bgName = imgName('signature-flyer-fond', 'png'); files.push({ name: bgName, bytes: baked.bytes }); }
         } catch (e) {}
+      } else if (flMode === 'points') {
+        // same circle pattern as the carte-de-visite signature
+        try {
+          const cell = Math.max(this.state.dotSpacing, this.state.dotSize + 2);
+          const r = this.state.dotSize / 2;
+          const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + cell + '" height="' + cell + '"><rect width="' + cell + '" height="' + cell + '" fill="' + S.bg + '"/><circle cx="' + (cell / 2) + '" cy="' + (cell / 2) + '" r="' + r + '" fill="' + this.state.dotColor + '"/></svg>';
+          bgName = imgName('signature-flyer-points', 'png');
+          files.push({ name: bgName, bytes: await this._rasterizeSvg(svg, cell) });
+        } catch (e) {}
       }
       const panelBg = bgName
-        ? 'background-color:' + S.bg + ';background-image:url(' + bgName + ');background-repeat:no-repeat;background-position:bottom center;background-size:cover;'
+        ? (flMode === 'points'
+            ? 'background-color:' + S.bg + ';background-image:url(' + bgName + ');background-repeat:repeat;'
+            : 'background-color:' + S.bg + ';background-image:url(' + bgName + ');background-repeat:no-repeat;background-position:bottom center;background-size:cover;')
         : 'background:' + S.bg + ';';
 
       const flLogo = logoName;
@@ -2391,37 +2448,30 @@ class Component extends DCLogic {
       head += '<div style="padding-top:6px;"><a href="mailto:' + esc(CT.email) + '" style="font-family:' + F + ';font-weight:700;font-size:14px;letter-spacing:1px;color:' + S.accent + ';text-decoration:none;">' + esc(CT.email) + '</a></div>';
       head += '<div style="font-family:' + F + ';font-weight:600;font-size:11.5px;color:' + TXT + ';padding-top:10px;">' + esc(CT.address) + '</div>';
       head += '<div style="font-family:' + F + ';font-weight:800;font-size:14px;letter-spacing:3px;color:' + TXT + ';padding-top:8px;">' + esc(CT.web) + '</div>';
+      if (S.showWhatsapp !== false && (CT.whatsapp || '').trim()) {
+        let waIcon = null;
+        try { waIcon = imgName('reseau-whatsapp', 'png'); files.push({ name: waIcon, bytes: await this._rasterizeSvg(this._socialSvg('whatsapp', '#ffffff', '#25D366'), 20) }); } catch (e) { waIcon = null; }
+        head += '<div style="padding-top:8px;"><a href="https://wa.me/' + esc(String(CT.whatsapp || '').replace(/[^0-9]/g, '')) + '" style="font-family:' + F + ';font-weight:700;font-size:12.5px;color:' + TXT + ';text-decoration:none;">'
+          + (waIcon ? '<img src="' + waIcon + '" width="20" height="20" alt="" style="display:inline-block;width:20px;height:20px;vertical-align:middle;margin-right:6px;">' : '')
+          + esc(CT.whatsapp) + '</a></div>';
+      }
 
       // 3 columns inside a 548px content box, 9px gutters.
       const shown = (S.tiles || []).filter((t) => t.on !== false);
-      const cellW = 168;
+      const cols = Math.max(2, Math.min(5, S.tileCols || 4));
+      const cellW = Math.round(552 / cols) - 8;
       const cellsHtml = [];
       for (const t of shown) {
         const base = 'signature-' + t.file.replace(/\.svg$/, '');
-        if (t.split) {
-          // Same artwork, cut in two, so each icon carries its own href.
-          const halves = [];
-          for (const [range, url, label] of [[[0, 0.5], t.urlLeft, 'Instagram'], [[0.5, 1], t.urlRight, 'LinkedIn']]) {
-            let name = null;
-            try {
-              const baked = await this._rasterizeAsset('assets/' + t.file, cellW, range);
-              if (baked) { name = imgName(base + '-' + label.toLowerCase(), 'png'); files.push({ name, bytes: baked.bytes }); }
-            } catch (e) {}
-            const tag = name ? '<img src="' + name + '" width="' + Math.round(cellW / 2) + '" alt="' + esc(label) + '" style="display:block;width:100%;height:auto;border:0;">' : '&nbsp;';
-            halves.push('<td width="50%" valign="bottom" style="vertical-align:bottom;padding:0;font-size:0;line-height:0;">' + linked(url, tag) + '</td>');
-          }
-          cellsHtml.push('<td width="33%" valign="bottom" style="vertical-align:bottom;padding:4px;">'
-            + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>' + halves.join('') + '</tr></table></td>');
-          continue;
-        }
         const im = await asset(t.file, cellW, base);
         const tag = im ? '<img src="' + im + '" width="' + cellW + '" alt="' + esc(t.alt) + '" style="display:block;width:100%;height:auto;border:0;">' : '&nbsp;';
-        cellsHtml.push('<td width="33%" valign="bottom" style="vertical-align:bottom;padding:4px;">' + linked(t.url, tag) + '</td>');
+        cellsHtml.push('<td width="' + Math.floor(100 / cols) + '%" valign="bottom" style="vertical-align:bottom;padding:4px;">' + linked(t.url, tag) + '</td>');
       }
+      const colPct = Math.floor(100 / cols) + '%';
       let grid = '';
-      for (let i = 0; i < cellsHtml.length; i += 3) {
-        const row = cellsHtml.slice(i, i + 3);
-        while (row.length < 3) row.push('<td width="33%" style="padding:4px;">&nbsp;</td>');
+      for (let i = 0; i < cellsHtml.length; i += cols) {
+        const row = cellsHtml.slice(i, i + cols);
+        while (row.length < cols) row.push('<td width="' + colPct + '" style="padding:4px;">&nbsp;</td>');
         grid += '<tr>' + row.join('') + '</tr>';
       }
       const gridHtml = grid ? '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:18px;">' + grid + '</table>' : '';
@@ -2429,11 +2479,26 @@ class Component extends DCLogic {
       sig = '<tr><td background="' + bgName + '" bgcolor="' + S.bg + '" class="px" style="' + panelBg + 'padding:46px 34px 30px;text-align:center;">'
         + head + gridHtml + '</td></tr>';
 
+      if (S.socialLine !== false) {
+        let li = null, ig = null;
+        try { li = imgName('reseau-linkedin', 'png'); files.push({ name: li, bytes: await this._rasterizeSvg(this._socialSvg('linkedin', '#ffffff', '#0A66C2'), 22) }); } catch (e) { li = null; }
+        try { ig = imgName('reseau-instagram', 'png'); files.push({ name: ig, bytes: await this._rasterizeSvg(this._socialSvg('instagram', '#ffffff', S.accent), 22) }); } catch (e) { ig = null; }
+        const icon = (n) => n ? '<img src="' + n + '" width="22" height="22" alt="" style="display:inline-block;width:22px;height:22px;vertical-align:middle;margin-right:6px;">' : '';
+        const link = (url, n, label) => '<a href="' + href(url) + '" style="font-family:' + F + ';font-weight:800;font-size:12.5px;letter-spacing:.5px;color:' + TXT + ';text-decoration:none;">' + icon(n) + label + '</a>';
+        sig += '<tr><td bgcolor="' + S.bg + '" class="px" style="' + panelBg + 'padding:0 22px 22px;text-align:center;">'
+          + '<span style="font-family:' + F + ';font-weight:700;font-style:italic;font-size:14px;color:' + S.accent + ';">' + esc(S.socialLabel) + '</span>&nbsp;&nbsp;'
+          + link(S.linkedinUrl, li, 'LinkedIn')
+          + '<span style="font-family:' + F + ';font-weight:700;font-size:13px;color:' + TXT + ';">&nbsp;&nbsp;|&nbsp;&nbsp;</span>'
+          + link(S.instagramUrl, ig, 'Instagram')
+          + '</td></tr>';
+      }
+
       if (S.nfc !== false) {
         const nfcIm = await asset(S.nfcFile || 'sig-nfc-band.svg', 600, 'signature-nfc');
         if (nfcIm) {
           const tag = '<img src="' + nfcIm + '" width="600" alt="Plaque NFC avis Google" style="display:block;width:100%;max-width:600px;height:auto;border:0;">';
-          sig += '<tr><td bgcolor="' + S.bg + '" style="background:' + S.bg + ';padding:0;font-size:0;line-height:0;">' + linked(S.nfcUrl, tag) + '</td></tr>';
+          const shift = S.nfcShift == null ? -24 : S.nfcShift;
+          sig += '<tr><td bgcolor="' + S.bg + '" style="background:' + S.bg + ';padding:0;font-size:0;line-height:0;text-align:' + (shift < 0 ? 'left' : shift > 0 ? 'right' : 'center') + ';">' + linked(S.nfcUrl, tag) + '</td></tr>';
         }
       }
     } else if (this.state.sigStyle === 'newsletter') {
@@ -3008,6 +3073,18 @@ class Component extends DCLogic {
 
   renderVals() {
     const tab = this.state.tab;
+    const _FL = this.state.sigFlyer;
+    const flCols = Math.max(2, Math.min(5, _FL.tileCols || 4));
+    const flGap = _FL.tileGap == null ? 6 : _FL.tileGap;
+    const flShift = _FL.nfcShift == null ? -24 : _FL.nfcShift;
+    const flMode = ['points', 'uni'].indexOf(_FL.bgMode) >= 0 ? _FL.bgMode : 'flyer';
+    // 'points' reuses the carte-de-visite circle pattern so both styles can share a look.
+    const flDotCell = Math.max(this.state.dotSpacing, this.state.dotSize + 2);
+    const flBg = flMode === 'flyer'
+      ? "background-image:url('assets/" + (_FL.bgFile || 'sig-flyer-bg-clean.svg') + "');background-size:cover;background-repeat:no-repeat;background-position:center bottom;"
+      : flMode === 'points'
+        ? 'background-image:radial-gradient(circle, ' + this.state.dotColor + ' ' + (this.state.dotSize / 2).toFixed(1) + 'px, transparent ' + (this.state.dotSize / 2 + 1).toFixed(1) + 'px);background-size:' + flDotCell + 'px ' + flDotCell + 'px;'
+        : '';
     const tabBase = 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:.04em;padding:12px 22px;border-radius:50px;cursor:pointer;transition:all .15s;';
     const active = tabBase + 'background:#141417;color:#fff;border:1px solid #141417;';
     const idle = tabBase + 'background:#fff;color:#56565e;border:1px solid #DADADE;';
@@ -3045,17 +3122,8 @@ class Component extends DCLogic {
       src: 'assets/' + t.file,
       on: t.on !== false,
       hasUrl: !!(t.url || '').trim(),
-      // The « Suivez-nous » artwork holds two icons side by side; splitting it down
-      // the middle makes each half its own link without redrawing the icons.
-      split: !!t.split, notSplit: !t.split,
-      urlLeft: t.urlLeft || '', urlRight: t.urlRight || '',
-      halfWrapStyle: 'display:block;width:50%;overflow:hidden;line-height:0;',
-      halfImgLeftStyle: 'display:block;width:200%;height:auto;',
-      halfImgRightStyle: 'display:block;width:200%;height:auto;margin-left:-100%;',
       onToggle: () => this.setFlyerTile(idx, 'on', t.on === false),
       onUrl: (e) => this.setFlyerTile(idx, 'url', e.target.value),
-      onUrlLeft: (e) => this.setFlyerTile(idx, 'urlLeft', e.target.value),
-      onUrlRight: (e) => this.setFlyerTile(idx, 'urlRight', e.target.value),
       btnStyle: 'border:none;border-radius:50px;padding:7px 10px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10px;cursor:pointer;flex:0 0 auto;' + (t.on !== false ? 'background:#fff;color:#141417;' : 'background:#2a2a30;color:#8e8e96;'),
     }));
     const flyerCells = flyerTiles.filter((t) => t.on);
@@ -3135,18 +3203,53 @@ class Component extends DCLogic {
       flTiles: flyerTiles,
       flLogoSrc: 'assets/' + (FL.logoFile || 'logo.svg'),
       flNfcSrc: 'assets/' + (FL.nfcFile || 'sig-nfc-band.svg'),
-      flWrapStyle: 'position:relative;overflow:hidden;background-color:' + FL.bg + ';padding:46px 40px 0;'
-        + (FL.bgArt !== false ? "background-image:url('assets/" + (FL.bgFile || 'sig-flyer-bg-clean.svg') + "');background-size:cover;background-repeat:no-repeat;background-position:center bottom;" : ''),
+      flWrapStyle: 'position:relative;overflow:hidden;background-color:' + FL.bg + ';padding:46px 34px 0;' + flBg,
       flKickerStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.34em;color:' + FL.textColor + ';text-transform:uppercase;',
       flYearStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:10.5px;letter-spacing:.34em;color:' + FL.accent + ';',
       flPhoneStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:18px;letter-spacing:.13em;color:' + FL.textColor + ';margin:16px 0 0;',
       flEmailStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12.5px;letter-spacing:.06em;color:' + FL.accent + ';',
       flAddressStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:10.5px;letter-spacing:.03em;color:' + FL.textColor + ';margin:9px 0 0;',
       flWebStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12.5px;letter-spacing:.13em;color:' + FL.textColor + ';margin:7px 0 0;',
-      flGridStyle: 'position:relative;z-index:2;display:flex;flex-wrap:wrap;align-items:flex-end;gap:7px;margin:26px 0 0;',
-      flTileStyle: 'flex:0 0 calc((100% - 14px) / 3);max-width:calc((100% - 14px) / 3);line-height:0;',
+      flGridStyle: 'position:relative;z-index:2;display:flex;flex-wrap:wrap;align-items:flex-end;gap:' + flGap + 'px;margin:24px 0 0;',
+      flTileStyle: 'flex:0 0 calc((100% - ' + (flGap * (flCols - 1)) + 'px) / ' + flCols + ');max-width:calc((100% - ' + (flGap * (flCols - 1)) + 'px) / ' + flCols + ');line-height:0;',
+      flCols: flCols, flGap: flGap,
+      onFlCols: (e) => this.setFlyer('tileCols', +e.target.value),
+      onFlGap: (e) => this.setFlyer('tileGap', +e.target.value),
+
+      // « Suivez-nous : LinkedIn | Instagram » on one line, replacing the grid cell
+      flSocialOn: FL.socialLine !== false,
+      flSocialBtnStyle: sigSeg(FL.socialLine !== false),
+      onToggleFlSocial: () => this.setFlyer('socialLine', FL.socialLine === false),
+      flSocialRowStyle: 'position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:9px;margin:20px 0 0;flex-wrap:wrap;',
+      flSocialLabelStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:700;font-style:italic;font-size:14px;color:' + FL.accent + ';',
+      flSocialLinkStyle: 'display:inline-flex;align-items:center;gap:6px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12.5px;letter-spacing:.04em;color:' + FL.textColor + ';',
+      flSocialSepStyle: 'font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:13px;color:' + FL.textColor + '66;',
+      flLinkedinIcon: this._socialDataUrl('linkedin', '#ffffff', '#0A66C2'),
+      flInstagramIcon: this._socialDataUrl('instagram', '#ffffff', FL.accent),
+      flWhatsappIcon: this._socialDataUrl('whatsapp', '#ffffff', '#25D366'),
+      onFlSocialLabel: (e) => this.setFlyer('socialLabel', e.target.value),
+      onFlLinkedin: (e) => this.setFlyer('linkedinUrl', e.target.value),
+      onFlInstagram: (e) => this.setFlyer('instagramUrl', e.target.value),
+
+      // WhatsApp line in the coordonnées
+      flWhatsappOn: FL.showWhatsapp !== false,
+      flWhatsappBtnStyle: sigSeg(FL.showWhatsapp !== false),
+      onToggleFlWhatsapp: () => this.setFlyer('showWhatsapp', FL.showWhatsapp === false),
+      flWaRowStyle: 'display:inline-flex;align-items:center;gap:7px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:12.5px;color:' + FL.textColor + ';margin:8px 0 0;',
+
+      // background source
+      flBgFlyerStyle: sigSeg(flMode === 'flyer'),
+      flBgPointsStyle: sigSeg(flMode === 'points'),
+      flBgUniStyle: sigSeg(flMode === 'uni'),
+      onFlBgFlyer: () => this.setFlyer('bgMode', 'flyer'),
+      onFlBgPoints: () => this.setFlyer('bgMode', 'points'),
+      onFlBgUni: () => this.setFlyer('bgMode', 'uni'),
+
+      // NFC band horizontal nudge
+      flNfcShift: flShift,
+      onFlNfcShift: (e) => this.setFlyer('nfcShift', +e.target.value),
       flTileImgStyle: 'width:100%;height:auto;display:block;',
-      flNfcWrapStyle: 'position:relative;z-index:2;margin:26px -40px 0;line-height:0;',
+      flNfcWrapStyle: 'position:relative;z-index:2;margin:24px ' + (-34 - flShift) + 'px 0 ' + (-34 + flShift) + 'px;line-height:0;',
       flNfcImgStyle: 'width:100%;height:auto;display:block;',
       onFlKicker: (e) => this.setFlyer('kicker', e.target.value),
       onFlYear: (e) => this.setFlyer('year', e.target.value),
@@ -3155,10 +3258,8 @@ class Component extends DCLogic {
       onFlTextColor: (e) => this.setFlyer('textColor', e.target.value),
       onFlNfcUrl: (e) => this.setFlyer('nfcUrl', e.target.value),
       onToggleFlNfc: () => this.setFlyer('nfc', FL.nfc === false),
-      onToggleFlBgArt: () => this.setFlyer('bgArt', FL.bgArt === false),
       flNfcOn: FL.nfc !== false,
       flNfcBtnStyle: sigSeg(FL.nfc !== false),
-      flBgArtBtnStyle: sigSeg(FL.bgArt !== false),
       sigShowLegal: this.state.sigShowLegal !== false,
       sigLegalBtnStyle: 'border:none;border-radius:50px;padding:7px 16px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:11.5px;cursor:pointer;' + (this.state.sigShowLegal !== false ? 'background:#fff;color:#141417;' : 'background:#2a2a30;color:#8e8e96;'),
       onToggleSigLegal: () => this.setS('sigShowLegal', !(this.state.sigShowLegal !== false)),
@@ -3212,7 +3313,12 @@ class Component extends DCLogic {
       canvasRef: (el) => { if (el) this._canvasEl = el; },
       headerTitle: this.state.headerTitle,
       headerSelected: !!this.state.headerSelected,
-      headerWrapStyle: 'background:#141417;padding:17px 28px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;' + (this.state.headerSelected ? 'outline:2px solid #FC1D37;outline-offset:-2px;' : ''),
+      headerWrapStyle: 'position:relative;background-color:#141417;padding:20px 28px 26px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;'
+        + (this.state.headerArt !== false ? "background-image:url('assets/header-bg-clean.svg');background-size:100% 100%;background-repeat:no-repeat;background-position:center;" : '')
+        + (this.state.headerSelected ? 'outline:2px solid #FC1D37;outline-offset:-2px;' : ''),
+      headerArtOn: this.state.headerArt !== false,
+      headerArtBtnStyle: sigSeg(this.state.headerArt !== false),
+      onToggleHeaderArt: () => this.setS('headerArt', this.state.headerArt === false),
       onHeaderSelect: () => this.selectHeader(),
       onHeaderTitle: (e) => this.setS('headerTitle', e.target.value),
       stickers: this.state.stickers.map((st) => {

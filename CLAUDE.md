@@ -74,7 +74,7 @@ Every block with an `image-slot` exposes `onReframe` (built by the shared `refra
 `_mapBlock` are the shared toggle-pill and segmented-button style helpers — use them, don't re-inline.
 
 ## Header + signatures
-Header is the black bar: `logo-long.svg` + an editable title. (A `header.svg` "visuel" style existed
+Header is the black bar: `header-bg-clean.svg` (the swoosh + courbe layers of `header.svg`, its coordonnées stripped) + `logo-long.svg` + an editable title; `state.headerArt` toggles the artwork. (A `header.svg` "visuel" style existed
 briefly and was removed — it baked the coordonnées into a picture, duplicating the signature.)
 **`state.contact`** is the single source for company/tagline/address/phone/whatsapp/email/web/legal.
 All three signatures read it, in the canvas *and* in `exportHtml()`. Never hardcode a coordinate again.
@@ -89,7 +89,7 @@ All three signatures read it, in the canvas *and* in `exportHtml()`. Never hardc
   with the raison sociale + coordonnées on the left and the logo on the right. All strings editable.
 - **`'flyer'`** — the carte-de-visite verso, built from **supplied SVG artwork** in `assets/`:
   `sig-flyer-bg-clean.svg` (the dégradé + trame layers pulled out of `sig-flyer-bg.svg`, whose other layers are the header text and would double it), `tile-*.svg` (9 cells — 8 services + « Suivez-nous », each already carrying its
-  own rounded panel *and its label*), `sig-nfc-band.svg`, `logo.svg` / `logo-long.svg`, `header.svg`.
+  own rounded panel *and its label*), `sig-nfc-band.svg`, `logo.svg` / `logo-long.svg`, `header.svg`. Grid is `sigFlyer.tileCols` wide (default 4 -> 2 rows of 8 tiles); `bgMode` picks dégradé / carte-de-visite ronds / uni; the réseaux are a text line, not a tile.
   Because the labels are baked into the artwork the grid renders plain `<img>`, not image-slots, and
   there are no text labels to edit — each cell just toggles on/off and takes an optional link.
   Kicker, coordonnées and colours stay editable HTML above the grid, so phone/e-mail remain live links.
