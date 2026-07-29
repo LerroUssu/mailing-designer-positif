@@ -1290,6 +1290,17 @@
           <div class="pd-label" style="margin:14px 0 6px;">Lien navigateur</div>
           <input value="{{ viewOnlineUrl }}" onChange="{{ onViewOnlineUrl }}" class="pd-input">
           <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11.5px;line-height:1.5;color:#9a9aa2;margin:12px 0 0;">Dans Brevo, remplacez ces liens par vos variables de campagne si besoin.</p>
+
+          <div style="height:1px;background:#EFEFF2;margin:18px 0 14px;"></div>
+          <div class="pd-label" style="margin-bottom:8px;">Réglages par défaut</div>
+          <button onClick="{{ onSaveDefaults }}" style="width:100%;background:#141417;color:#fff;border:none;border-radius:50px;padding:11px;font-family:Montserrat,Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:.03em;cursor:pointer;">Enregistrer les réglages actuels</button>
+          <sc-if value="{{ hasDefaults }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ onClearDefaults }}" style="width:100%;margin-top:8px;background:#fff;border:1px solid #DEDEE4;color:#71717a;border-radius:50px;padding:10px;font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;cursor:pointer;">Revenir aux réglages d&#39;origine</button>
+          </sc-if>
+          <p style="font-family:Montserrat,Arial,sans-serif;font-weight:500;font-size:11.5px;line-height:1.5;color:#9a9aa2;margin:10px 0 0;">En-tête, coordonnées, signature et réglages d&#39;export sont rechargés à chaque ouverture. Le contenu de l&#39;e-mail n&#39;est pas concerné — pour ça, utilisez les modèles.</p>
+          <sc-if value="{{ hasDefaultsFlash }}" hint-placeholder-val="{{ false }}">
+            <p style="font-family:Montserrat,Arial,sans-serif;font-weight:700;font-size:11.5px;line-height:1.5;color:#141417;margin:8px 0 0;">{{ defaultsFlash }}</p>
+          </sc-if>
         </div>
         </div></sc-if>
         <sc-if value="{{ railIsSignature }}" hint-placeholder-val="{{ false }}"><div>
@@ -1676,7 +1687,7 @@ class Component extends DCLogic {
     return this._socialSvg(key, '#ffffff', '#141417');
   }
   _brandDataUrl(key) { return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(this._brandSvg(key)); }
-  state = {
+  state = this._withDefaults({
     tab: 'builder',
     railTab: 'bloc',
     selectedId: null,
@@ -1767,8 +1778,10 @@ class Component extends DCLogic {
     unsubscribeUrl: '{{ unsubscribe }}',
     viewOnlineUrl: '{{ mirror }}',
     savedTemplates: this._loadSavedTemplates(),
+    hasDefaults: !!this._readDefaults(),
+    defaultsFlash: '',
     blocks: [],
-  };
+  });
 
   _mk(type) {
     const id = this._nextId++;
@@ -1809,6 +1822,45 @@ class Component extends DCLogic {
     if (type === 'banner') return { id, type, title: 'VOTRE GRAND TITRE', subtitle: 'Un sous-titre accrocheur pour annoncer votre offre, votre nouveauté ou votre événement.', btnLabel: 'EN SAVOIR PLUS →', btnUrl: 'https://positifdesign.fr', btnBg: '#FC1D37', btnColor: '#FFFFFF', imgH: 284, showText: true, linkUrl: '' };
     if (type === 'sticker') return { id, type, linkUrl: '', size: 210, shape: 'rounded', radius: 18, align: 'center', frame: 'polaroid', shadow: true };
     return { id, type };
+  }
+
+  // Saved defaults: the settings the app should start with. Content (blocks, stickers) is
+  // deliberately excluded — that is what the Modèles tab is for.
+  _defaultsKey() { return 'positif-mailing-defaults-v1'; }
+  _readDefaults() {
+    try {
+      const raw = localStorage.getItem(this._defaultsKey());
+      const d = raw ? JSON.parse(raw) : null;
+      return d && typeof d === 'object' && !Array.isArray(d) ? d : null;
+    } catch (e) { return null; }
+  }
+  // Only keys the built-in state already declares are applied, so a stale or hand-edited
+  // entry can never introduce something the app does not know about.
+  _withDefaults(base) {
+    const d = this._readDefaults();
+    if (!d) return base;
+    const out = { ...base };
+    Object.keys(d).forEach((k) => { if (Object.prototype.hasOwnProperty.call(base, k)) out[k] = d[k]; });
+    return out;
+  }
+  _defaultsPayload() {
+    const p = this._templatePayload();
+    delete p.blocks;
+    delete p.stickers;
+    p.halftone = this.state.halftone;
+    p.emailSubject = this.state.emailSubject;
+    p.emailPreheader = this.state.emailPreheader;
+    p.unsubscribeUrl = this.state.unsubscribeUrl;
+    p.viewOnlineUrl = this.state.viewOnlineUrl;
+    return p;
+  }
+  saveDefaults() {
+    try { localStorage.setItem(this._defaultsKey(), JSON.stringify(this._defaultsPayload())); } catch (e) { return; }
+    this.setState({ hasDefaults: true, defaultsFlash: 'Réglages enregistrés — ils seront chargés à l\'ouverture.' });
+  }
+  clearDefaults() {
+    try { localStorage.removeItem(this._defaultsKey()); } catch (e) {}
+    this.setState({ hasDefaults: false, defaultsFlash: 'Réglages par défaut effacés — recharger la page pour repartir des réglages d\'origine.' });
   }
 
   _templateKey() { return 'positif-mailing-builder-templates-v1'; }
@@ -3712,6 +3764,11 @@ class Component extends DCLogic {
       railWrapStyle: 'width:420px;flex:0 0 auto;position:sticky;top:24px;max-height:calc(100vh - 48px);overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:14px;padding-right:2px;',
       railTabBarStyle: 'display:flex;gap:5px;background:#E8E8EE;border-radius:12px;padding:5px;position:sticky;top:0;z-index:5;flex:0 0 auto;',
       railIsBloc: this.state.railTab !== 'export' && this.state.railTab !== 'signature',
+      hasDefaults: !!this.state.hasDefaults,
+      defaultsFlash: this.state.defaultsFlash || '',
+      hasDefaultsFlash: !!this.state.defaultsFlash,
+      onSaveDefaults: () => this.saveDefaults(),
+      onClearDefaults: () => this.clearDefaults(),
       railIsExport: this.state.railTab === 'export',
       railIsSignature: this.state.railTab === 'signature',
       railBlocStyle: railTabStyle(this.state.railTab !== 'export' && this.state.railTab !== 'signature'),
