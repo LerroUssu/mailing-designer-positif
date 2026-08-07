@@ -409,6 +409,22 @@ Checks worth running after any change:
   endpoint — no need to unzip the download) and grep for: unresolved `{{` holes, `.svg`
   references, `href=""`
 
+`_saveExportLocal` is what writes that folder. It **returns early unless the hostname is
+localhost**: on the deployed site the POST 404s, and the export panel used to answer with a red
+"Sauvegarde locale indisponible" that read as a failed export even though the ZIP had already
+downloaded.
+
+### Console noise that is not a bug
+
+- **`GET /{{ flLogoSrc }}` and friends, 404.** The DC host paints the template once as a
+  placeholder before the logic supplies values, so the literal `{{ … }}` text sits in `src` and
+  the browser tries to fetch it. Measured: 11 of them, all within the first ~135 ms, and **0
+  unresolved or broken images** across the three signatures once mounted, with none appearing
+  afterwards. Nothing to fix in the app.
+- **`POST /__save-export`.** Local preview only, guarded by hostname since — see above.
+- **`content-script-start.js: Extension context invalidated`.** A browser extension, not the page.
+- **`/favicon.ico`.** No favicon is shipped.
+
 ## 12. Deploying
 
 Vercel auto-deploys `main` through the GitHub integration. **The project is invisible to the
