@@ -110,7 +110,11 @@ Playwright (`/opt/node22/lib/node_modules/playwright`, `PLAYWRIGHT_BROWSERS_PATH
 **Intercept `**://unpkg.com/**`** and serve locally-curled react/react-dom 18.3.1 — the sandbox
 can't reach the CDN and the DC never mounts otherwise.
 Exports land in `outputs/brevo-export/` via the server's `/__save-export` endpoint; grep them
-for unresolved `{{`, `.svg`, and `href=""`.
+for unresolved `{{`, `.svg`, and `href=""`. `_saveExportLocal` **returns early off localhost** —
+the endpoint only exists on the preview server, and its 404 used to surface a red "sauvegarde
+indisponible" that read as a failed export.
+Console 404s on `/{{ … }}` are the DC's placeholder pass before mount (~135 ms, all resolved
+after); they are not a bug.
 
 Vercel auto-deploys `main`. The project is **invisible to the Vercel MCP** — that is not an
 outage. Verify by curling the live URL and grepping for a marker you just shipped.

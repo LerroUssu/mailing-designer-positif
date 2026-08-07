@@ -2983,6 +2983,11 @@ class Component extends DCLogic {
   }
 
   async _saveExportLocal(zip, doc, files) {
+    // Only the local preview server implements /__save-export. On the deployed site the POST
+    // 404s and the panel used to answer with an alarming red "sauvegarde indisponible", which
+    // read as a failed export even though the ZIP had already downloaded.
+    const h = (window.location && window.location.hostname) || '';
+    if (h !== 'localhost' && h !== '127.0.0.1' && h !== '[::1]' && h !== '') return { ok: false, skipped: true };
     try {
       const buf = await zip.arrayBuffer();
       let binary = '';
@@ -3011,7 +3016,7 @@ class Component extends DCLogic {
       document.body.appendChild(box);
     }
     box.style.cssText = 'position:fixed;right:22px;bottom:22px;z-index:99999;width:360px;max-width:calc(100vw - 44px);background:#fff;border:2px solid #141417;border-radius:14px;box-shadow:0 22px 60px -24px rgba(0,0,0,.55);padding:16px;font-family:Montserrat,Arial,sans-serif;color:#141417;';
-    const savedHtml = saved && saved.ok ? '<div style="background:#F4F4F6;border:1px solid #E2E2E8;border-radius:10px;padding:10px;margin:0 0 12px;font-size:11.5px;line-height:1.45;color:#34343c;">Enregistre aussi dans :<br><strong>' + this._esc(saved.folder) + '</strong><br><a href="' + saved.zipUrl + '" style="color:#FC1D37;font-weight:800;">ouvrir ZIP local</a> · <a href="' + saved.htmlUrl + '" style="color:#141417;font-weight:800;">ouvrir HTML local</a></div>' : '<div style="background:#FFF4F4;border:1px solid #FFD0D6;border-radius:10px;padding:10px;margin:0 0 12px;font-size:11.5px;line-height:1.45;color:#9a3a44;">Sauvegarde locale indisponible. Utilisez les liens de téléchargement ci-dessous.</div>';
+    const savedHtml = saved && saved.ok ? '<div style="background:#F4F4F6;border:1px solid #E2E2E8;border-radius:10px;padding:10px;margin:0 0 12px;font-size:11.5px;line-height:1.45;color:#34343c;">Enregistre aussi dans :<br><strong>' + this._esc(saved.folder) + '</strong><br><a href="' + saved.zipUrl + '" style="color:#FC1D37;font-weight:800;">ouvrir ZIP local</a> · <a href="' + saved.htmlUrl + '" style="color:#141417;font-weight:800;">ouvrir HTML local</a></div>' : saved && saved.skipped ? '' : '<div style="background:#FFF4F4;border:1px solid #FFD0D6;border-radius:10px;padding:10px;margin:0 0 12px;font-size:11.5px;line-height:1.45;color:#9a3a44;">Sauvegarde locale indisponible. Utilisez les liens de téléchargement ci-dessous.</div>';
     box.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;">' +
       '<div style="font-weight:900;font-size:14px;letter-spacing:.06em;text-transform:uppercase;">Export pret</div>' +
       '<button type="button" data-close="1" style="border:0;background:#ECECEF;border-radius:50%;width:28px;height:28px;cursor:pointer;font-weight:900;">x</button></div>' +
